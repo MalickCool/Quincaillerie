@@ -34,6 +34,7 @@ class Accueil extends CI_Controller {
 
 		$data['page'] = "welcome_message";
 		$data['menu'] = 'home';
+		$data['titre'] = 'Bienvenu ';
 		$data['script'] = 'filter1';
 		$this->load->view($this->template, $data);
 	}

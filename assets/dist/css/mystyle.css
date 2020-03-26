@@ -1,0 +1,10 @@
+legend{
+	border-bottom: none !important;
+	margin-bottom: 0!important;
+	width: auto;
+	padding-right: 8px;
+}
+fieldset{
+	border: 1px red solid;
+	padding: .35em .625em .75em;
+}

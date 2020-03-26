@@ -1,0 +1,18 @@
+{
+  "name": "quincaillerie",
+  "version": "1.0.0",
+  "description": "Projet de gestion de quincaillerie",
+  "main": "index.php",
+  "scripts": {
+    "test": "teste"
+  },
+  "repository": {
+    "type": "git",
+    "url": "quincaillerie"
+  },
+  "keywords": [
+    "quincaillerie"
+  ],
+  "author": "Malick Coulibaly",
+  "license": "ISC"
+}
