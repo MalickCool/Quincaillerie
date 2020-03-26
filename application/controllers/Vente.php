@@ -18,6 +18,7 @@ class Vente extends CI_Controller {
         $this->load->model('detailvente_m');
         $this->load->model('commercial_m');
         $this->load->model('paiement_m');
+        $this->load->model('entrepot_m');
     }
 
     public $template = 'templates/template';
@@ -61,7 +62,9 @@ class Vente extends CI_Controller {
         $data['link'] = $link;
         $data['ventes'] = $bigArray;
         $data['texte'] = $periode;
+        $data['magasins'] = $this->entrepot_m->getActivated();
         $data['script'] = "filter1";
+        $data['script2'] = "global";
         //echo"<pre>"; die(print_r($bigArray));
         $data['titre'] = $periode;
         $data['page'] = "vente/liste";
@@ -440,4 +443,20 @@ class Vente extends CI_Controller {
         $mpdf->WriteHTML($html);
         $mpdf->Output($message.'.pdf', 'I');
     }
+
+    public function livrer($idvente){
+		if(!$this->ion_auth->logged_in()){
+			redirect("auth/login");
+		}
+
+		$returnArray = $this->vente_m->getArray($idvente);
+
+		//echo "<pre>";die(print_r($returnArray));
+		$data['returnArray'] = $returnArray;
+		$data['script'] = 'global';
+		$data['titre'] = 'Détail de la Vente N° '.$idvente;
+		$data['page'] = "vente/details";
+		$data['menu'] = 'edition';
+		$this->load->view($this->template, $data);
+	}
 }

@@ -192,7 +192,7 @@
 
 						<li class="nav-item">
 							<a href="<?= site_url("versement/ajouter") ?>" class="nav-link">
-								<i class="fas fa-warehouse nav-icon"></i>
+								<i class="fas fa-circle nav-icon"></i>
 								<p>Approvisionnement</p>
 							</a>
 						</li>

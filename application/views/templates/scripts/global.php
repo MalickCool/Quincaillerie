@@ -66,5 +66,13 @@
         }
     });
 
+    $('.modalClick').click(function () {
+		let id = $(this).attr('id');
+
+		$('#achat').val(id);
+
+        $('#modal-default').modal('show');
+    });
+
 
 </script>

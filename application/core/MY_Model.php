@@ -197,13 +197,18 @@ class MY_Model extends CI_Model
 
 		$returnArray['TotalRemise'] = $totalRemise;
 
+		$livraison = 'Non Livré';
+		if($vente->etatlivraison == 1)
+			$livraison = 'Livré';
+
+		$returnArray['Livraison'] = $livraison;
+
 		$returnArray['MontTTC'] = $vente->montant  + ($vente->montant * $tva / 100);
 		$returnArray['TotalTTC'] = $vente->montant + ($vente->montant * $tva / 100) - $totalRemise;
 		$returnArray['Produits'] = $productArray;
 		$returnArray['Paiements'] = $paiements;
 		$returnArray['MontantVerse'] = $sommeVersee;
 		$returnArray['Reste'] = $returnArray['TotalTTC'] - $sommeVersee;
-
 
 		//echo'<pre>'; die(print_r($returnArray));
 

@@ -85,6 +85,7 @@
 
 											<th>Total TTC</th>
 											<th>Reste à Payer</th>
+											<th>Etat Livraison</th>
 											<th>Action</th>
 										</tr>
 									</thead>
@@ -110,6 +111,10 @@
 													<td class="text-right">
 														<b><?= $this->vente_m->formatNumber($vente['Reste']) ?> FCFA</b>
 													</td>
+
+													<td class="text-right">
+														<b><?= $vente['Livraison'] ?></b>
+													</td>
 													<td class="text-center">
 
 														<div class="btn-group">
@@ -122,6 +127,15 @@
 																		<a class="dropdown-item" href="<?= site_url("vente/details/".$vente['Vente']->idvente) ?>" >Afficher Détail</a>
 																		<a class="dropdown-item" href="<?= site_url("vente/modifier/".$vente['Vente']->idvente) ?>">Modifier</a>
 																		<a class="dropdown-item" href="<?= site_url("vente/annuler/".$vente['Vente']->idvente) ?>">Annuler</a>
+																		<?php
+																			if($vente['Vente']->etatlivraison == 0) {
+																				?>
+																				<button type="button" class="modalClick dropdown-item btn btn-link" id="<?= $vente['Vente']->idvente ?>">
+																					Livrer
+																				</button>
+																				<?php
+																			}
+																		?>
 																		<?php
 																	}else{
 																		?>
@@ -150,4 +164,47 @@
 		</div>
 	</section>
 </div>
+
+
+<div class="modal fade" id="modal-default">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<form action="" method="post">
+				<div class="modal-header">
+					<h4 class="modal-title">Détail Lieux déstockage pour Livraison</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<div class="form-group row">
+						<div class="col-md-12">
+							<label for="magasin" class="col-sm-12 text-left control-label col-form-label">Magasin :</label>
+							<div class="col-sm-12">
+								<select id="magasin" name="magasin" class="select2 theSelect form-control custom-select" style="" required>
+									<option value="">Selectionner un Magasin</option>
+									<?php
+										foreach ($magasins as $magasin) {
+											?>
+											<option value="<?= $magasin->identrepot ?>"><?= $magasin->designation ?></option>
+											<?php
+										}
+									?>
+								</select>
+								<input type="hidden" name="achat" id="achat">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer justify-content-between">
+					<button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-window-close"></i> Annuler</button>
+					<button type="submit" class="btn btn-success"><i class="fa fa-save"></i> Enregistrer</button>
+				</div>
+			</form>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
 
