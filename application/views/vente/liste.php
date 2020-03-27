@@ -169,7 +169,7 @@
 <div class="modal fade" id="modal-default">
 	<div class="modal-dialog">
 		<div class="modal-content">
-			<form action="" method="post">
+			<?php echo form_open("stock/destocker", array('class'=>'form-horizontal', 'id'=>'form'));?>
 				<div class="modal-header">
 					<h4 class="modal-title">Détail Lieux déstockage pour Livraison</h4>
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">

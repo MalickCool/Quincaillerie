@@ -49,20 +49,7 @@ class detailvente_m extends MY_Model
         return $query->result();
     }
 
-    function getNbreByBriqueId($idbrique, $begin, $end) {
-        $realDateBegin = date('Y-m-d', strtotime($begin));
-        $realDateEnd = date('Y-m-d', strtotime($end));
-        $this->db->select('detailvente.*');
-        $this->db->from('detailvente, vente');
-        $this->db->where('detailvente.vente_id = vente.idvente');
-        $this->db->where('brique_id', $idbrique);
-        $this->db->where('vente.etat > -1');
-        $this->db->where('vente.datevente > -1');
-        $this->db->where('vente.datevente >=', $realDateBegin);
-        $this->db->where('vente.datevente <=', $realDateEnd);
-        $query = $this->db->get();
-        return $query->result();
-    }
+
 
 
 

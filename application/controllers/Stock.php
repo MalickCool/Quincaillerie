@@ -16,6 +16,8 @@ class Stock extends CI_Controller {
         $this->load->model('produit_m');
         $this->load->model('produit_m');
         $this->load->model('entrepot_m');
+        $this->load->model('vente_m');
+        $this->load->model('detailvente_m');
     }
 
     public $template = 'templates/template';
@@ -278,6 +280,175 @@ class Stock extends CI_Controller {
         $mpdf->WriteHTML($html);
         $mpdf->Output($message.'.pdf', 'I');
     }
+
+    public function destocker(){
+		if(!$this->ion_auth->logged_in()){
+			redirect("auth/login");
+		}
+
+		if(isset($_POST['magasin']) AND isset($_POST['achat'])){
+			$achat = $this->vente_m->get($_POST['achat']);
+
+			$details = $this->detailvente_m->getByForeignKey($achat->idvente);
+
+			$magasin = $this->entrepot_m->get($_POST['magasin']);
+
+			$verif = true;
+
+			//echo'<pre>'; die(print_r($details));
+
+			foreach ($details as $detail) {
+				$qte = $this->stock_m->getProductsByEntrepotWithDetails($detail->produit_id, $magasin->identrepot);
+				if(!is_numeric($qte))
+					$verif = false;
+			}
+
+			if($verif){
+				foreach ($details as $detail) {
+					$lines = $this->stock_m->getProductsLineByEntrepotWithDetails($detail->produit_id, $magasin->identrepot);
+
+					if(!empty($lines)){
+
+						$aRetirer = $detail->qte;
+
+						foreach ($lines as $line) {
+							if($line->qte > 0){
+								if($aRetirer > 0){
+									if($aRetirer >= $line->qte){
+										$aRetirer -= $line->qte;
+										$dataz = array(
+											'qte' => 0,
+										);
+										$this->stock_m->update($line->idstock, $dataz);
+									}else{
+										$nvxQte = $line->qte - $aRetirer;
+										$aRetirer = 0;
+
+										$dataz = array(
+											'qte' => $nvxQte,
+										);
+										$this->stock_m->update($line->idstock, $dataz);
+									}
+
+								}
+							}
+						}
+					}
+				}
+
+				$dataVente = array(
+					'etatlivraison' => 1,
+				);
+				$this->vente_m->update($achat->idvente, $dataVente);
+
+				$this->session->set_flashdata('destockage', 'Destockage effectué');
+
+			}else{
+				$this->session->set_flashdata('destockage', 'Impossible de Livrer ces marchandises. Quantité inssufisante dans ce magasin');
+			}
+			//echo'<pre>'; die('Verif ==> '.$verif);
+		}else{
+			$this->session->set_flashdata('destockage', 'Choisissez un magasin pour la livraison');
+		}
+
+		redirect('vente/index','refresh');
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function stock(){
         if(!$this->ion_auth->logged_in()){
