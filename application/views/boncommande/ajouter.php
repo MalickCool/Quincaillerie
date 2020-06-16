@@ -27,11 +27,23 @@
 							<div class="card-body">
 								<div class="col-xs-12 text-right">
 									<div class="offset-sm-10 text-center col-sm-2 pr-0 pt-2 pb-2 mb-3 font-weight-bold" style="color: #DA542E; border: 2px red solid;">
-										<span class="total">0</span><span> FCFA</span>
+										<span class="total"><?= $totalFacture ?></span><span> FCFA</span>
 									</div>
 								</div>
 								<?php echo form_open_multipart("Commande/validerAchat", array('class'=>'form-horizontal', 'id'=>'form'));?>
-									<div id="formulaire" class="hidden"></div>
+									<div id="formulaire" class="">
+										<?php
+											foreach ($stocks as $stock) {
+												?>
+												<div id="elem_<?= $stock['idProduit'] ?>">
+													<input name="product[]" type="" value="<?= $stock['idProduit'] ?>">
+													<input name="qte[]" class="qte" type="" value="<?= $stock['seuil'] - $stock['Qte'] ?>">
+													<input name="pu[]" class="pu" type="" value="<?= $stock['prix'] ?>">
+												</div>
+												<?php
+											}
+										?>
+									</div>
 									<input type="hidden" name="token" value="<?= bin2hex(openssl_random_pseudo_bytes(50)) ?>">
 
 									<div class="form-group row">
@@ -127,7 +139,23 @@
 												<th>Action</th>
 											</tr>
 										</thead>
-										<tbody id="tbody"></tbody>
+										<tbody id="tbody">
+											<?php
+												foreach ($stocks as $stock) {
+													?>
+													<tr id="tr_<?= $stock['idProduit'] ?>">
+														<td id="name_<?= $stock['idProduit'] ?>"><?= $stock['designation'] ?></td>
+														<td><input type="number" class="form-control automaticallyAddQte" min="1" value="<?= $stock['seuil'] - $stock['Qte'] ?>"></td>
+														<td><input type="number" class="form-control automaticallyAddPu" min="1" value="<?= $stock['prix'] ?>"></td>
+														<td class="tot"><?= ($stock['seuil'] - $stock['Qte']) * $stock['prix'] ?></td>
+														<td>
+															<button type="button" class="btn btn-danger removeBtn" id="<?= $stock['idProduit'] ?>"> Retirer</button>
+														</td>
+													</tr>
+													<?php
+												}
+											?>
+										</tbody>
 									</table>
 								</div>
 							</div>

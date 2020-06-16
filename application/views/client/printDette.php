@@ -18,7 +18,7 @@
             <th style="width: 30%; border: solid; border-color: #000; border-width: 0.5px; padding: 10px; background-color: #CCCCCC">
 				Client
             </th>
-            <th style="width: 20%; border: solid; border-color: #000; border-width: 0.5px; padding: 10px; background-color: #CCCCCC">
+            <th style="width: 10%; border: solid; border-color: #000; border-width: 0.5px; padding: 10px; background-color: #CCCCCC">
                 Contact Client
             </th>
 			<th style="width: 10%; border: solid; border-color: #000; border-width: 0.5px; padding: 10px; background-color: #CCCCCC">
@@ -29,6 +29,9 @@
             </th>
 			<th style="width: 10%; border: solid; border-color: #000; border-width: 0.5px; padding: 10px; background-color: #CCCCCC">
 				Reste à Payer
+            </th>
+			<th style="width: 10%; border: solid; border-color: #000; border-width: 0.5px; padding: 10px; background-color: #CCCCCC">
+				Date Echéance
             </th>
         </tr>
         </thead>
@@ -50,6 +53,8 @@
 						<td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: center"><?= $this->client_m->formatNumber($list['TotalTTC']) ?></td>
 						<td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: center"><?= $this->client_m->formatNumber($list['MontantVerse']) ?></td>
 						<td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: center"><?= $this->client_m->formatNumber($list['Reste']) ?></td>
+						<td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: center"><?= ($this->client_m->formatNumber($list['Reste']) > 0) ? date("d/m/Y", strtotime($list['Vente']->echeance)) : "" ?></td>
+
 					</tr>
 					<?php
 				}

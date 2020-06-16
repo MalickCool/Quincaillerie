@@ -4,15 +4,7 @@
 	<div class="content-header">
 		<div class="container-fluid">
 			<div class="row mb-2">
-				<div class="col-sm-6">
-					<h1 class="m-0 text-dark">Transfert Interne de Stock</h1>
-				</div><!-- /.col -->
-				<div class="col-sm-6">
-					<ol class="breadcrumb float-sm-right">
-						<li class="breadcrumb-item"><a href="<?= site_url("Accueil/index") ?>">Accueil</a></li>
-						<li class="breadcrumb-item active">Stock</li>
-					</ol>
-				</div><!-- /.col -->
+
 			</div><!-- /.row -->
 		</div><!-- /.container-fluid -->
 	</div>
@@ -22,48 +14,44 @@
 	<section class="content">
 		<div class="container-fluid">
 			<div class="row">
-				<form action="<?= site_url("stock/transfert_step2") ?>" method="post" class="form-horizontal col-12">
+				<form action="<?= site_url("stock/insertTransfert") ?>" method="post" class="form-horizontal col-12">
+
+					<input type="hidden" name="de" value="<?= $de->identrepot ?>">
+					<input type="hidden" name="vers" value="<?= $vers->identrepot ?>">
+
 					<div class="row">
 						<div class="offset-md-3 col-md-6">
 							<div class="card">
-								<div class="card-header colorOrange">
-									Choix des Magasins
+								<div class="card-header colorOrange font-weight-bolder">
+									Transfert de Stock de <?= $de->designation ?> vers <?= $vers->designation ?><br>
+									Quantité à Transférer
 								</div>
 								<div class="card-body">
-									<div class="form-group row">
-										<div class="col-sm-6">
-											<label for="idmagasin" class="col-sm-12 control-label col-form-label">Transférer De</label>
-											<div class="col-sm-12">
-												<select name="de" id="idmagasin" required class="select2 form-control custom-select">
-													<?php
-													foreach ($entrepots as $entrepot) {
-														?>
-														<option value="<?= $entrepot->identrepot ?>"><?= $entrepot->designation ?></option>
-														<?php
-													}
-													?>
-												</select>
-												<?= form_error('de','<div class="alert alert-danger">','</div>');?>
-											</div>
-										</div>
-
-										<div class="col-sm-6">
-											<label for="idmagasin2" class="col-sm-12 control-label col-form-label">Vers</label>
-											<div class="col-sm-12">
-												<select name="vers" id="idmagasin2" required class="select2 form-control custom-select">
-													<?php
-													foreach ($entrepots as $entrepot) {
-														?>
-														<option value="<?= $entrepot->identrepot ?>"><?= $entrepot->designation ?></option>
-														<?php
-													}
-													?>
-												</select>
-												<?= form_error('vers','<div class="alert alert-danger">','</div>');?>
-											</div>
-										</div>
-									</div>
+									<table id="" class="table table-striped table-bordered">
+										<thead>
+											<tr>
+												<th>Article</th>
+												<th style="width: 35%" class="text-center">Quantité</th>
+											</tr>
+										</thead>
+										<tbody>
+										<?php
+											foreach ($stocks as $stock) {
+												?>
+												<tr>
+													<td><?= $stock['designation'] ?></td>
+													<td>
+														<input type="number" name="stock_<?= $stock['idProduit'] ?>" max="<?= $stock['Qte'] ?>" min="0" value="<?= $stock['Qte'] ?>" class="form-control text-center colorOrange">
+													</td>
+												</tr>
+												<?php
+											}
+										?>
+										</tbody>
+									</table
 								</div>
+
+								<input type="hidden" name="token" value="<?= bin2hex(openssl_random_pseudo_bytes(50)) ?>">
 
 								<div class="border-top">
 									<div class="card-body text-center">
@@ -71,7 +59,7 @@
 											<i class="fa fa-window-close"></i> Annuler
 										</a>
 										<button type="submit" class="btn btn-primary">
-											Continuer <i class="fa fa-chevron-circle-right"></i>
+											<i class="fa fa-save"></i> Transférer
 										</button>
 									</div>
 								</div>

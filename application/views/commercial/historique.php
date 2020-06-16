@@ -119,7 +119,7 @@
 
                                                 <div class="form-group row">
                                                     <div class="col-md-6 pl-0">
-                                                        <label for="" class="col-sm-12 text-left control-label col-form-label">Total Remise sur Brique</label>
+                                                        <label for="" class="col-sm-12 text-left control-label col-form-label">Total Remise sur Article</label>
                                                         <div class="col-sm-12">
                                                             <input type="text" class="form-control" readonly value="<?= $this->commande_m->formatNumber($commande['TotalRemise'] - $commande['Commande']->remisefacture) ?> FCFA">
                                                         </div>

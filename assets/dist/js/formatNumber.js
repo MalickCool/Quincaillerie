@@ -11,13 +11,14 @@
  * @public
  */
 
-module.exports = formatNumber;
+Module.exports = formatNumber;
 
 /**
  * Return a well formatted number according to french rules
  * @param value
  * @param options
  */
+
 function formatNumber(value, options) {
 	options = options || {};
 	value += ''; // must be String Type

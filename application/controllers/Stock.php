@@ -18,6 +18,8 @@ class Stock extends CI_Controller {
         $this->load->model('entrepot_m');
         $this->load->model('vente_m');
         $this->load->model('detailvente_m');
+        $this->load->model('transfert_m');
+        $this->load->model('detailtransfert_m');
     }
 
     public $template = 'templates/template';
@@ -338,13 +340,15 @@ class Stock extends CI_Controller {
 
 				$dataVente = array(
 					'etatlivraison' => 1,
+					'datelivraison' => date('Y/m/d'),
+					'entrepotlivraison' => $magasin->identrepot,
 				);
 				$this->vente_m->update($achat->idvente, $dataVente);
 
 				$this->session->set_flashdata('destockage', 'Destockage effectué');
 
 			}else{
-				$this->session->set_flashdata('destockage', 'Impossible de Livrer ces marchandises. Quantité inssufisante dans ce magasin');
+				$this->session->set_flashdata('destockage', 'Impossible de Livrer ces marchandises. Quantité insufisante dans ce magasin');
 			}
 			//echo'<pre>'; die('Verif ==> '.$verif);
 		}else{
@@ -353,6 +357,142 @@ class Stock extends CI_Controller {
 
 		redirect('vente/index','refresh');
 	}
+
+	public function transfert(){
+		if(!$this->ion_auth->logged_in()){
+			redirect("auth/login");
+		}
+
+		$entrepots = $this->entrepot_m->getActivated();
+		$data['entrepots'] = $entrepots;
+
+		$data['titre'] = 'Transfert Interne de Stock';
+		$data['page'] = "stock/choixmagasin";
+		$data['menu'] = 'stock';
+		$this->load->view($this->template, $data);
+	}
+
+	public function transfert_step2(){
+		if(!$this->ion_auth->logged_in()){
+			redirect("auth/login");
+		}
+
+		$entrepotDe = $this->entrepot_m->get($_POST['de']);
+		$data['entrepotDe'] = $entrepotDe;
+
+		$entrepotVers = $this->entrepot_m->get($_POST['vers']);
+		$data['entrepotVers'] = $entrepotVers;
+
+		$produits = $this->produit_m->getActivated();
+		$stocks = array();
+		foreach ($produits as $produit) {
+			$qte = $this->stock_m->getProductsByEntrepotWithDetails($produit->idproduit, $_POST['de']);
+			if(!is_numeric($qte))
+				$qte = 0;
+
+			if($qte > 0){
+				$stocks[$produit->idproduit]['idProduit'] = $produit->idproduit;
+				$stocks[$produit->idproduit]['designation'] = $produit->designation;
+				$stocks[$produit->idproduit]['seuil'] = $produit->seuil;
+				$stocks[$produit->idproduit]['Qte'] = $qte;
+			}
+		}
+
+		//echo "<pre>";die(print_r($stocks));
+		$data['stocks'] = $stocks;
+		$data['de'] = $entrepotDe;
+		$data['vers'] = $entrepotVers;
+
+		$data['titre'] = 'Transfert Interne de Stock';
+		$data['page'] = "stock/transfert";
+		$data['menu'] = 'stock';
+		$this->load->view($this->template, $data);
+	}
+
+	public function insertTransfert(){
+		if(!$this->ion_auth->logged_in()){
+			redirect("auth/login");
+		}
+
+		$entrepotDe = $this->entrepot_m->get($_POST['de']);
+		
+		$entrepotVers = $this->entrepot_m->get($_POST['vers']);
+
+		$produits = $this->produit_m->getActivated();
+
+		$datas = array(
+			'datetransfert' => date('Y/m/d'),
+			'heuretransfert' => date('H:i:s'),
+			'user_id' => $this->session->userdata('user_id'),
+			'token' => $this->input->post('token'),
+
+			'de' => $this->input->post('de'),
+			'vers' => $this->input->post('vers'),
+		);
+
+		$idTransfert = $this->transfert_m->add_item($datas);
+
+		foreach ($produits as $produit) {
+			if(isset($_POST['stock_'.$produit->idproduit]) AND $_POST['stock_'.$produit->idproduit] > 0){
+				//echo "<pre>";die(print_r($_POST['stock_'.$produit->idproduit]));
+				$dataDetail = array(
+					'idproduit' => $produit->idproduit,
+					'quantite' => $_POST['stock_'.$produit->idproduit],
+					'transfert_id' => $idTransfert,
+				);
+				$this->detailtransfert_m->add_item($dataDetail);
+
+				$lines = $this->stock_m->getAllStockByIdArticle($produit->idproduit, $_POST['de']);
+				//echo "<pre>";die(print_r($lines));
+				$aRetirer = $_POST['stock_'.$produit->idproduit];
+				foreach ($lines as $line) {
+					if($line->qte > 0){
+						if($aRetirer > 0){
+							if($aRetirer >= $line->qte){
+								$aRetirer -= $line->qte;
+								$dataY = array(
+									'idproduit' => $produit->idproduit,
+									'qte' => $line->qte,
+									'prixachat' => $line->prixachat,
+									'identrepot' => $_POST['vers'],
+									'idbl' => $line->idbl,
+									'dateachat' => $line->dateachat,
+								);
+								$this->stock_m->insert($dataY);
+
+								$dataz = array(
+									'qte' => 0,
+								);
+								$this->stock_m->update($line->idstock, $dataz);
+							}else{
+								$nvxQte = $line->qte - $aRetirer;
+
+								$dataY = array(
+									'idproduit' => $produit->idproduit,
+									'qte' => $aRetirer,
+									'prixachat' => $line->prixachat,
+									'identrepot' => $_POST['vers'],
+									'idbl' => $line->idbl,
+									'dateachat' => $line->dateachat,
+								);
+								$this->stock_m->insert($dataY);
+
+								$aRetirer = 0;
+
+								$dataz = array(
+									'qte' => $nvxQte,
+								);
+								$this->stock_m->update($line->idstock ,$dataz);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		redirect('stock/entrepot','refresh');
+	}
+
 
 
 

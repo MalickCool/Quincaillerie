@@ -6,7 +6,7 @@ class Accueil extends CI_Controller {
 	public function __construct($value = "")
 	{
 		parent::__construct();
-		//$this->load->model('depense_m');
+		$this->load->model('actioncaisse_m');
 	}
 
 	public $template = 'templates/template';
@@ -32,10 +32,41 @@ class Accueil extends CI_Controller {
 			redirect("auth/login");
 		}
 
+		$action = '';
+		if(isset($_SESSION['caisse'])){
+			$actionCaisse = $this->actioncaisse_m->arretCaisseDidExists($_SESSION['caisse']->idcaisse);
+
+			if(!$actionCaisse){
+				$action = 'ouverture';
+				if(isset($_SESSION['arretCaisse']))
+					unset($_SESSION['arretCaisse']);
+
+			}else{
+				$arretCaisse = $this->actioncaisse_m->getArretCaisse($_SESSION['caisse']->idcaisse);
+				$arretCaisse = $arretCaisse[0];
+
+				if($arretCaisse->etat == 0){
+					$action = 'réouverture';
+				}else{
+					$action = 'Annuler';
+				}
+
+				if(isset($_SESSION['arretCaisse']))
+					unset($_SESSION['arretCaisse']);
+
+				$_SESSION['arretCaisse'] = $arretCaisse;
+			}
+		}else{
+			redirect("auth/login");
+		}
+
+		//echo"<pre>"; die(print_r($_SESSION));
+
 		$data['page'] = "welcome_message";
 		$data['menu'] = 'home';
-		$data['titre'] = 'Bienvenu ';
+		$data['titre'] = 'Bienvenu';
 		$data['script'] = 'filter1';
+
 		$this->load->view($this->template, $data);
 	}
 }

@@ -35,6 +35,16 @@
 											<th>Désignation</th>
 											<th>Contact</th>
 											<th>Email</th>
+
+											<th>NCC</th>
+											<th>RCCM</th>
+											<th>N° Compte</th>
+
+											<th>Représentant</th>
+											<th>Fonction</th>
+											<th>Contact Professionnel</th>
+											<th>Contact Personnel</th>
+
 											<th>Etat</th>
 											<th>Action</th>
 										</tr>
@@ -50,6 +60,16 @@
 													<td><?= $item->designation ?></td>
 													<td><?= $item->contact ?></td>
 													<td><?= $item->email ?></td>
+
+													<td><?= $item->ncc ?></td>
+													<td><?= $item->rccm ?></td>
+													<td><?= $item->ncb ?></td>
+
+													<td><?= $item->nomRep ?></td>
+													<td><?= $item->fonction ?></td>
+													<td><?= $item->contactProfessionnel ?></td>
+													<td><?= $item->contactPersonnel ?></td>
+
 													<td><?= $status ?></td>
 													<td>
 														<a href="<?= site_url("fournisseur/edit/".$item->idfournisseur) ?>" class="btn btn-danger">Modifier</a>

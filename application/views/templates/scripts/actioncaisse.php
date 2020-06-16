@@ -1,216 +1,114 @@
 <script>
-    $('#ajouter').click(function (event) {
+
+    $('#openCaisse').click(function (event) {
         event.preventDefault();
-        var input = $('#add').html();
-        $('#add2').append(input);
-    });
 
-    $('#moyen').change(function () {
-        if($(this).val() === 'cheque'){
-            $('.chequeDiv').removeClass('d-none');
-            $('#numCheque').attr('required', 'required');
-            $('#banque').attr('required', 'required');
-        }else{
-            $('.chequeDiv').addClass('d-none');
-            $('#numCheque').removeAttr('required', 'required');
-            $('#banque').removeAttr('required', 'required');
-        }
-    });
+        const login = $("#utilisateur").val();
+        const password = $("#password").val();
+        const token = $("#token").val();
 
+        if(login.length > 5 && password.length > 5){
 
-    $(document).on("change", '.theSelect', function (){
-        var x = $(this).find('option:selected').attr('lang');
-        $(this).parent().parent().find('.theQte').val(0);
-        console.log(x);
-    });
+            params = new FormData();
 
-    $(document).on('keyup', '.theQte', function () {
-        var x = $(this).parent().parent().parent().find('option:selected').attr('lang');
+            params.append( 'identity', login);
+            params.append( 'password', password);
+            params.append( 'token', token);
 
-        var remise = $(this).parent().parent().parent().find('.theRemise').val();
+            var config = {
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            };
+            axios.post('<?= site_url('auth/ajaxLogin');?>', params, config)
+                .then(function (response) {
+                    alert("Ouverture de Caisse effectuée");
 
-
-        if(remise !== ''){
-            x = parseInt(x) - parseInt(remise);
-        }
-
-
-        if(x >= 0){
-            var result = parseInt(x) * parseInt($(this).val());
-            console.log(result);
-
-            $(this).parent().parent().parent().find('.theTotal').val(result);
-
-            var transport = 0;
-
-
-            var mht = 0;
-            $("#fieldset .theTotal").each(function() {
-                mht += parseInt($( this ).val());
-            });
-
-            let remiseFacture = $('#remiseMtnt').val();
-
-            if(remiseFacture === ''){
-                remiseFacture = 0;
-            }
-
-            var mhtAvecTransport = mht + parseInt(transport);
-
-            mhtAvecTransport -= remiseFacture;
-
-            $('#mht').val(mhtAvecTransport);
-            $('#htWithoutTransport').val(mht);
-
-            var tauxTVA = $("#filedset0 .theTVA").find('option:selected').attr('lang');
-
-            var mttc = parseInt(mht) + (parseInt(mht) * parseInt(tauxTVA) / 100);
-
-            var mttcAvecTransport = mttc + parseInt(transport);
-
-
-
-            console.log('Remise Facture ====> '+remiseFacture);
-
-            mttcAvecTransport -= parseInt(remiseFacture);
-            //mttc -= parseInt(remiseFacture);
-
-            $('#mttc').val(mttcAvecTransport);
-            $('#rap').val(mttcAvecTransport);
-            $('#montP').val(0);
-
-            $('#ttcWithoutTransport').val(mttc);
-        }
-    });
-
-    $("#filedset0 .theTVA").change(function () {
-        var tauxTVA = $("#filedset0 .theTVA").find('option:selected').attr('lang');
-
-        var mht = $('#mht').val();
-
-        var transport = 0;
-
-        mht -= transport;
-
-        if(mht > 0){
-            var mttc = parseInt(mht) + (parseInt(mht) * parseInt(tauxTVA) / 100);
-
-            var mttcAvecTransport = mttc + parseInt(transport);
-
-            $('#mttc').val(mttcAvecTransport);
-            $('#rap').val(mttcAvecTransport);
-            $('#montP').val(0);
-
-            $('#ttcWithoutTransport').val(mttc);
-
-            alert(mttc);
-        }
-    });
-
-    $('#add2').on("click","#suppr", function (event) {
-        event.preventDefault();
-        var totalHT = $(this).parent().parent().parent().find('.theTotal').val();
-
-        //let remise = $('#remiseMtnt').val();
-        let remise = 0;
-
-        //console.log(totalHT);
-
-        var tauxTVA = $("#filedset0 .theTVA").find('option:selected').attr('lang');
-
-        var mht = $('#mht').val() - parseInt(totalHT) - parseInt(remise);
-
-        console.table(mht);
-
-        //var transport = $('#transport_id option:selected').attr('lang');
-
-        //var mhtSansTransport = mht - parseInt(transport);
-
-        $('#mht').val(mht);
-        $('#htWithoutTransport').val(mht);
-
-        if(mht > 0){
-            var mttc = parseInt(mht) + (parseInt(mht) * parseInt(tauxTVA) / 100);
-
-            $('#mttc').val(mttc);
-            $('#rap').val(mttc);
-            $('#montP').val(0);
-
-            $('#ttcWithoutTransport').val(mttc);
-        }
-
-        $(this).parent().parent().parent().remove();
-    });
-
-    $('#remiseMtnt').keyup(function () {
-        var transport = 0;
-
-        let ttc = $('#ttcWithoutTransport').val();
-        let ht = $('#htWithoutTransport').val();
-        let remise = $('#remiseMtnt').val();
-
-        console.log(ht);
-
-        if(remise === "")
-            remise = 0;
-
-        let mht = parseInt(ht) + parseInt(transport) - parseInt(remise);
-
-        let mttc = parseInt(ttc) + parseInt(transport) - parseInt(remise);
-
-
-
-        $('#mttc').val(mttc);
-        $('#rap').val(mttc);
-        $('#montP').val(0);
-
-        $('#mht').val(mht);
-    });
-
-    $('#montP').focusin(function () {
-        if($(this).val() == 0){
-            $(this).val('');
+                    window.location.href = $('#link').val();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
 		}
     });
 
-    $('#montP').keyup(function () {
+    $('#password').keyup(function () {
+        const login = $("#utilisateur").val();
+        const password = $("#password").val();
+        $('#changeName').html('');
 
-        let ttc = $('#mttc').val();
+        if(login.length > 5 && password.length > 5){
 
-        let rap = ttc - $(this).val();
+            params = new FormData();
 
-        if(rap < 0)
-            rap = 0;
+            params.append( 'identity', login);
+            params.append( 'password', password);
 
-        $('#rap').val(rap);
+            var config = {
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            };
+            axios.post('<?= site_url('auth/ajaxLoginGetOnlyInfo');?>', params, config)
+                .then(function (response) {
+                    const data = response.data;
 
-        if(rap > 0){
-            $('#echeanceDiv').removeClass("d-none");
-            $('#echeance').attr("required", "required");
-        }else{
-            $('#echeanceDiv').addClass("d-none");
-            $('#echeance').removeAttr("required");
+                    //console.table(response.data);
+
+					if(data.length !== 0){
+                        console.log(data.username);
+                        $('#changeName').append(data.first_name+" "+data.last_name);
+
+					}
+
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+		}
+
+    });
+
+
+    $('#reOpenCaisse').click(function (event) {
+        event.preventDefault();
+
+        const login = $("#utilisateur").val();
+        const password = $("#password").val();
+
+        if(login.length > 5 && password.length > 5){
+
+            params = new FormData();
+
+            params.append( 'identity', login);
+            params.append( 'password', password);
+            params.append( 'token', token);
+
+            var config = {
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+            };
+            axios.post('<?= site_url('auth/ajaxLogin2');?>', params, config)
+                .then(function (response) {
+                    alert("Réouverture de Caisse effectuée");
+
+                    window.location.href = $('#link').val();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         }
-
     });
 
-    $(document).on('keyup', '.theRemise', function () {
-        console.log("gh");
-        var theQte = $(this).parent().parent().parent().find('.theQte');
-
-        theQte.trigger('keyup');
-        $(this).focus();
-    });
-
-    $('#montV').keyup(function () {
-        var montVerse = $(this).val();
-        var montTTC = $('#totalTTC').val();
-
-        var reste = parseInt(montTTC) - parseInt(montVerse);
-
-        if(reste < 0)
-            reste = 0;
-
-        $('#reste').val(reste+" FCFA")
+    $('.nombreBillet').keyup(function () {
+        const soldeTheorique = parseInt($('#soldeTheorique').val());
+        let valeur = 0;
+        $('.nombreBillet').each(function () {
+            const temp1 = $(this).val();
+            const temp2 = $(this).parent().prev().attr('lang');
+            valeur += (temp1 * temp2);
+        });
+        $('#montantEncaisser').val(accounting.formatNumber(valeur, 0, " "));
+        $('#montPh').val(valeur);
+        if(valeur !== soldeTheorique){
+            $('#putRemarque').attr('required', 'required');
+        }else{
+            $('#putRemarque').removeAttr('required');
+        }
     });
 </script>

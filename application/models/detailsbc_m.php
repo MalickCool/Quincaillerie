@@ -36,13 +36,18 @@ class detailsbc_m extends MY_Model
 	}
 
     function getArticles($id) {
-        $this->db->select('d.iddetail, d.qte, d.pu, p.designation AS produit');
+        $this->db->select('d.iddetail, d.qte, d.pu, d.idproduit, p.designation AS produit');
         $this->db->from('detailbc d, produits p');
         $this->db->where('d.idproduit = p.idproduit');
         $this->db->where('idbon', $id);
         $query = $this->db->get();
         return $query->result();
     }
+
+	function deleteAll($idbon)
+	{
+		$this->db->delete('detailbc', array('idbon' => $idbon));
+	}
 
 
 

@@ -6,7 +6,7 @@
  * Time: 15:32
  */
 if (! defined('BASEPATH')) exit("no direct script access allowed");
-class produit_m extends MY_Model
+class prix_m extends MY_Model
 {
     public function __construct()
     {
@@ -14,113 +14,45 @@ class produit_m extends MY_Model
     }
 
     public function get_db_table(){
-        return 'produits';
+        return 'prix';
     }
 
     public function get_db_table_id(){
-        return 'idproduit';
-    }
-
-    public function getProductWithFamilly($id)
-    {
-        $this->db->select('pr.*, fm.libelle');
-        $this->db->from('produits pr, famille fm');
-        $this->db->where('pr.idfamille = fm.idfamille');
-        $this->db->where('pr.idproduit', $id);
-        $query = $this->db->get();
-        return $query->result();
-    }
-
-    public function getAllProductWithFamilly()
-    {
-        $this->db->select('pr.*, fm.libelle');
-        $this->db->from('produits pr, famille fm');
-        $this->db->where('pr.idfamille = fm.idfamille');
-        $query = $this->db->get();
-        return $query->result();
-    }
-
-    public function getAllProductWithoutFT()
-    {
-        $this->db->select('*');
-        $this->db->from($this->get_db_table());
-        $this->db->where('fichetechnique', 0);
-        $this->db->order_by($this->get_db_table_id(),'DESC');
-        $query = $this->db->get();
-        return $query->result();
+        return 'idPrix';
     }
 
     function add_item($post_data) {
-        $this->db->insert('produits',$post_data);
+        $this->db->insert('prix',$post_data);
         return $this->db->insert_id();
-    }
-
-    public function exist($token){
-        $this->db->select('*');
-        $this->db->from($this->get_db_table());
-        $this->db->where("token", $token);
-        $query = $this->db->get();
-        $result = $query->result();
-        $rep = false;
-        if(!empty($result)){
-            $rep = true;
-        }
-        return $rep;
     }
 
     function getActivated() {
         $this->db->select('*');
         $this->db->from($this->get_db_table());
         $this->db->where('etat = 0');
+        $this->db->where('deleted = 0');
         $this->db->order_by($this->get_db_table_id(),'DESC');
         $query = $this->db->get();
         return $query->result();
     }
 
-    function getActivatedWithFT() {
-        $this->db->select('*');
-        $this->db->from($this->get_db_table());
-        $this->db->where('etat = 0');
-        $this->db->where('fichetechnique = 1');
-        $this->db->order_by($this->get_db_table_id(),'DESC');
-        $query = $this->db->get();
-        return $query->result();
-    }
+	function getPrices($idProduit) {
+		$this->db->select('prix.*, typeclient.designation');
+		$this->db->from('prix, typeclient');
+		$this->db->where('prix.tyclient_id = typeclient.idType');
+		$this->db->where('produit_id', $idProduit);
+		$this->db->where('deleted = 0');
+		$query = $this->db->get();
+		return $query->result();
+	}
 
-    public function getAllIntrant($id)
-    {
-        $this->db->select('detailfiche.*');
-        $this->db->from('fiche, detailfiche');
-        $this->db->where('fiche.idfiche = detailfiche.idfiche');
-        $this->db->where('fiche.idproduit', $id);
-        $query = $this->db->get();
-        return $query->result();
-    }
-
-    public function getFicheTechnique($id)
-    {
-        $this->db->select('*');
-        $this->db->from('fiche');
-        $this->db->where('fiche.idproduit', $id);
-        $query = $this->db->get();
-        return $query->result();
-    }
-
-    function getProdByName($name) {
-        $this->db->select('*');
-        $this->db->from($this->get_db_table());
-        $this->db->where('designation', $name);
-        $this->db->order_by($this->get_db_table_id(),'DESC');
-        $query = $this->db->get();
-        return $query->result();
-    }
-
-	function getNotSelectedYet($array) {
-		$this->db->select('*');
-		$this->db->from($this->get_db_table());
+	function getPrice($idProduit, $idType) {
+		$this->db->select('prix');
+		$this->db->from('prix');
+		$this->db->where('produit_id', $idProduit);
+		$this->db->where('tyclient_id', $idType);
 		$this->db->where('etat = 0');
-		$this->db->where_not_in('idproduit', $array);
-		$this->db->order_by($this->get_db_table_id(),'DESC');
+		$this->db->where('deleted = 0');
 		$query = $this->db->get();
 		return $query->result();
 	}

@@ -43,14 +43,14 @@
 
 
     $('#moyen').change(function () {
-        if($(this).val() === 'espece'){
-            $('.chequeDiv').addClass('d-none');
-            $('#numCheque').removeAttr('required', 'required');
-            $('#banque').removeAttr('required', 'required');
-        }else{
+        if($(this).val() === 'cheque'){
             $('.chequeDiv').removeClass('d-none');
             $('#numCheque').attr('required', 'required');
             $('#banque').attr('required', 'required');
+        }else{
+            $('.chequeDiv').addClass('d-none');
+            $('#numCheque').removeAttr('required', 'required');
+            $('#banque').removeAttr('required', 'required');
         }
     });
 
@@ -63,6 +63,17 @@
         }else{
             $('.depBenef').removeClass('d-none');
             $('.founisseurDiv').removeClass('d-none');
+        }
+    });
+
+    $('#type_client').change(function () {
+        let type = $(this).val();
+
+        if(type == 'revendeur'){
+            $('#form-ncc').removeClass('d-none');
+        }else{
+            $('#form-ncc').addClass('d-none');
+            $('#ncc').val('');
         }
     });
 

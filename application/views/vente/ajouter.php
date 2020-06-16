@@ -35,8 +35,8 @@
 										<legend>Détails de la Vente</legend>
 										<div class="form-group row">
 
-											<label for="commercial_id" class="col-sm-1 text-left text-sm-right control-label col-form-label">Commercial</label>
-											<div class="col-sm-3">
+											<label for="commercial_id" class="col-sm-2 text-left text-sm-right control-label col-form-label">Commercial</label>
+											<div class="col-sm-4">
 												<select id="commercial_id" name="commercial_id" class="select2 form-control custom-select" style="width: 100%; height:36px;">
 													<option value="">Aucun</option>
 													<?php
@@ -50,25 +50,17 @@
 												<?= form_error('commercial_id','<div class="alert alert-danger">','</div>');?>
 											</div>
 
-											<label for="client" class="col-sm-1 text-left text-sm-right control-label col-form-label">Client</label>
-											<div class="col-sm-3">
-												<select id="client" name="client_id" class="select2 form-control custom-select" style="width: 100%; height:36px;" required>
-													<option value="">Selectionner client</option>
-													<?php
-													foreach ($clients as $client) {
-														?>
-														<option value="<?= $client->idclient ?>"><?= $client->nom ?></option>
-														<?php
-													}
-													?>
+											<label for="client" class="col-sm-2 text-left text-sm-right control-label col-form-label">Client</label>
+											<div class="col-sm-4">
+												<select id="client" name="client_id" class="form-control" readonly style="width: 100%; height:36px;" required>
+													<option value="<?= $client->idclient ?>"><?= $client->nom ?></option>
 												</select>
 												<?= form_error('client_id','<div class="alert alert-danger">','</div>');?>
 											</div>
 
-											<label for="tva" class="col-sm-1 text-left text-sm-right control-label col-form-label">Appliquer TVA :</label>
-											<div class="col-sm-2">
+											<label for="tva" class="col-sm-1 d-none text-left text-sm-right control-label col-form-label">Appliquer TVA :</label>
+											<div class="col-sm-2 d-none">
 												<select id="tva" name="tva" class="select2 form-control custom-select theTVA" style="width: 100%; height:36px;">
-													<option lang="0" value="">Non</option>
 													<option lang="18" value="1">18%</option>
 												</select>
 											</div>
@@ -96,11 +88,11 @@
 														<select id="agglo" name="lib2[]" class="select2 theSelect form-control custom-select" style="width: 100%; height:36px;" required>
 															<option value="">Selectionner un Produit</option>
 															<?php
-															foreach ($produits as $produit) {
-																?>
-																<option lang="<?= $produit->montant ?>" value="<?= $produit->idproduit ?>"><?= $produit->designation ?></option>
-																<?php
-															}
+																foreach ($produits as $produit) {
+																	?>
+																	<option lang="<?= $produit['Prix'] ?>" value="<?= $produit['IdProduit'] ?>"><?= $produit['Designation'] ?></option>
+																	<?php
+																}
 															?>
 														</select>
 													</div>
@@ -168,6 +160,36 @@
 										<legend>Paiement</legend>
 
 										<div class="form-group row">
+											<label for="moyen" class="col-sm-2 text-right control-label col-form-label">Moyen de Paiement :</label>
+											<div class="col-sm-9">
+												<select name="typepaiement" class="select2 form-control custom-select" id="moyen" style="border: 2px red solid">
+													<option value="espece">Espèce</option>
+													<option value="cheque">Chèque</option>
+													<option value="mobile">Mobile Money</option>
+												</select>
+											</div>
+										</div>
+
+										<div class="form-group row chequeDiv d-none">
+											<div class="col-md-6">
+												<div class="row">
+													<label for="numCheque" class="col-sm-4 text-right control-label col-form-label">N° du Chèque:</label>
+													<div class="col-sm-8">
+														<input type="number" id="numCheque" class="form-control" name="numerocheque" min="1" style="border: 2px red solid">
+													</div>
+												</div>
+											</div>
+											<div class="col-md-5">
+												<div class="row">
+													<label for="banque" class="col-sm-4 text-right control-label col-form-label">Banque:</label>
+													<div class="col-sm-8">
+														<input type="text" id="banque" class="form-control" name="nombanque" style="border: 2px red solid">
+													</div>
+												</div>
+											</div>
+										</div>
+
+										<div class="form-group row">
 											<label for="montP" class="col-sm-2 text-right control-label col-form-label">Montant Payé</label>
 											<div class="col-sm-9">
 												<input type="number" name="montP" class="form-control" id="montP" value="">
@@ -175,9 +197,22 @@
 										</div>
 
 										<div class="form-group row">
-											<label for="rap" class="col-sm-2 text-right control-label col-form-label">Reste à Payer</label>
-											<div class="col-sm-9">
-												<input disabled="disabled" type="number" name="rap" class="form-control" id="rap" placeholder="" value="0">
+											<div class="offset-md-1 col-md-6">
+												<div class="row">
+													<label for="rap" class="col-sm-2 text-right control-label col-form-label">Reste</label>
+													<div class="col-sm-9">
+														<input disabled="disabled" type="number" name="rap" class="form-control" id="rap" placeholder="" value="0">
+													</div>
+												</div>
+											</div>
+
+											<div class="col-md-5" id="echeanceDiv">
+												<div class="row">
+													<label for="echeance" class="col-sm-3 text-right control-label col-form-label">Echéance</label>
+													<div class="col-sm-7">
+														<input type="date" required name="echeance" class="form-control" id="echeance" value="0">
+													</div>
+												</div>
 											</div>
 										</div>
 									</fieldset>
@@ -197,14 +232,14 @@
 							<div id="add" class="d-none">
 								<div class="form-group row">
 									<div class="col-md-3">
-										<label for="cono1" class="col-sm-12 text-left control-label col-form-label">Agglo :</label>
+										<label for="cono1" class="col-sm-12 text-left control-label col-form-label">Produit :</label>
 										<div class="col-sm-12">
 											<select name="lib2[]" class="select theSelect form-control custom-select" style="width: 100%; height:36px;">
-												<option value="">Selectionner brique</option>
+												<option value="">Selectionner un Produit</option>
 												<?php
 													foreach ($produits as $produit) {
 														?>
-														<option lang="<?= $produit->montant ?>" value="<?= $produit->idproduit ?>"><?= $produit->designation ?></option>
+														<option lang="<?= $produit['Prix'] ?>" value="<?= $produit['IdProduit'] ?>"><?= $produit['Designation'] ?></option>
 														<?php
 													}
 												?>

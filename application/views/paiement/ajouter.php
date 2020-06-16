@@ -74,6 +74,20 @@
 										</div>
 
 										<div class="form-group row">
+											<label for="" class="col-sm-3 text-right control-label col-form-label">Remise :</label>
+											<div class="col-sm-9">
+												<input type="text" class="form-control" readonly value="<?= $this->vente_m->formatNumber($returnArray['TotalRemise']) ?> FCFA">
+											</div>
+										</div>
+
+										<div class="form-group row">
+											<label for="" class="col-sm-3 text-right control-label col-form-label">Net à Payer :</label>
+											<div class="col-sm-9">
+												<input type="text" class="form-control" readonly value="<?= $this->vente_m->formatNumber($returnArray['Vente']->montant + $mTVA - $returnArray['TotalRemise']) ?> FCFA">
+											</div>
+										</div>
+
+										<div class="form-group row">
 											<label for="" class="col-sm-3 text-right control-label col-form-label">Montant Payé :</label>
 											<div class="col-sm-9">
 												<input type="text" class="form-control" readonly value="<?= $this->vente_m->formatNumber($returnArray['MontantVerse']) ?> FCFA">
@@ -142,33 +156,50 @@
 							<div class="card" style="height: 95%">
 								<div class="card-body">
 									<fieldset id="filedset0" style="height: 100%">
-										<legend>Versement</legend>
+										<legend>Paiement</legend>
 
 										<div class="form-group row">
-											<div class="offset-md-2 col-md-8">
-												<label for="montV" class="col-sm-12 text-left control-label col-form-label">Somme Versé :</label>
-												<div class="col-sm-12">
-													<input type="number" id="montV" class="form-control" name="montV" min="1" style="border: 2px red solid">
-													<input type="hidden" id="montVV" class="form-control" name="montVV" min="1">
+											<label for="moyen" class="col-sm-2 text-right control-label col-form-label">Moyen de Paiement :</label>
+											<div class="col-sm-9">
+												<select name="typepaiement" class="select2 form-control custom-select" id="moyen" style="border: 2px red solid">
+													<option value="espece">Espèce</option>
+													<option value="cheque">Chèque</option>
+													<option value="mobile">Mobile Money</option>
+												</select>
+											</div>
+										</div>
+
+										<div class="form-group row chequeDiv d-none">
+											<div class="col-md-6">
+												<div class="row">
+													<label for="numCheque" class="col-sm-4 text-right control-label col-form-label">N° du Chèque:</label>
+													<div class="col-sm-8">
+														<input type="number" id="numCheque" class="form-control" name="numerocheque" min="1" style="border: 2px red solid">
+													</div>
+												</div>
+											</div>
+											<div class="col-md-5">
+												<div class="row">
+													<label for="banque" class="col-sm-4 text-right control-label col-form-label">Banque:</label>
+													<div class="col-sm-8">
+														<input type="text" id="banque" class="form-control" name="nombanque" style="border: 2px red solid">
+													</div>
 												</div>
 											</div>
 										</div>
 
 										<div class="form-group row">
-											<div class="offset-md-2 col-md-8">
-												<label for="reste" class="col-sm-12 text-left control-label col-form-label">Reste à payer :</label>
-												<div class="col-sm-12">
-													<input type="text" id="reste" readonly class="form-control">
-												</div>
+											<label for="montV" class="col-sm-2 text-right control-label col-form-label">Somme Versé :</label>
+											<div class="col-sm-9">
+												<input type="number" id="montV" class="form-control" name="montV" min="1" style="border: 2px red solid">
+												<input type="hidden" id="montVV" class="form-control" name="montVV" min="1">
 											</div>
 										</div>
 
-										<div class="form-group row echeanceDiv">
-											<div class="offset-md-2 col-md-8">
-												<label for="echeance" class="col-sm-12 text-left control-label col-form-label">Date prochaine échéance</label>
-												<div class="col-sm-12">
-													<input type="date" id="echeance" class="form-control" name="echeance" min="<?= date('Y-m-d') ?>" style="border: 2px red solid">
-												</div>
+										<div class="form-group row">
+											<label for="reste" class="col-sm-2 text-right control-label col-form-label">Reste à payer :</label>
+											<div class="col-sm-9">
+												<input type="text" id="reste" readonly class="form-control">
 											</div>
 										</div>
 

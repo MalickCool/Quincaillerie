@@ -53,6 +53,8 @@
 		<!-- DataTables -->
 		<script src="<?= base_url("assets/plugins/datatables/jquery.dataTables.js") ?>"></script>
 		<script src="<?= base_url("assets/plugins/datatables-bs4/js/dataTables.bootstrap4.js") ?>"></script>
+		<!--Axios JavaScript -->
+		<script type="text/javascript" src="<?= base_url("assets/plugins/axios/axios.min.js") ?>"></script>
 		<!-- Summernote -->
 		<script src="<?= base_url("assets/plugins/summernote/summernote-bs4.min.js") ?>"></script>
 		<!-- overlayScrollbars -->
@@ -63,7 +65,7 @@
 		<script src="<?= base_url("assets/dist/js/pages/dashboard.js") ?>"></script>
 		<!-- AdminLTE for demo purposes -->
 		<script src="<?= base_url("assets/dist/js/demo.js") ?>"></script>
-		<script src="<?= base_url("assets/dist/js/formatNumber.js") ?>"></script>
+		<script src="<?= base_url("assets/dist/js/currency.js") ?>"></script>
 
 		<script>
 			$(function () {
@@ -98,6 +100,5 @@
 				$this->load->view("templates/scripts/".$script2);
 			}
 		?>
-
 	</body>
 </html>

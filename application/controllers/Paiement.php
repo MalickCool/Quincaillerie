@@ -95,9 +95,8 @@ class Paiement extends CI_Controller {
 
             $array =  $this->vente_m->getArray($vente->idvente);
 
-            if($array['MontantVerse'] == 0){
-                redirect('accueil/index','refresh');
-            }
+			//echo "<pre>";die(print_r($array));
+
 
             if($array['Reste'] <= 0){
                 redirect('accueil/index','refresh');
@@ -115,19 +114,25 @@ class Paiement extends CI_Controller {
                 'montant' => $montantVersee,
                 'etat' => 0,
                 'datepaiement' => date('Y/m/d'),
+
+				'typepaiement' => $this->input->post('typepaiement'),
+				'numerocheque' => $this->input->post('numerocheque'),
+				'nombanque' => $this->input->post('nombanque'),
+
                 'token' => $this->input->post('token'),
+				'arretcaisse_id' => $_SESSION['IdAC'],
             );
 
 
             if(!$this->paiement_m->exist($this->input->post('token'))){
                 $this->paiement_m->add_item($paiement);
 
-				/**
+
                 $venteArray = array(
                     'echeance' => $this->input->post('echeance'),
                 );
                 $this->vente_m->update($vente->idvente, $venteArray);
-				 **/
+
             }
 
         }
@@ -200,9 +205,9 @@ class Paiement extends CI_Controller {
 
         $paiement = $this->paiement_m->get($id);
 
-        $commande = $this->commande_m->get($paiement->commande_id);
+        $commande = $this->vente_m->get($paiement->vente_id);
 
-        $oldPaiement = $this->paiement_m->getPaiementGauche($commande->idcommande, $id);
+        $oldPaiement = $this->paiement_m->getPaiementGauche($commande->idvente, $id);
 
         if(!is_numeric($oldPaiement))
             $oldPaiement = 0;
@@ -213,7 +218,7 @@ class Paiement extends CI_Controller {
 
         $data['commande'] = $commande;
 
-        $returnArray = self::getArray($commande->idcommande);
+        $returnArray = $this->vente_m->getArray($commande->idvente);
 
         //echo "<pre>";die(print_r($returnArray));
         $data['returnArray'] = $returnArray;
@@ -260,9 +265,73 @@ class Paiement extends CI_Controller {
                     <td width="30%" align="center">'. ucfirst($paiement->nompayeur) .'</td>
                 </tr>
             </table>');
+		$mpdf->AddPage('', // L - landscape, P - portrait
+			'', '', '', '',
+			15, // margin_left
+			15, // margin right
+			37, // margin top
+			30, // margin bottom
+			10, // margin header
+			5); // margin footer
         $mpdf->WriteHTML($html);
         $mpdf->Output($message.'.pdf', 'I');
     }
+
+	public function imprimerListePaiement($id){
+
+
+		$vente = $this->vente_m->get($id);
+
+		if($vente->token == ''){
+			redirect("accueil/index");
+		}
+
+		$returnArray = $this->vente_m->getArray($id);
+
+		$data['returnArray'] = $returnArray;
+		//echo "<pre>";die(print_r($returnArray));
+
+		$message = "Liste des Paiements de la Facture FACT_".date('ymd', strtotime($vente->datevente)).'_'.$vente->idvente;
+
+		$data['message'] = $message;
+
+		$mpdf = new \Mpdf\Mpdf([
+			'mode' => 'utf-8',
+			'format' => 'A4-P',
+			'orientation' => 'P'
+		]);
+		$mpdf->SetTitle($message);
+		$mpdf->SetAuthor('ESC Technologie');
+		$mpdf->SetCreator('Malick Coulibaly');
+		$html = $this->load->view('paiement/printListePaiement', $data, true);
+		$mpdf->setFooter('{PAGENO} / {nb}');
+		$mpdf->SetHTMLHeader('
+            <page_header>
+                <table style="border: none;">
+                    <tr>
+                        <td style="width: 20%;">
+                        
+                        </td>
+                        <td style="width: 60%;  padding-left: 0px; border: none !important; text-align: center">
+                            <img src="'.FCPATH.'/Uploads/logo.jpg" style="width: 100%;"  alt="">
+                        </td>
+                        <td style="width: 20%;">
+                        
+                        </td>
+                   </tr>
+                </table>
+            </page_header>');
+		$mpdf->AddPage('', // L - landscape, P - portrait
+			'', '', '', '',
+			15, // margin_left
+			15, // margin right
+			37, // margin top
+			30, // margin bottom
+			10, // margin header
+			5); // margin footer
+		$mpdf->WriteHTML($html);
+		$mpdf->Output($message.'.pdf', 'I');
+	}
 
     private function getArray($id){
 

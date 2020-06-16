@@ -114,4 +114,14 @@ class produit_m extends MY_Model
         $query = $this->db->get();
         return $query->result();
     }
+
+	function getNotSelectedYet($array) {
+		$this->db->select('*');
+		$this->db->from($this->get_db_table());
+		$this->db->where('etat = 0');
+		$this->db->where_not_in('idproduit', $array);
+		$this->db->order_by($this->get_db_table_id(),'DESC');
+		$query = $this->db->get();
+		return $query->result();
+	}
 }

@@ -18,6 +18,7 @@ class Client extends CI_Controller {
         $this->load->model('commercial_m');
         $this->load->model('detailvente_m');
         $this->load->model('produit_m');
+        $this->load->model('typeclient_m');
     }
 
     public $template = 'templates/template';
@@ -42,11 +43,15 @@ class Client extends CI_Controller {
         }
 
         $clients = $this->client_m->get_all();
+        $types = $this->typeclient_m->getActivated();
+
         $data['clients'] = $clients;
+        $data['types'] = $types;
         //echo"<pre>"; die(print_r($types));
         $data['titre'] = 'Ajouter un Client';
         $data['page'] = "client/ajouter";
         $data['menu'] = 'commerciale';
+        $data['script'] = 'global';
         $this->load->view($this->template, $data);
     }
 
@@ -56,26 +61,27 @@ class Client extends CI_Controller {
             redirect("auth/login");
         }
 
-        $this->form_validation->set_rules('nom','Nom du client','required');
-        $this->form_validation->set_rules('phone','Contact du client','required');
+        $nom = ($_POST['nom'] != "") ? $_POST['nom'] : $_POST['raisonsociale'];
+        $ncc = ($_POST['nom'] != "") ? "" : $_POST['ncc'];
 
-        if($this->form_validation->run()){
+		$datas = array(
+			'nom' => $nom,
+			'adresse' => $this->input->post('adresse'),
+			'email' => $this->input->post('email'),
+			'phone' => $this->input->post('phone'),
+			'type_client' => $this->input->post('type_client'),
+			'ncc' => $ncc,
+			'profession' => $this->input->post('profession'),
+			'observation' => $this->input->post('observation'),
+			'token' => $this->input->post('token'),
+		);
 
-            $datas = array(
-                'nom' => $this->input->post('nom'),
-                'adresse' => $this->input->post('adresse'),
-                'email' => $this->input->post('email'),
-                'phone' => $this->input->post('phone'),
-                'type_client' => $this->input->post('type_client'),
-                'token' => $this->input->post('token'),
-            );
+		$lastInsertedId = 0;
 
-            $lastInsertedId = 0;
+		if(!$this->client_m->exist($this->input->post('token'))) {
+			$lastInsertedId = $this->client_m->add_item($datas);
+		}
 
-            if(!$this->client_m->exist($this->input->post('token'))) {
-                $lastInsertedId = $this->client_m->add_item($datas);
-            }
-        }
         redirect('client/ajouter','refresh');
     }
 
@@ -94,9 +100,13 @@ class Client extends CI_Controller {
 
         $data['client'] = $client;
 
+		$types = $this->typeclient_m->getActivated();
+		$data['types'] = $types;
+
         $data['titre'] = 'Modifier le client '.$client->nom;
         $data['page'] = "client/modifier";
         $data['menu'] = 'commerciale';
+		$data['script'] = 'global';
         $this->load->view($this->template, $data);
     }
 
@@ -111,27 +121,29 @@ class Client extends CI_Controller {
             redirect("client/");
         }
 
-        $this->form_validation->set_rules('nom','Nom du client','required');
-        $this->form_validation->set_rules('phone','Contact du client','required');
+		$etat = 0;
+		if(isset($_POST['etat'])){
+			$etat = 1;
+		}
 
-        if($this->form_validation->run()){
+		$nom = ($_POST['nom'] != "") ? $_POST['nom'] : $_POST['raisonsociale'];
+		$ncc = ($_POST['nom'] != "") ? "" : $_POST['ncc'];
 
-            $etat = 0;
-            if(isset($_POST['etat'])){
-                $etat = 1;
-            }
+		$datas = array(
+			'nom' => $nom,
+			'adresse' => $this->input->post('adresse'),
+			'email' => $this->input->post('email'),
+			'phone' => $this->input->post('phone'),
+			'ncc' => $ncc,
+			'type_client' => $this->input->post('type_client'),
+			'etat' => $etat,
 
-            $datas = array(
-                'nom' => $this->input->post('nom'),
-                'adresse' => $this->input->post('adresse'),
-                'email' => $this->input->post('email'),
-                'phone' => $this->input->post('phone'),
-                'type_client' => $this->input->post('type_client'),
-                'etat' => $etat,
-            );
+			'profession' => $this->input->post('profession'),
+			'observation' => $this->input->post('observation'),
+		);
 
-            $this->client_m->update($item->idclient, $datas);
-        }
+		$this->client_m->update($item->idclient, $datas);
+
         redirect('client/ajouter');
     }
 
@@ -313,6 +325,10 @@ class Client extends CI_Controller {
 		foreach ($ventes as $vente) {
 			if($vente->etat == 0){
 				$tempCmd = $this->client_m->getArray($vente->idvente);
+
+				if($vente->idvente == 7){
+					//echo'<pre>'; die(print_r($tempCmd));
+				}
 
 				if($tempCmd['TotalTTC'] != $tempCmd['MontantVerse']){
 					$cmdArray[$vente->idvente] = $this->client_m->getArray($vente->idvente);

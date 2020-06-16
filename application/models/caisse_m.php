@@ -6,7 +6,7 @@
  * Time: 15:32
  */
 if (! defined('BASEPATH')) exit("no direct script access allowed");
-class client_m extends MY_Model
+class caisse_m extends MY_Model
 {
     public function __construct()
     {
@@ -14,15 +14,15 @@ class client_m extends MY_Model
     }
 
     public function get_db_table(){
-        return 'clients';
+        return 'caisse';
     }
 
     public function get_db_table_id(){
-        return 'idclient';
+        return 'idCaisse';
     }
 
     function add_item($post_data) {
-        $this->db->insert('clients',$post_data);
+        $this->db->insert('caisse',$post_data);
         return $this->db->insert_id();
     }
 
@@ -31,15 +31,6 @@ class client_m extends MY_Model
         $this->db->from($this->get_db_table());
         $this->db->where('etat = 0');
         $this->db->order_by($this->get_db_table_id(),'DESC');
-        $query = $this->db->get();
-        return $query->result();
-    }
-
-    function getHistorique($id) {
-        $this->db->select('*');
-        $this->db->from("ventes");
-        $this->db->where('client_id', $id);
-        $this->db->order_by('datevente','DESC');
         $query = $this->db->get();
         return $query->result();
     }
@@ -56,4 +47,17 @@ class client_m extends MY_Model
         }
         return $rep;
     }
+
+	public function caisseExist($id){
+		$this->db->select('*');
+		$this->db->from($this->get_db_table());
+		$this->db->where("idcaisse", $id);
+		$query = $this->db->get();
+		$result = $query->result();
+		$rep = false;
+		if(!empty($result)){
+			$rep = true;
+		}
+		return $rep;
+	}
 }

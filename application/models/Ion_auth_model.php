@@ -889,17 +889,50 @@ class Ion_auth_model extends CI_Model
 	}
 
 	/**
+	 * ajaxLogin
+	 *
+	 *
+	 * @param $identity
+	 * @param $password
+	 *
+	 * @return bool
+	 */
+
+	public function ajaxLogin($identity, $password)
+	{
+		$returnArray = array();
+
+		if (!empty($identity) AND !empty($password)) {
+			$query = $this->db->select($this->identity_column . ', email, id, password, active, first_name, last_name')
+				->where($this->identity_column, $identity)
+				->limit(1)
+				->order_by('id', 'desc')
+				->get($this->tables['users']);
+
+			if(isset($query->result_id) AND $query->result_id->num_rows === 1){
+				$user = $query->row();
+				if ($this->verify_password($password, $user->password, $identity)) {
+					if ($user->active == 1) {
+						$returnArray = $user;
+					}
+				}
+			}
+		}
+		return $returnArray;
+	}
+
+	/**
 	 * login
 	 *
 	 * @param    string $identity
 	 * @param    string $password
-	 * @param    bool   $remember
+	 * @param bool $remember
 	 *
 	 * @return    bool
 	 * @author    Mathew
 	 */
-	public function login($identity, $password, $remember=FALSE)
-	{
+
+	public function login($identity, $password, $remember=FALSE) {
 		$this->trigger_events('pre_login');
 
 		if (empty($identity) || empty($password))
@@ -911,10 +944,10 @@ class Ion_auth_model extends CI_Model
 		$this->trigger_events('extra_where');
 
 		$query = $this->db->select($this->identity_column . ', email, id, password, active, last_login')
-						  ->where($this->identity_column, $identity)
-						  ->limit(1)
-						  ->order_by('id', 'desc')
-						  ->get($this->tables['users']);
+			->where($this->identity_column, $identity)
+			->limit(1)
+			->order_by('id', 'desc')
+			->get($this->tables['users']);
 
 		if ($this->is_max_login_attempts_exceeded($identity))
 		{
@@ -959,7 +992,7 @@ class Ion_auth_model extends CI_Model
 						$this->clear_remember_code($identity);
 					}
 				}
-				
+
 				// Rehash if needed
 				$this->rehash_password_if_needed($user->password, $identity, $password);
 

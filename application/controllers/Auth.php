@@ -19,6 +19,11 @@ class Auth extends CI_Controller
 		$this->form_validation->set_error_delimiters($this->config->item('error_start_delimiter', 'ion_auth'), $this->config->item('error_end_delimiter', 'ion_auth'));
 
 		$this->lang->load('auth');
+
+		$this->load->model('caisse_m');
+		$this->load->model('actioncaisse_m');
+
+		$this->load->library('session');
 	}
 
 	public $template = 'templates/template';
@@ -69,8 +74,35 @@ class Auth extends CI_Controller
 	/**
 	 * Log the user in
 	 */
-	public function login()
+	public function login($idCaisse = NULL)
 	{
+		if(isset($_SESSION['arretCaisse']))
+			unset($_SESSION['arretCaisse']);
+
+		if(isset($_SESSION['IdAC']))
+			unset($_SESSION['IdAC']);
+
+		$_SESSION['statusCaisse'] = "close";
+
+		if(isset($_POST['idcaisse']) and is_numeric($_POST['idcaisse']) AND $_POST['idcaisse'] > 0){
+			$idCaisse = $_POST['idcaisse'];
+		}
+
+		if(isset($idCaisse) and is_numeric($idCaisse) AND $idCaisse > 0){
+			if(!$this->caisse_m->caisseExist($idCaisse)){
+				die("Erreur: La caisse n'existe pas. Veuillez contactez l'administrateur du système");
+			}else{
+				if(isset($_SESSION['caisse']))
+					unset($_SESSION['caisse']);
+
+				$caisse = $this->caisse_m->get($idCaisse);
+
+				$_SESSION['caisse'] = $caisse;
+			}
+		}else{
+			die("Erreur de chargement contactez l'administrateur du système");
+		}
+
 		$this->data['title'] = $this->lang->line('login_heading');
 
 		// validate form input
@@ -95,7 +127,7 @@ class Auth extends CI_Controller
 				// if the login was un-successful
 				// redirect them back to the login page
 				$this->session->set_flashdata('message', $this->ion_auth->errors());
-				redirect('auth/login', 'refresh'); // use redirects instead of loading views for compatibility with MY_Controller libraries
+				redirect('auth/login/'.$idCaisse, 'refresh'); // use redirects instead of loading views for compatibility with MY_Controller libraries
 			}
 		}
 		else
@@ -117,7 +149,83 @@ class Auth extends CI_Controller
 				'type' => 'password',
 			];
 
+			$this->data['idCaisse'] = [
+				'name' => 'idcaisse',
+				'id' => 'idcaisse',
+				'type' => 'hidden',
+				'value' => $idCaisse,
+			];
+
 			$this->_render_page('auth' . DIRECTORY_SEPARATOR . 'login', $this->data);
+		}
+	}
+
+	public function ajaxLogin() {
+		$response = $this->ion_auth->ajaxLogin($_POST['identity'], $_POST['password']);
+
+		if(!empty($response)){
+			$_SESSION['statusCaisse'] = "open";
+
+			$datas = array(
+				'date_ouverture' => date("Y/m/d"),
+				'heure_ouverture' => date("H:i:s"),
+				'solde_theorique' => 0,
+				'etat' => 0,
+				'user_id' => $this->session->userdata('user_id'),
+				'caisse_id' => $_SESSION['caisse']->idcaisse,
+				'token' => $_POST['token'],
+			);
+
+			if(!$this->actioncaisse_m->exist($this->input->post('token'))) {
+				$id_ac = $this->actioncaisse_m->add_item($datas);
+			}
+
+			$arretCaisse = $this->actioncaisse_m->getArretCaisse($_SESSION['caisse']->idcaisse);
+			$arretCaisse = $arretCaisse[0];
+
+			if(isset($_SESSION['arretCaisse']))
+				unset($_SESSION['arretCaisse']);
+
+			$_SESSION['arretCaisse'] = $arretCaisse;
+
+			$_SESSION['IdAC'] = $id_ac;
+
+		}
+
+		echo json_encode($response);
+	}
+
+	public function ajaxLogin2() {
+		$response = $this->ion_auth->ajaxLogin($_POST['identity'], $_POST['password']);
+
+		if(!empty($response)){
+			$_SESSION['statusCaisse'] = "open";
+
+
+			$arretCaisse = $this->actioncaisse_m->getArretCaisse($_SESSION['caisse']->idcaisse);
+			$arretCaisse = $arretCaisse[0];
+
+			if(isset($_SESSION['arretCaisse']))
+				unset($_SESSION['arretCaisse']);
+
+			$_SESSION['arretCaisse'] = $arretCaisse;
+
+			$_SESSION['IdAC'] = $arretCaisse->idac;
+
+		}
+
+		echo json_encode($response);
+	}
+
+	public function ajaxLoginGetOnlyInfo() {
+		$arr = array();
+		$response = $this->ion_auth->ajaxLogin($_POST['identity'], $_POST['password']);
+		if(!empty($response)){
+			//die(print_r());
+			$rep = (array)$response;
+			echo json_encode($rep);
+		}else{
+			echo json_encode($arr);
 		}
 	}
 
@@ -128,11 +236,25 @@ class Auth extends CI_Controller
 	{
 		$this->data['title'] = "Logout";
 
+		$caisse = $_SESSION['caisse'];
+
+		if(isset($_SESSION['caisse']))
+			unset($_SESSION['caisse']);
+
+		if(isset($_SESSION['arretCaisse']))
+			unset($_SESSION['arretCaisse']);
+
+		if(isset($_SESSION['IdAC']))
+			unset($_SESSION['IdAC']);
+
+		if(isset($_SESSION['statusCaisse']))
+			$_SESSION['statusCaisse'] = "close";
+
 		// log the user out
 		$this->ion_auth->logout();
 
 		// redirect them to the login page
-		redirect('auth/login', 'refresh');
+		redirect('auth/login/'.$caisse->idcaisse, 'refresh');
 	}
 
 	/**

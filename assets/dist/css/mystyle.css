@@ -8,3 +8,262 @@ fieldset{
 	border: 1px red solid;
 	padding: .35em .625em .75em;
 }
+
+.colorOrange{
+	background-color: #E87E04;
+	color: #ffffff;
+}
+.fontOrange{
+	color: #E87E04 !important;
+}
+.fontRed{
+	color: red;
+}
+.fontWhite{
+	color: white;
+}
+.fontWhite{
+	color: white;
+}
+
+.fs-1 {font-size: 1px!important;}
+.fs-2 {font-size: 2px!important;}
+.fs-3 {font-size: 3px!important;}
+.fs-4 {font-size: 4px!important;}
+.fs-5 {font-size: 5px!important;}
+.fs-6 {font-size: 6px!important;}
+.fs-7 {font-size: 7px!important;}
+.fs-8 {font-size: 8px!important;}
+.fs-9 {font-size: 9px!important;}
+.fs-10 {font-size: 10px!important;}
+.fs-11 {font-size: 11px!important;}
+.fs-12 {font-size: 12px!important;}
+.fs-13 {font-size: 13px!important;}
+.fs-14 {font-size: 14px!important;}
+.fs-15 {font-size: 15px!important;}
+.fs-16 {font-size: 16px!important;}
+.fs-17 {font-size: 17px!important;}
+.fs-18 {font-size: 18px!important;}
+.fs-19 {font-size: 19px!important;}
+.fs-20 {font-size: 20px!important;}
+.fs-21 {font-size: 21px!important;}
+.fs-22 {font-size: 22px!important;}
+.fs-23 {font-size: 23px!important;}
+.fs-24 {font-size: 24px!important;}
+.fs-25 {font-size: 25px!important;}
+.fs-26 {font-size: 26px!important;}
+.fs-27 {font-size: 27px!important;}
+.fs-28 {font-size: 28px!important;}
+.fs-29 {font-size: 29px!important;}
+.fs-30 {font-size: 30px!important;}
+.fs-31 {font-size: 31px!important;}
+.fs-32 {font-size: 32px!important;}
+.fs-33 {font-size: 33px!important;}
+.fs-34 {font-size: 34px!important;}
+.fs-35 {font-size: 35px!important;}
+.fs-36 {font-size: 36px!important;}
+.fs-37 {font-size: 37px!important;}
+.fs-38 {font-size: 38px!important;}
+.fs-39 {font-size: 39px!important;}
+.fs-40 {font-size: 40px!important;}
+.fs-41 {font-size: 41px!important;}
+.fs-42 {font-size: 42px!important;}
+.fs-43 {font-size: 43px!important;}
+.fs-44 {font-size: 44px!important;}
+.fs-45 {font-size: 45px!important;}
+.fs-46 {font-size: 46px!important;}
+.fs-47 {font-size: 47px!important;}
+.fs-48 {font-size: 48px!important;}
+.fs-49 {font-size: 49px!important;}
+.fs-50 {font-size: 50px!important;}
+.fs-51 {font-size: 51px!important;}
+.fs-52 {font-size: 52px!important;}
+.fs-53 {font-size: 53px!important;}
+.fs-54 {font-size: 54px!important;}
+.fs-55 {font-size: 55px!important;}
+.fs-56 {font-size: 56px!important;}
+.fs-57 {font-size: 57px!important;}
+.fs-58 {font-size: 58px!important;}
+.fs-59 {font-size: 59px!important;}
+.fs-60 {font-size: 60px!important;}
+.fs-61 {font-size: 61px!important;}
+.fs-62 {font-size: 62px!important;}
+.fs-63 {font-size: 63px!important;}
+.fs-64 {font-size: 64px!important;}
+.fs-65 {font-size: 65px!important;}
+.fs-66 {font-size: 66px!important;}
+.fs-67 {font-size: 67px!important;}
+.fs-68 {font-size: 68px!important;}
+.fs-69 {font-size: 69px!important;}
+.fs-70 {font-size: 70px!important;}
+.fs-71 {font-size: 71px!important;}
+.fs-72 {font-size: 72px!important;}
+.fs-73 {font-size: 73px!important;}
+.fs-74 {font-size: 74px!important;}
+.fs-75 {font-size: 75px!important;}
+.fs-76 {font-size: 76px!important;}
+.fs-77 {font-size: 77px!important;}
+.fs-78 {font-size: 78px!important;}
+.fs-79 {font-size: 79px!important;}
+.fs-80 {font-size: 80px!important;}
+.fs-81 {font-size: 81px!important;}
+.fs-82 {font-size: 82px!important;}
+.fs-83 {font-size: 83px!important;}
+.fs-84 {font-size: 84px!important;}
+.fs-85 {font-size: 85px!important;}
+.fs-86 {font-size: 86px!important;}
+.fs-87 {font-size: 87px!important;}
+.fs-88 {font-size: 88px!important;}
+.fs-89 {font-size: 89px!important;}
+.fs-90 {font-size: 90px!important;}
+.fs-91 {font-size: 91px!important;}
+.fs-92 {font-size: 92px!important;}
+.fs-93 {font-size: 93px!important;}
+.fs-94 {font-size: 94px!important;}
+.fs-95 {font-size: 95px!important;}
+.fs-96 {font-size: 96px!important;}
+.fs-97 {font-size: 97px!important;}
+.fs-98 {font-size: 98px!important;}
+.fs-99 {font-size: 99px!important;}
+.fs-100 {font-size: 100px!important;}
+.fs-101 {font-size: 101px!important;}
+.fs-102 {font-size: 102px!important;}
+.fs-103 {font-size: 103px!important;}
+.fs-104 {font-size: 104px!important;}
+.fs-105 {font-size: 105px!important;}
+.fs-106 {font-size: 106px!important;}
+.fs-107 {font-size: 107px!important;}
+.fs-108 {font-size: 108px!important;}
+.fs-109 {font-size: 109px!important;}
+.fs-110 {font-size: 110px!important;}
+.fs-111 {font-size: 111px!important;}
+.fs-112 {font-size: 112px!important;}
+.fs-113 {font-size: 113px!important;}
+.fs-114 {font-size: 114px!important;}
+.fs-115 {font-size: 115px!important;}
+.fs-116 {font-size: 116px!important;}
+.fs-117 {font-size: 117px!important;}
+.fs-118 {font-size: 118px!important;}
+.fs-119 {font-size: 119px!important;}
+.fs-120 {font-size: 120px!important;}
+.fs-121 {font-size: 121px!important;}
+.fs-122 {font-size: 122px!important;}
+.fs-123 {font-size: 123px!important;}
+.fs-124 {font-size: 124px!important;}
+.fs-125 {font-size: 125px!important;}
+.fs-126 {font-size: 126px!important;}
+.fs-127 {font-size: 127px!important;}
+.fs-128 {font-size: 128px!important;}
+.fs-129 {font-size: 129px!important;}
+.fs-130 {font-size: 130px!important;}
+.fs-131 {font-size: 131px!important;}
+.fs-132 {font-size: 132px!important;}
+.fs-133 {font-size: 133px!important;}
+.fs-134 {font-size: 134px!important;}
+.fs-135 {font-size: 135px!important;}
+.fs-136 {font-size: 136px!important;}
+.fs-137 {font-size: 137px!important;}
+.fs-138 {font-size: 138px!important;}
+.fs-139 {font-size: 139px!important;}
+.fs-140 {font-size: 140px!important;}
+.fs-141 {font-size: 141px!important;}
+.fs-142 {font-size: 142px!important;}
+.fs-143 {font-size: 143px!important;}
+.fs-144 {font-size: 144px!important;}
+.fs-145 {font-size: 145px!important;}
+.fs-146 {font-size: 146px!important;}
+.fs-147 {font-size: 147px!important;}
+.fs-148 {font-size: 148px!important;}
+.fs-149 {font-size: 149px!important;}
+.fs-150 {font-size: 150px!important;}
+.fs-151 {font-size: 151px!important;}
+.fs-152 {font-size: 152px!important;}
+.fs-153 {font-size: 153px!important;}
+.fs-154 {font-size: 154px!important;}
+.fs-155 {font-size: 155px!important;}
+.fs-156 {font-size: 156px!important;}
+.fs-157 {font-size: 157px!important;}
+.fs-158 {font-size: 158px!important;}
+.fs-159 {font-size: 159px!important;}
+.fs-160 {font-size: 160px!important;}
+.fs-161 {font-size: 161px!important;}
+.fs-162 {font-size: 162px!important;}
+.fs-163 {font-size: 163px!important;}
+.fs-164 {font-size: 164px!important;}
+.fs-165 {font-size: 165px!important;}
+.fs-166 {font-size: 166px!important;}
+.fs-167 {font-size: 167px!important;}
+.fs-168 {font-size: 168px!important;}
+.fs-169 {font-size: 169px!important;}
+.fs-170 {font-size: 170px!important;}
+.fs-171 {font-size: 171px!important;}
+.fs-172 {font-size: 172px!important;}
+.fs-173 {font-size: 173px!important;}
+.fs-174 {font-size: 174px!important;}
+.fs-175 {font-size: 175px!important;}
+.fs-176 {font-size: 176px!important;}
+.fs-177 {font-size: 177px!important;}
+.fs-178 {font-size: 178px!important;}
+.fs-179 {font-size: 179px!important;}
+.fs-180 {font-size: 180px!important;}
+.fs-181 {font-size: 181px!important;}
+.fs-182 {font-size: 182px!important;}
+.fs-183 {font-size: 183px!important;}
+.fs-184 {font-size: 184px!important;}
+.fs-185 {font-size: 185px!important;}
+.fs-186 {font-size: 186px!important;}
+.fs-187 {font-size: 187px!important;}
+.fs-188 {font-size: 188px!important;}
+.fs-189 {font-size: 189px!important;}
+.fs-190 {font-size: 190px!important;}
+.fs-191 {font-size: 191px!important;}
+.fs-192 {font-size: 192px!important;}
+.fs-193 {font-size: 193px!important;}
+.fs-194 {font-size: 194px!important;}
+.fs-195 {font-size: 195px!important;}
+.fs-196 {font-size: 196px!important;}
+.fs-197 {font-size: 197px!important;}
+.fs-198 {font-size: 198px!important;}
+.fs-199 {font-size: 199px!important;}
+.fs-200 {font-size: 200px!important;}
+
+#zero_config tbody > tr > td,
+#zero_config tbody > tr > td > a,
+
+#zero_config2 tbody > tr > td,
+#zero_config2 tbody > tr > td > a,
+
+#zero_configGrand tbody > tr > td,
+#zero_configGrand tbody > tr > td > a {
+	vert-align: middle;
+	vertical-align: middle;
+
+	font-size: 12px!important;
+	padding: 2px!important;
+}
+
+#zero_config tbody > tr > td > a,
+#zero_config2 tbody > tr > td > a,
+#zero_configGrand tbody > tr > td > a,
+tbody > tr > td > button {
+	font-size: 12px!important;
+	padding: 2px!important;
+}
+
+#zero_config thead > tr,
+#zero_config2 thead > tr,
+#zero_configGrand thead > tr,
+.dataTables_scrollHeadInner thead > tr {
+	background-color: #E87E04;
+	color: #FFFFFF;
+	font-weight: bolder!important;
+	font-size: 12px!important;
+}
+
+.table th, .table thead th {
+	font-weight: bolder!important;
+}
+
+.select2.select2-container.select2-container--default.select2-container--focus{
+	width: 100% !important;
+}

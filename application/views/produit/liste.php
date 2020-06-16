@@ -34,7 +34,7 @@
 									<tr>
 										<th>Famille</th>
 										<th>Désignation</th>
-										<th>Prix de Vente</th>
+										<th>Prix Par Défaut</th>
 										<th>Poids</th>
 										<th>Seuil d'alerte</th>
 										<th>Etat</th>
@@ -55,8 +55,10 @@
 											<td><?= $item->masse ?> Kg</td>
 											<td><?= $item->seuil ?></td>
 											<td><?= $status ?></td>
-											<td>
+											<td width="13%" class="text-center">
 												<a href="<?= site_url("produit/edit/".$item->idproduit) ?>" class="btn btn-danger">Modifier</a>
+
+												<a href="<?= site_url("prix/configurer/".$item->idproduit) ?>" class="btn btn-primary">Configurer Prix</a>
 											</td>
 										</tr>
 										<?php

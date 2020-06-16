@@ -5,12 +5,13 @@
 		<div class="container-fluid">
 			<div class="row mb-2">
 				<div class="col-sm-6">
-					<h1 class="m-0 text-dark">Réceptionner Commande </h1>
+					<h1 class="m-0 text-dark">Régler Dette Fournisseur </h1>
 				</div><!-- /.col -->
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
 						<li class="breadcrumb-item"><a href="<?= site_url("Accueil/index") ?>">Accueil</a></li>
-						<li class="breadcrumb-item active">Stock</li>
+						<li class="breadcrumb-item">Caisse</li>
+						<li class="breadcrumb-item active">Régler Dette Fournisseur</li>
 					</ol>
 				</div><!-- /.col -->
 			</div><!-- /.row -->
@@ -46,61 +47,33 @@
 						<?php
 							$item = 3;
 						?>
-						<?php echo form_open_multipart("Commande/validerReception/".$bon->idfacture, array('class'=>'form-horizontal', 'id'=>'form'));?>
+						<?php echo form_open_multipart("depense/validerPaiementFournisseur/", array('class'=>'form-horizontal', 'id'=>'form'));?>
+
+							<input type="hidden" name="idFacture" value="<?= $bon->idfacture ?>">
 							<div class="card-body">
 								<div class="row">
 									<table class="table table-striped table-bordered table-responsive-md">
-										<thead>
-											<tr>
-												<th style="width: 20%">Produit</th>
-												<th style="width: 10%">Quantité Total</th>
-												<?php
-													foreach ($magasins as $magasin) {
-														$item++;
-														?>
-														<th style="width: 10%"><?= $magasin->designation ?></th>
-														<?php
-													}
-												?>
 
-												<th style="width: 15%">Prix Unitaire TTC</th>
-												<th style="width: 15%">Total TTC</th>
-											</tr>
-										</thead>
-										<tbody id="tbody">
+
 											<?php
 												$total = 0;
 												foreach ($details as $detail) {
 													$total += ($detail->qte * $detail->pu);
-													?>
-													<tr>
-														<td><?= $detail->produit ?></td>
-														<td><input class="form-control qte font-weight-bold text-center" readonly type="number" name="qte_<?= $detail->iddetail ?>" value="<?= $detail->qte ?>"></td>
-
-
-														<?php
-															foreach ($magasins as $magasin) {
-																?>
-																<td>
-																	<input class="form-control entrepot font-weight-bold" type="number" name="entrepot_<?= $detail->iddetail ?>_<?= $magasin->identrepot ?>">
-																</td>
-																<?php
-															}
-														?>
-														<td class="text-right font-weight-bold" style="font-size: 20px"><span class="pu"><?= $this->detailsbc_m->formatNumber($detail->pu) ?></span> FCFA</td>
-														<td class="text-right font-weight-bold" style="font-size: 20px"><span class="total"><?= $this->detailsbc_m->formatNumber($detail->qte * $detail->pu) ?></span> FCFA</td>
-													</tr>
-													<?php
 												}
 											?>
-										</tbody>
+										<span id="theTotal" class="d-none"><?= $total - $oldPaiement ?></span>
 										<tfoot>
 											<tr>
-												<td colspan="<?= $item ?>">Total:</td>
-												<td class="text-right font-weight-bold" style="font-size: 20px; text-align: right"><span id="theTotal"><?= $this->detailsbc_m->formatNumber($total) ?></span> FCFA</td>
+												<td colspan="<?= $item ?>">Total Facture:</td>
+												<td class="text-right font-weight-bold" style="font-size: 20px; text-align: right"><span id=""><?= $this->detailsbc_m->formatNumber($total) ?></span> FCFA</td>
 											</tr>
 											<tr>
-												<td colspan="<?= $item ?>">Montant du Paiement:</td>
+												<td colspan="<?= $item ?>">Motant déjà Payé:</td>
+												<td class="text-right font-weight-bold" style="font-size: 20px; text-align: right"><span id=""><?= $this->detailsbc_m->formatNumber($oldPaiement) ?></span> FCFA</td>
+
+											</tr>
+											<tr>
+												<td colspan="<?= $item ?>">Montant à Régler:</td>
 												<td>
 													<input type="number" class="form-control font-weight-bold bg-red" style="border: 2px red solid" name="montantPayer" id="montantPayer" min="0">
 												</td>
@@ -108,7 +81,7 @@
 											<tr>
 												<td colspan="<?= $item ?>">Reste à Payer:</td>
 												<td>
-													<input type="text" class="form-control font-weight-bold" readonly style="border: 2px red solid" name="reste" id="reste">
+													<input type="text" class="form-control font-weight-bold" value="<?= $this->detailsbc_m->formatNumber($total - $oldPaiement) ?>" readonly style="border: 2px red solid" name="reste" id="reste">
 												</td>
 											</tr>
 										</tfoot>
@@ -117,7 +90,7 @@
 							</div>
 							<div class="card-footer text-center">
 								<input type="hidden" name="token" value="<?= bin2hex(openssl_random_pseudo_bytes(50)) ?>">
-								<a href="<?= site_url("commande/index") ?>" class="btn btn-danger"> <i class="fa fa-window-close"></i> Annuler</a>
+								<a href="<?= site_url("accueil/index") ?>" class="btn btn-danger"> <i class="fa fa-window-close"></i> Annuler</a>
 								<button type="submit" class="btn btn-success"> <i class="fa fa-save"></i> Valider</button>
 							</div>
 

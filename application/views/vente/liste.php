@@ -85,7 +85,8 @@
 
 											<th>Total TTC</th>
 											<th>Reste à Payer</th>
-											<th>Etat Livraison</th>
+
+											<th>Etat</th>
 											<th>Action</th>
 										</tr>
 									</thead>
@@ -113,8 +114,10 @@
 													</td>
 
 													<td class="text-right">
-														<b><?= $vente['Livraison'] ?></b>
+														<b><?= $vente['GlobalState'] ?></b>
 													</td>
+
+													
 													<td class="text-center">
 
 														<div class="btn-group">
@@ -125,14 +128,22 @@
 																	if($vente['Vente']->etat == 0){
 																		?>
 																		<a class="dropdown-item" href="<?= site_url("vente/details/".$vente['Vente']->idvente) ?>" >Afficher Détail</a>
-																		<a class="dropdown-item" href="<?= site_url("vente/modifier/".$vente['Vente']->idvente) ?>">Modifier</a>
-																		<a class="dropdown-item" href="<?= site_url("vente/annuler/".$vente['Vente']->idvente) ?>">Annuler</a>
 																		<?php
 																			if($vente['Vente']->etatlivraison == 0) {
 																				?>
+																				<a class="dropdown-item"
+																				   href="<?= site_url("vente/modifier/" . $vente['Vente']->idvente) ?>">Modifier</a>
+																				<a class="dropdown-item"
+																				   href="<?= site_url("vente/annuler/" . $vente['Vente']->idvente) ?>">Annuler</a>
+
 																				<button type="button" class="modalClick dropdown-item btn btn-link" id="<?= $vente['Vente']->idvente ?>">
 																					Livrer
 																				</button>
+																				<?php
+																			}else{
+																				?>
+																				<a class="dropdown-item" target="_blank"
+																				   href="<?= site_url("vente/imprimerBL/" . $vente['Vente']->idvente) ?>">Bon de Livraison</a>
 																				<?php
 																			}
 																		?>

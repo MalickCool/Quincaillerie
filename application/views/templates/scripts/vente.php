@@ -5,6 +5,18 @@
         $('#add2').append(input);
     });
 
+    $('#moyen').change(function () {
+        if($(this).val() === 'cheque'){
+            $('.chequeDiv').removeClass('d-none');
+            $('#numCheque').attr('required', 'required');
+            $('#banque').attr('required', 'required');
+        }else{
+            $('.chequeDiv').addClass('d-none');
+            $('#numCheque').removeAttr('required', 'required');
+            $('#banque').removeAttr('required', 'required');
+        }
+    });
+
 
     $(document).on("change", '.theSelect', function (){
         var x = $(this).find('option:selected').attr('lang');
@@ -171,6 +183,14 @@
             rap = 0;
 
         $('#rap').val(rap);
+
+        if(rap > 0){
+            $('#echeanceDiv').removeClass("d-none");
+            $('#echeance').attr("required", "required");
+        }else{
+            $('#echeanceDiv').addClass("d-none");
+            $('#echeance').removeAttr("required");
+        }
 
     });
 

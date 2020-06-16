@@ -52,7 +52,7 @@
 													<td>C<?= str_pad($list->idclient, 4, "0", STR_PAD_LEFT) ?></td>
 													<td><?= $list->nom ?></td>
 													<td><?= $list->phone ?></td>
-													<td><?= ucfirst($list->type_client) ?></td>
+													<td><?= $this->typeclient_m->get($list->type_client)->designation ?></td>
 													<td><?= $status ?></td>
 													<td>
 														<a href="<?= site_url("client/edit/".$list->idclient) ?>" class="btn btn-primary">Modifier</a>

@@ -81,6 +81,7 @@
 											<th>Montant TVA</th>
 											<th>Solde TTC</th>
 											<th>Status</th>
+											<th>Etat</th>
 											<th>Action</th>
 										</tr>
 									</thead>
@@ -91,6 +92,11 @@
 										$totalTVA = 0;
 										$totalTTC = 0;
 										foreach ($bons as $item) {
+
+											$etat = "Valide";
+											if($item->annulee == 1)
+												$etat = "Annulée";
+
 											$totalPoids += $item->PoidsTotal;
 											$totalHT += $item->soldeHT;
 											$totalTVA += $item->soldeTaxe;
@@ -107,26 +113,41 @@
 												<td class="text-right"><?= $this->detailsbc_m->formatNumber($item->soldeTaxe) ?></td>
 												<td class="text-right"><?= $this->detailsbc_m->formatNumber($item->soldeTTC) ?></td>
 												<td><?= $item->State ?></td>
-												<td>
-													<div class="dropdown">
-														<button class="btn btn btn-info dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-															Action
-														</button>
-														<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-															<a href="<?= site_url("commande/detail/".$item->idfacture) ?>" class="dropdown-item" type="button">Détail</a>
-															<div class="dropdown-divider"></div>
-															<?php
-																if($item->etat == 0){
-																	?>
-																	<a href="<?= site_url("commande/receptionner/".$item->idfacture) ?>" class="dropdown-item" type="button">Réceptionner</a>
-																	<div class="dropdown-divider"></div>
-																	<?php
-																}
-															?>
-															<a href="<?= site_url("commande/print/".$item->idfacture) ?>" class="dropdown-item" type="button">Imprimer Bon</a>
+												<td><?= $etat ?></td>
+												<?php
+												if($item->annulee == 0){
+													?>
+													<td>
+														<div class="dropdown">
+															<button class="btn btn btn-info dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+																Action
+															</button>
+															<div class="dropdown-menu" aria-labelledby="dropdownMenu2">
+																<a href="<?= site_url("commande/detail/".$item->idfacture) ?>" class="dropdown-item" type="button">Détail</a>
+																<div class="dropdown-divider"></div>
+																<?php
+																	if($item->etat == 0){
+																		?>
+																		<a href="<?= site_url("commande/receptionner/".$item->idfacture) ?>" class="dropdown-item" type="button">Réceptionner</a>
+																		<div class="dropdown-divider"></div>
+																		<?php
+																	}
+																?>
+																<a target="_blank" href="<?= site_url("commande/imprimerBon/".$item->idfacture) ?>" class="dropdown-item" type="button">Imprimer Bon</a>
+																<?php
+																	if($item->etat == 0){
+																		?>
+																		<div class="dropdown-divider"></div>
+																		<a href="<?= site_url("commande/annuler/".$item->idfacture) ?>" class="dropdown-item" type="button">Annuler BC</a>
+																		<?php
+																	}
+																?>
+															</div>
 														</div>
-													</div>
-												</td>
+													</td>
+													<?php
+												}
+												?>
 											</tr>
 											<?php
 										}

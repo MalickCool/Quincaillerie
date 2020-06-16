@@ -14,6 +14,7 @@ class Versement extends CI_Controller {
 		parent::__construct();
 		$this->load->model('versement_m');
 		$this->load->model('depense_m');
+		$this->load->model('paiement_m');
 	}
 
 	public $template = 'templates/template';
@@ -75,7 +76,7 @@ class Versement extends CI_Controller {
 	}
 
 	public function getADayDepenseAchat($day){
-		$somme = $this->depense_m->getADayDepense2($day, 1);
+		$somme = $this->depense_m->getADayDepense2($day, 'fa');
 		return $somme;
 	}
 
@@ -127,6 +128,7 @@ class Versement extends CI_Controller {
 				'iduser' => $this->session->userdata('user_id'),
 				'montant' => $this->input->post('montant'),
 				'token' => $this->input->post('token'),
+				'arretcaisse_id' => $_SESSION['IdAC'],
 			);
 
 			if(!$this->versement_m->exist($this->input->post('token'))) {
@@ -239,6 +241,7 @@ class Versement extends CI_Controller {
 			if(!is_numeric($depenseAchat))
 				$depenseAchat = 0;
 
+			//echo"<pre>"; die(print_r($depenseAchat));
 
 			$depenseBanque = self::getADayDepenseBanque($theDate);
 
@@ -264,7 +267,7 @@ class Versement extends CI_Controller {
 				$depInt += $item->montant;
 			}
 
-			//echo"<pre>"; die(print_r($depExp));
+			//echo"<pre>"; die(print_r($depense));
 
 			$liste[$k]['Date'] = $theDate;
 			$liste[$k]['Versement'] = $versement;

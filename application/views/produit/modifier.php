@@ -30,9 +30,9 @@
 						<?php echo form_open_multipart("produit/update", array('class'=>'form-horizontal', 'id'=>'form'));?>
 						<div class="card-body">
 							<div class="form-group row">
-								<label for="designation" class="col-sm-12 control-label col-form-label">Famille</label>
+								<label for="idfamille" class="col-sm-12 control-label col-form-label">Famille</label>
 								<div class="col-sm-12">
-									<select name="idfamille" required class="select2 form-control custom-select">
+									<select name="idfamille" id="idfamille" required class="select2 form-control custom-select">
 										<?php
 										foreach ($familles as $famille) {
 											?>
@@ -44,28 +44,27 @@
 									<?= form_error('libelle','<div class="alert alert-danger">','</div>');?>
 								</div>
 							</div>
-							<div class="form-group row">
-								<div class="col-sm-8 pl-0">
-									<label for="designation" class="col-sm-12 control-label col-form-label">Désignation</label>
-									<div class="col-sm-12">
-										<input type="text" name="designation" class="form-control" id="designation" value="<?= $produit->designation ?>" required>
-										<?= form_error('designation','<div class="alert alert-danger">','</div>');?>
-									</div>
-								</div>
 
-								<div class="col-sm-4 pl-0">
-									<label for="montant" class="col-sm-12 control-label col-form-label">Prix</label>
-									<div class="col-sm-12">
-										<input type="number" name="montant" class="form-control" id="montant" value="<?= $produit->montant ?>" required>
-										<?= form_error('montant','<div class="alert alert-danger">','</div>');?>
-									</div>
+							<div class="form-group row">
+								<label for="designation" class="col-sm-12 control-label col-form-label">Désignation</label>
+								<div class="col-sm-12">
+									<input type="text" name="designation" class="form-control" id="designation" value="<?= $produit->designation ?>" required>
+									<?= form_error('designation','<div class="alert alert-danger">','</div>');?>
+								</div>
+							</div>
+
+							<div class="form-group row">
+								<label for="montant" class="col-sm-12 control-label col-form-label">Prix Par Défaut</label>
+								<div class="col-sm-12">
+									<input type="number" name="montant" class="form-control" id="montant" value="<?= $produit->montant ?>" required>
+									<?= form_error('montant','<div class="alert alert-danger">','</div>');?>
 								</div>
 							</div>
 
 							<div class="form-group row">
 								<label for="masse" class="col-sm-12 control-label col-form-label">Poids du Produit (en Kg)</label>
 								<div class="col-sm-12">
-									<input type="number" name="masse" class="form-control" id="masse" value="<?= $produit->masse ?>" required>
+									<input type="number" step="any" name="masse" class="form-control" id="masse" value="<?= $produit->masse ?>" required>
 									<?= form_error('masse','<div class="alert alert-danger">','</div>');?>
 								</div>
 							</div>
@@ -122,7 +121,7 @@
 									<tr>
 										<th>Famille</th>
 										<th>Désignation</th>
-										<th>Prix de Vente</th>
+										<th>Prix Par Défaut</th>
 										<th>Poids</th>
 										<th>Etat</th>
 										<th>Action</th>

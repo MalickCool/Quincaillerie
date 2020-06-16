@@ -184,4 +184,14 @@ class stock_m extends MY_Model
         }
         return $rep;
     }
+
+	function getAllStockByIdArticle($id, $entrepot) {
+		$this->db->select('*');
+		$this->db->from('stock');
+		$this->db->where('idproduit', $id);
+		$this->db->where('identrepot', $entrepot);
+		$this->db->where('qte > 0');
+		$query = $this->db->get();
+		return $query->result();
+	}
 }

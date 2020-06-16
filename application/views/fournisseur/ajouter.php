@@ -22,47 +22,123 @@
 	<section class="content">
 		<div class="container-fluid">
 			<div class="row">
-				<div class="col-md-6">
+				<div class="col-md-5">
 					<div class="card">
 						<div class="card-header">
 							<h4 class="card-title">Créer Fournisseur</h4>
 						</div>
 						<?php echo form_open("fournisseur/insert", array('class'=>'form-horizontal', 'id'=>'form'));?>
 							<div class="card-body">
-
-								<div class="form-group row">
-									<label for="designation" class="col-sm-12 control-label col-form-label">Désignation</label>
-									<div class="col-sm-12">
-										<input type="text" name="designation" class="form-control" id="designation" placeholder="Nom du Fournisseur" required>
-										<?= form_error('designation','<div class="alert alert-danger">','</div>');?>
-									</div>
-								</div>
-
-								<div class="form-group row">
-									<div class="col-sm-6 pl-0">
-										<label for="contact" class="col-sm-12 control-label col-form-label">Téléphone</label>
+								<fieldset>
+									<legend>Information Structure</legend>
+									<div class="form-group row">
+										<label for="designation" class="col-sm-12 control-label col-form-label">Désignation</label>
 										<div class="col-sm-12">
-											<input type="text" name="contact" class="form-control" id="contact" placeholder="Contact" required>
-											<?= form_error('contact','<div class="alert alert-danger">','</div>');?>
+											<input type="text" name="designation" class="form-control" id="designation" placeholder="Désignation de la structure" required>
+											<?= form_error('designation','<div class="alert alert-danger">','</div>');?>
 										</div>
 									</div>
 
-									<div class="col-sm-6 pl-0">
-										<label for="email" class="col-sm-12 control-label col-form-label">Email</label>
-										<div class="col-sm-12">
-											<input type="email" name="email" class="form-control" id="email" placeholder="Adresse Email">
-											<?= form_error('email','<div class="alert alert-danger">','</div>');?>
+									<div class="form-group row">
+										<div class="col-sm-6 pl-0">
+											<label for="contact" class="col-sm-12 control-label col-form-label">Téléphone</label>
+											<div class="col-sm-12">
+												<input type="text" name="contact" class="form-control" id="contact" placeholder="Téléphone de la structure" required>
+												<?= form_error('contact','<div class="alert alert-danger">','</div>');?>
+											</div>
+										</div>
+
+										<div class="col-sm-6 pl-0">
+											<label for="email" class="col-sm-12 control-label col-form-label">Email</label>
+											<div class="col-sm-12">
+												<input type="email" name="email" class="form-control" id="email" placeholder="Adresse Email de la structure">
+												<?= form_error('email','<div class="alert alert-danger">','</div>');?>
+											</div>
 										</div>
 									</div>
-								</div>
 
-								<div class="form-group row">
-									<label for="situation" class="col-sm-12 control-label col-form-label">Situation</label>
-									<div class="col-sm-12">
-										<textarea name="situation" class="form-control" id="situation" rows="3"> </textarea>
-										<?= form_error('situation','<div class="alert alert-danger">','</div>');?>
+									<div class="form-group row">
+										<div class="col-sm-6 pl-0">
+											<label for="ncc" class="col-sm-12 control-label col-form-label">NCC</label>
+											<div class="col-sm-12">
+												<input type="text" name="ncc" class="form-control" id="ncc" placeholder="Numéro Compte Contribuable">
+												<?= form_error('ncc','<div class="alert alert-danger">','</div>');?>
+											</div>
+										</div>
+
+										<div class="col-sm-6 pl-0">
+											<label for="rccm" class="col-sm-12 control-label col-form-label">N° RCCM</label>
+											<div class="col-sm-12">
+												<input type="text" name="rccm" class="form-control" id="rccm" placeholder="Régistre de Commerce">
+												<?= form_error('rccm','<div class="alert alert-danger">','</div>');?>
+											</div>
+										</div>
 									</div>
-								</div>
+
+									<div class="form-group row">
+										<label for="ncb" class="col-sm-12 control-label col-form-label">N° Compte Bancaire</label>
+										<div class="col-sm-12">
+											<input type="text" name="ncb" class="form-control" id="ncb" placeholder="N° Compte Bancaire">
+											<?= form_error('ncb','<div class="alert alert-danger">','</div>');?>
+										</div>
+									</div>
+
+									<div class="form-group row">
+										<div class="col-md-6 pl-0">
+											<label for="situation" class="col-sm-12 control-label col-form-label">Situation</label>
+											<div class="col-sm-12">
+												<textarea name="situation" class="form-control" id="situation" rows="2"> </textarea>
+												<?= form_error('situation','<div class="alert alert-danger">','</div>');?>
+											</div>
+										</div>
+										<div class="col-md-6 pl-0">
+											<label for="observation" class="col-sm-12 control-label col-form-label">Observation</label>
+											<div class="col-sm-12">
+												<textarea name="observation" class="form-control" id="observation" rows="2"> </textarea>
+												<?= form_error('observation','<div class="alert alert-danger">','</div>');?>
+											</div>
+										</div>
+
+									</div>
+								</fieldset>
+
+								<fieldset>
+									<legend>Représentant Fournisseur</legend>
+									<div class="form-group row">
+										<div class="col-sm-7 pl-0">
+											<label for="nomRep" class="col-sm-12 control-label col-form-label">Nom & Prénom</label>
+											<div class="col-sm-12">
+												<input type="text" name="nomRep" class="form-control" id="nomRep" placeholder="Nom et Prénom du Représentant" required>
+												<?= form_error('nomRep','<div class="alert alert-danger">','</div>');?>
+											</div>
+										</div>
+										<div class="col-sm-5 pl-0">
+											<label for="fonction" class="col-sm-12 control-label col-form-label">Fonction</label>
+											<div class="col-sm-12">
+												<input type="text" name="fonction" class="form-control" id="fonction" placeholder="Fonction du Représentant" required>
+												<?= form_error('fonction','<div class="alert alert-danger">','</div>');?>
+											</div>
+										</div>
+									</div>
+
+									<div class="form-group row">
+										<div class="col-sm-6 pl-0">
+											<label for="contactPersonnel" class="col-sm-12 control-label col-form-label">Contact Personnel</label>
+											<div class="col-sm-12">
+												<input type="text" name="contactPersonnel" class="form-control" id="contactPersonnel" placeholder="Contact Personnel" required>
+												<?= form_error('contactPersonnel','<div class="alert alert-danger">','</div>');?>
+											</div>
+										</div>
+
+										<div class="col-sm-6 pl-0">
+											<label for="contactProfessionnel" class="col-sm-12 control-label col-form-label">Contact Professionnel</label>
+											<div class="col-sm-12">
+												<input type="text" name="contactProfessionnel" class="form-control" id="contactProfessionnel" placeholder="Contact Professionnel" required>
+												<?= form_error('contactProfessionnel','<div class="alert alert-danger">','</div>');?>
+											</div>
+										</div>
+									</div>
+								</fieldset>
 							</div>
 							<div class="border-top">
 								<div class="card-body text-center">
@@ -78,7 +154,7 @@
 						<?php echo form_close();?>
 					</div>
 				</div>
-				<div class="col-md-6">
+				<div class="col-md-7">
 					<div class="card">
 						<div class="card-header">
 							<h4 class="card-title">Liste Fournisseurs</h4>

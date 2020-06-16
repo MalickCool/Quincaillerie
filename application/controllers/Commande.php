@@ -101,7 +101,7 @@ class Commande extends CI_Controller {
 
         $data['titre'] = 'Liste des Bons de Commande';
         $data['page'] = "boncommande/liste";
-        $data['menu'] = 'edition';
+        $data['menu'] = 'stock';
         $this->load->view($this->template, $data);
     }
 
@@ -116,7 +116,32 @@ class Commande extends CI_Controller {
 
         $produits = $this->produit_m->getActivated();
 
+		$stocks = array();
 
+		$total = 0;
+
+		foreach ($produits as $produit) {
+			$qte = $this->stock_m->getProductStock($produit->idproduit);
+			if(!is_numeric($qte))
+				$qte = 0;
+
+			if($qte > 0 AND $qte < $produit->seuil){
+				$stocks[$produit->idproduit]['idProduit'] = $produit->idproduit;
+				$stocks[$produit->idproduit]['designation'] = $produit->designation;
+				$stocks[$produit->idproduit]['prix'] = $produit->montant;
+				$stocks[$produit->idproduit]['seuil'] = $produit->seuil;
+				$stocks[$produit->idproduit]['Qte'] = $qte;
+
+				$total += ($produit->seuil - $qte) * $produit->montant;
+
+			}
+		}
+
+		//echo'<pre>'; die(print_r($total));
+
+        $data['totalFacture'] = $total;
+
+        $data['stocks'] = $stocks;
         $data['achats'] = $achats;
         $data['fournisseurs'] = $fournisseurs;
         $data['produits'] = $produits;
@@ -162,41 +187,55 @@ class Commande extends CI_Controller {
                         'idbon' => $lastId,
                     );
                     $this->detailsbc_m->add_item($datax);
-
-                    /*
-                    $dataz = array(
-                        'idproduit' => $_POST['product'][$i],
-                        'qte_virtuelle' => $_POST['qte'][$i],
-                        'qte_physique' => $_POST['qte'][$i],
-                        'prixachat' => $_POST['pu'][$i],
-                        'identrepot' => $_POST['entrepot'][$i],
-                        'dateachat' => date('Y-m-d'),
-                    );
-                    $this->stock_m->add_item($dataz);
-
-                    $montantTotal += ($_POST['qte'][$i] * $_POST['pu'][$i]);
-                    */
                 }
-
-                /*
-                $datas = array(
-                    'motifdepense' => "Facture d'achat N°".$lastId,
-                    'datedepense' => date('Y-m-d'),
-                    'iduser' => $this->session->userdata('user_id'),
-                    'montant' => $montantTotal,
-                    'token' => $this->input->post('token'),
-                    'factureachat' => 1,
-                );
-
-
-                if(!$this->depense_m->exist($this->input->post('token'))) {
-                    $this->depense_m->add_item($datas);
-                }
-                */
             }
         }
 
         redirect('stock/ajouter','refresh');
+    }
+
+    public function updateBonCommande(){
+        if(!$this->ion_auth->logged_in()){
+            redirect("auth/login");
+        }
+
+        $bon = $this->boncommande_m->get($_POST['idBon']);
+
+		if($bon->token == ""){
+			redirect("commande/index");
+		}
+
+		//echo'<pre>'; die(print_r($bon));
+
+        $this->form_validation->set_rules('idfournisseur','Id du fournisseur','required');
+
+        if($this->form_validation->run()){
+
+            $datas = array(
+                'idfournisseur' => $this->input->post('idfournisseur'),
+                'iduser' => $this->session->userdata('user_id'),
+            );
+
+			$this->boncommande_m->update($bon->idfacture, $datas);
+
+            $montantTotal = 0;
+
+			$this->detailsbc_m->deleteAll($bon->idfacture);
+
+			$nbreProduit = sizeof($_POST['product']);
+			for ($i=0; $i < $nbreProduit; $i++) {
+				$datax = array(
+					'idproduit' => $_POST['product'][$i],
+					'qte' => $_POST['qte'][$i],
+					'pu' => $_POST['pu'][$i],
+					'idbon' => $bon->idfacture,
+				);
+				$this->detailsbc_m->add_item($datax);
+			}
+
+        }
+
+        redirect('commande/index','refresh');
     }
 
     public function detail($id){
@@ -225,6 +264,91 @@ class Commande extends CI_Controller {
         $data['titre'] = "Bon de Commande N° ".'BC_'.date('ymd', strtotime($bon->datebon)).'_'.$bon->idfacture;
         $data['page'] = "boncommande/afficher";
         $data['menu'] = 'edition';
+        $this->load->view($this->template, $data);
+    }
+
+    public function modifier($id){
+        if(!$this->ion_auth->logged_in()){
+            redirect("auth/login");
+        }
+
+        $bon = $this->boncommande_m->get($id);
+
+        if($bon->token == ''){
+            redirect("accueil/");
+        }
+
+		$bon->idfournisseur = $bon->idfournisseur;
+
+		$bon->fournisseur = $this->fournisseur_m->get($bon->idfournisseur)->designation;
+
+		$bon->numbon = 'BC_'.date('ymd', strtotime($bon->datebon)).'_'.$bon->idfacture;
+
+        $details = $this->detailsbc_m->getArticles($bon->idfacture);
+
+		$total = 0;
+		$intrantOnly = array();
+		foreach ($details as $detail) {
+			$total += ($detail->qte * $detail->pu);
+			$intrantOnly[] = $detail->idproduit;
+        }
+
+		$achats = $this->boncommande_m->get_all();
+
+		$fournisseurs = $this->fournisseur_m->get_all();
+
+		if(!empty($intrantOnly)){
+			$produits = $this->produit_m->getNotSelectedYet($intrantOnly);
+		}else{
+			$produits = $this->produit_m->getActivated();
+		}
+
+
+		$data['total'] = $total;
+		$data['achats'] = $achats;
+		$data['fournisseurs'] = $fournisseurs;
+
+
+		$data['produits'] = $produits;
+
+        //echo'<pre>'; die(print_r($details));
+
+        $data['details'] = $details;
+        $data['bon'] = $bon;
+
+        $data['titre'] = "Modifier Bon de Commande N° ".'BC_'.date('ymd', strtotime($bon->datebon)).'_'.$bon->idfacture;
+        $data['page'] = "boncommande/modifier";
+		$data['script'] = 'achat';
+        $data['menu'] = 'stock';
+        $this->load->view($this->template, $data);
+    }
+
+    public function annuler($id){
+        if(!$this->ion_auth->logged_in()){
+            redirect("auth/login");
+        }
+
+        $bon = $this->boncommande_m->get($id);
+
+        if($bon->token == ''){
+            redirect("accueil/");
+        }
+
+		$bon->idfournisseur = $this->fournisseur_m->get($bon->idfournisseur)->designation;
+
+		$bon->numbon = 'BC_'.date('ymd', strtotime($bon->datebon)).'_'.$bon->idfacture;
+
+        $details = $this->detailsbc_m->getArticles($bon->idfacture);
+
+        //echo'<pre>'; die(print_r($bon));
+
+        //$data['fournisseur'] = $fournisseur;
+        $data['details'] = $details;
+        $data['bon'] = $bon;
+
+        $data['titre'] = "Annuler Bon de Commande N° ".'BC_'.date('ymd', strtotime($bon->datebon)).'_'.$bon->idfacture;
+        $data['page'] = "boncommande/annuler";
+        $data['menu'] = 'stock';
         $this->load->view($this->template, $data);
     }
 
@@ -267,6 +391,8 @@ class Commande extends CI_Controller {
 
 		//echo'<pre>'; die(print_r($_POST));
 
+		$magasins = $this->entrepot_m->get_all();
+
 		$bon = $this->boncommande_m->get($idbon);
 
 		$details = $this->detailsbc_m->getDetails($bon->idfacture);
@@ -285,6 +411,8 @@ class Commande extends CI_Controller {
 
 		$idBl = $this->bonlivraison_m->add_item($datas);
 
+		$total = 0;
+
 		foreach ($details as $detail) {
 
 			//echo'<pre>'; die(print_r($_POST));
@@ -300,15 +428,26 @@ class Commande extends CI_Controller {
 				$this->detailsbl_m->add_item($datax);
 
 
-				$dataz = array(
-					'idproduit' => $detail->idproduit,
-					'qte' => $_POST['qte_'.$detail->iddetail],
-					'prixachat' => $detail->pu,
-					'identrepot' => $_POST['entrepot_'.$detail->iddetail],
-					'dateachat' => $bon->datebon,
-					'idbl' => $idBl,
-				);
-				$this->stock_m->add_item($dataz);
+				foreach ($magasins as $magasin) {
+
+					if(isset($_POST['entrepot_'.$detail->iddetail.'_'.$magasin->identrepot]) AND $_POST['entrepot_'.$detail->iddetail.'_'.$magasin->identrepot] > 0){
+
+						$total += ($_POST['entrepot_'.$detail->iddetail.'_'.$magasin->identrepot] * $detail->pu);
+
+						$dataz = array(
+							'idproduit' => $detail->idproduit,
+							'qte' => $_POST['entrepot_'.$detail->iddetail.'_'.$magasin->identrepot],
+							'prixachat' => $detail->pu,
+							'identrepot' => $magasin->identrepot,
+							'dateachat' => $bon->datebon,
+							'idbl' => $idBl,
+						);
+						$this->stock_m->add_item($dataz);
+					}
+
+				}
+
+
 
 			}
 
@@ -339,7 +478,43 @@ class Commande extends CI_Controller {
 			$this->depense_m->add_item($datas);
 		}
 
+		if($total > $_POST['montantPayer']){
+			$dataEcheance = array(
+				'echeance' => $this->input->post('echeance'),
+			);
+			$this->boncommande_m->update($bon->idfacture, $dataEcheance);
+		}
+
 		redirect('depense/index','refresh');
+	}
+
+	public function disableBon(){
+		if(!$this->ion_auth->logged_in()){
+			redirect("auth/login");
+		}
+
+		//echo'<pre>'; die(print_r($_POST));
+
+		$idbon = $_POST['id'];
+
+		$bon = $this->boncommande_m->get($idbon);
+
+		$details = $this->detailsbc_m->getDetails($bon->idfacture);
+
+		if($bon->token == ''){
+			redirect("accueil/");
+		}
+
+		$datas = array(
+			'annulee' => 1,
+			'motifAnnulation' => $this->input->post('motif'),
+			'dateAnnulation' => date('Y/m/d'),
+			'idUserAnnulation' => $this->session->userdata('user_id'),
+
+		);
+		$this->boncommande_m->update($bon->idfacture, $datas);
+
+		redirect('commande/index','refresh');
 	}
 
 	public function show($id){
@@ -367,5 +542,86 @@ class Commande extends CI_Controller {
 		$data['page'] = "boncommande/afficher";
 		$data['menu'] = 'caisse';
 		$this->load->view($this->template, $data);
+	}
+
+	public function imprimerBon($id){
+
+		if(!$this->ion_auth->logged_in()){
+			redirect("auth/login");
+		}
+
+		$bon = $this->boncommande_m->get($id);
+
+		if($bon->token == ''){
+			redirect("accueil/");
+		}
+
+		$bon->idfournisseur = $this->fournisseur_m->get($bon->idfournisseur)->designation;
+
+		$bon->numbon = 'BC_'.date('ymd', strtotime($bon->datebon)).'_'.$bon->idfacture;
+
+		$details = $this->detailsbc_m->getArticles($bon->idfacture);
+
+		$details2 = $this->detailsbc_m->getDetails($bon->idfacture);
+
+		$poids = 0;
+
+		foreach ($details2 as $detail) {
+			$theProduct = $this->produit_m->get($detail->idproduit);
+
+			$poids += ($detail->qte * $theProduct->masse);
+		}
+
+		//echo'<pre>'; die(print_r($poids));
+
+		$data['details'] = $details;
+		$data['bon'] = $bon;
+		$data['poids'] = $poids;
+
+		$message = "Bon de Commande N° ".'BC_'.date('ymd', strtotime($bon->datebon)).'_'.$bon->idfacture;
+
+		$data['message'] = $message;
+
+
+
+		$mpdf = new \Mpdf\Mpdf([
+			'mode' => 'utf-8',
+			'format' => 'A4-P',
+			'orientation' => 'P'
+		]);
+		$mpdf->SetTitle($message);
+		$mpdf->SetAuthor('ESC Technologie');
+		$mpdf->SetCreator('Malick Coulibaly');
+		$html = $this->load->view('boncommande/print', $data, true);
+		$mpdf->setFooter('{PAGENO} / {nb}');
+		$mpdf->SetHTMLHeader('
+            <page_header>
+                <table style="border: none;">
+                    <tr>
+                        <td style="width: 20%;">
+                        
+                        </td>
+                        <td style="width: 60%;  padding-left: 0px; border: none !important; text-align: center">
+                            <img src="'.FCPATH.'/Uploads/logo.jpg" style="width: 100%;"  alt="">
+                        </td>
+                        <td style="width: 20%;">
+                        
+                        </td>
+                   </tr>
+                </table>
+            </page_header>');
+		$mpdf->AddPage('', // L - landscape, P - portrait
+			'', '', '', '',
+			15, // margin_left
+			15, // margin right
+			37, // margin top
+			30, // margin bottom
+			10, // margin header
+			5); // margin footer
+		$mpdf->WriteHTML($html);
+		$mpdf->Output($message.'.pdf', 'I');
+
+
+
 	}
 }

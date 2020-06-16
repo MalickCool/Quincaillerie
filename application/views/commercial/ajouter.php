@@ -32,6 +32,20 @@
 							<?php echo form_open_multipart("commercial/do_upload", array('class'=>'form-horizontal', 'id'=>'form'));?>
 								<div class="card-body">
 									<div class="form-group row">
+										<label for="type" class="col-sm-3 text-right control-label col-form-label"><b>Type Commercial</b></label>
+										<div class="col-sm-9">
+											<select id="type" name="typecommercial" required class="select2 form-control custom-select">
+												<?php
+													foreach ($types as $type) {
+														?>
+														<option value="<?= $type->idType ?>"><?= $type->designation ?></option>
+														<?php
+													}
+												?>
+											</select>
+										</div>
+									</div>
+									<div class="form-group row">
 										<label for="nom" class="col-sm-3 text-right control-label col-form-label pr-0">Nom & Prenom</label>
 										<div class="col-sm-9">
 											<input type="text" name="nom" class="form-control" required id="nom" placeholder="Nom et Prenom">
@@ -68,6 +82,7 @@
 										<tr>
 											<th>N° Commercial</th>
 											<th>Nom & Prénom</th>
+											<th>Type de Commerciaux</th>
 											<th>Contact</th>
 											<th>Etat</th>
 											<th>Action</th>
@@ -83,6 +98,7 @@
 												<tr>
 													<td>C<?= str_pad($list->idcommercial, 4, "0", STR_PAD_LEFT) ?></td>
 													<td><?= $list->nom ?></td>
+													<td><?= $this->typecommercial_m->get($list->type)->designation ?></td>
 													<td><?= $list->phone ?></td>
 													<td><?= $status ?></td>
 													<td>

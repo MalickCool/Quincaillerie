@@ -9,12 +9,15 @@
     <table style="width: 100%;" cellspacing="0">
         <thead style="width: 100%; border: solid; border-color: #000;">
         <tr style="width: 100%; border: solid; border-color: #000;">
-            <th style="width: 50%; border: solid; border-color: #000; border-width: 0.5px; padding: 10px; background-color: #CCCCCC">
+            <th style="width: 40%; border: solid; border-color: #000; border-width: 0.5px; padding: 10px; background-color: #CCCCCC">
                 Désignation
             </th>
-            <th style="width: 20%; border: solid; border-color: #000; border-width: 0.5px; padding: 10px; background-color: #CCCCCC">
-                Prix de Vente
-            </th>
+			<th style="width: 15%; border: solid; border-color: #000; border-width: 0.5px; padding: 10px; background-color: #CCCCCC">
+				Prix Client Ordinaire
+			</th>
+			<th style="width: 15%; border: solid; border-color: #000; border-width: 0.5px; padding: 10px; background-color: #CCCCCC">
+				Prix Client Revendeur
+			</th>
             <th style="width: 10%; border: solid; border-color: #000; border-width: 0.5px; padding: 10px; background-color: #CCCCCC">
                 Etat
             </th>
@@ -38,6 +41,9 @@
                 </td>
                 <td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: center">
                     <?php echo htmlspecialchars($item->montant." FCFA",ENT_QUOTES,'UTF-8');?>
+                </td>
+				<td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: center">
+                    <?php echo htmlspecialchars($item->montant_revendeur." FCFA",ENT_QUOTES,'UTF-8');?>
                 </td>
                 <td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: center">
                     <?php echo htmlspecialchars($status,ENT_QUOTES,'UTF-8');?>

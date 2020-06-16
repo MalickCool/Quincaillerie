@@ -67,6 +67,10 @@
 					</div>
 					<!-- /.col -->
 				</div>
+
+				<p>
+					<?php echo form_input($idCaisse);?>
+				</p>
 			</form>
 		</div>
 		<!-- /.login-card-body -->

@@ -8,7 +8,7 @@
 				<div class="offset-md-3 col-md-6">
 					<div class="card">
 						<div class="card-header text-center font-weight-bolder colorOrange">
-							Ouverture de Caisse
+							Réouverture de Caisse
 						</div>
 						<div class="card-body">
 							<?php echo form_open_multipart("#", array('class'=>'form-horizontal', 'id'=>'form'));?>
@@ -46,13 +46,13 @@
 
 								<div class="form-group row pt-4">
 									<div class="col-sm-12 text-center">
-										<button type="submit" id="openCaisse" class="btn btn-primary"><i class="fa fa-unlock-alt"></i> Ouvrir Caisse</button>
+										<button type="submit" id="reOpenCaisse" class="btn btn-primary"><i class="fa fa-unlock-alt"></i> Réouvrir Caisse</button>
 										<a href="<?= site_url("accueil/index/") ?>" class="btn btn-danger"><i class="fa fa-window-close"></i> Quitter</a>
 									</div>
 								</div>
 							<?php echo form_close();?>
 
-							<input type="hidden" value="<?= site_url("vente/ajouter") ?>" id="link">
+							<input type="hidden" value="<?= site_url("vente/selectCustomer") ?>" id="link">
 						</div>
 					</div>
 				</div>

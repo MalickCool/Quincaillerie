@@ -13,6 +13,7 @@ class Commercial extends CI_Controller {
     {
         parent::__construct();
         $this->load->model('commercial_m');
+        $this->load->model('typecommercial_m');
     }
 
     public $template = 'templates/template';
@@ -23,7 +24,10 @@ class Commercial extends CI_Controller {
             redirect("auth/login");
         }
         $commerciaux = $this->commercial_m->get_all();
-        $data['commerciaux'] = $commerciaux;
+		$data['commerciaux'] = $commerciaux;
+
+		$types = $this->typecommercial_m->getActivated();
+        $data['types'] = $types;
         //echo"<pre>"; die(print_r($types));
         $data['titre'] = 'Liste des commerciaux';
         $data['page'] = "Commercial/liste";
@@ -38,6 +42,10 @@ class Commercial extends CI_Controller {
 
         $commerciaux = $this->commercial_m->get_all();
         $data['commerciaux'] = $commerciaux;
+
+		$types = $this->typecommercial_m->getActivated();
+		$data['types'] = $types;
+
         //echo"<pre>"; die(print_r($types));
         $data['titre'] = 'Ajouter un Commercial';
         $data['page'] = "Commercial/ajouter";
@@ -53,12 +61,14 @@ class Commercial extends CI_Controller {
 
         $this->form_validation->set_rules('nom','Nom du Commercial','required');
         $this->form_validation->set_rules('phone','Contact du Commercial','required');
+        $this->form_validation->set_rules('typecommercial','Type de Commercial','required');
 
         if($this->form_validation->run()){
 
             $datas = array(
                 'nom' => $this->input->post('nom'),
                 'phone' => $this->input->post('phone'),
+                'type' => $this->input->post('typecommercial'),
                 'token' => $this->input->post('token'),
             );
 
@@ -86,6 +96,9 @@ class Commercial extends CI_Controller {
 
         $data['commercial'] = $commercial;
 
+		$types = $this->typecommercial_m->getActivated();
+		$data['types'] = $types;
+
         $data['titre'] = 'Modifier le Commercial '.$commercial->nom;
         $data['page'] = "Commercial/modifier";
         $data['menu'] = 'commerciale';
@@ -105,6 +118,7 @@ class Commercial extends CI_Controller {
 
         $this->form_validation->set_rules('nom','Nom du Commercial','required');
         $this->form_validation->set_rules('phone','Contact du Commercial','required');
+		$this->form_validation->set_rules('typecommercial','Type de Commercial','required');
 
         if($this->form_validation->run()){
 
@@ -116,6 +130,7 @@ class Commercial extends CI_Controller {
             $datas = array(
                 'nom' => $this->input->post('nom'),
                 'phone' => $this->input->post('phone'),
+				'type' => $this->input->post('typecommercial'),
                 'etat' => $etat,
             );
 

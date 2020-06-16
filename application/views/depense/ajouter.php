@@ -5,7 +5,7 @@
 		<div class="container-fluid">
 			<div class="row mb-2">
 				<div class="col-sm-6">
-					<h1 class="m-0 text-dark">Ajouter Dépense</h1>
+					<h1 class="m-0 text-dark">Sortie de Caisse</h1>
 				</div><!-- /.col -->
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
@@ -29,7 +29,7 @@
 
 							<div class="form-group row">
 								<div class="col-sm-6 pl-0 pr-0">
-									<label for="typeDepense" class="col-sm-12 control-label col-form-label">Type de dépense</label>
+									<label for="typeDepense" class="col-sm-12 control-label col-form-label">Type de Sortie de Caisse</label>
 									<div class="col-sm-12">
 										<select class="select2 form-control custom-select" name="typedepense" id="typeDepense">
 											<option value="exp">Exploitation</option>
@@ -38,7 +38,7 @@
 									</div>
 								</div>
 								<div class="col-sm-6 pl-0 pr-0">
-									<label for="montant" class="col-sm-12 control-label col-form-label">Montant de la dépense</label>
+									<label for="montant" class="col-sm-12 control-label col-form-label">Montant de la Transaction</label>
 									<div class="col-sm-12">
 										<input type="number" name="montant" class="form-control" id="montant" placeholder="Montant de la dépense">
 										<?= form_error('montant','<div class="alert alert-danger">','</div>');?>
@@ -47,7 +47,7 @@
 							</div>
 
 							<div class="form-group row">
-								<label for="motifdepense" class="col-sm-12 control-label col-form-label">Motif de la dépense</label>
+								<label for="motifdepense" class="col-sm-12 control-label col-form-label">Motif de la Transaction</label>
 								<div class="col-sm-12">
 									<textarea name="motifdepense" class="form-control" id="motifdepense" rows="12"> </textarea>
 									<?= form_error('motifdepense','<div class="alert alert-danger">','</div>');?>

@@ -11,6 +11,25 @@
 		padding-left: 30px !important;
 	}
 </style>
+
+<?php
+	if(isset($_SESSION['arretCaisse'])){
+		$arretCaisse = $_SESSION['arretCaisse'];
+
+		if($arretCaisse->etat == 0){
+			if($_SESSION['statusCaisse'] == "open"){
+				$action = 'work';
+			}else{
+				$action = "réouverture";
+			}
+		}else{
+			$action = 'Annuler';
+		}
+	}else{
+		$action = 'ouverture';
+	}
+?>
+
 <!-- Navbar -->
 <nav class="main-header navbar navbar-expand navbar-dark">
 	<!-- Left navbar links -->
@@ -85,6 +104,12 @@
 							</a>
 						</li>
 						<li class="nav-item">
+							<a href="<?= site_url("typedepense/ajouter") ?>" class="nav-link">
+								<i class="fas fa-users-cog nav-icon"></i>
+								<p>Type de Sortie de Caisse</p>
+							</a>
+						</li>
+						<li class="nav-item">
 							<a href="<?= site_url("fournisseur/ajouter") ?>" class="nav-link">
 								<i class="far fa-circle nav-icon"></i>
 								<p>Fournisseurs</p>
@@ -120,20 +145,32 @@
 								<p>Bon de Commande</p>
 							</a>
 						</li>
-					</ul>
-					<ul class="nav nav-treeview">
+
+						<li class="nav-item">
+							<a href="<?= site_url("Commande/index") ?>" class="nav-link">
+								<i class="fas fa-users-cog nav-icon"></i>
+								<p>Réceptionner Stock</p>
+							</a>
+						</li>
+
 						<li class="nav-item">
 							<a href="<?= site_url("Stock/entrepot") ?>" class="nav-link">
 								<i class="fas fa-users-cog nav-icon"></i>
 								<p>Etat du Stock</p>
 							</a>
 						</li>
-					</ul>
-					<ul class="nav nav-treeview">
+
 						<li class="nav-item">
 							<a href="<?= site_url("inventaire/entrepot") ?>" class="nav-link">
 								<i class="fas fa-users-cog nav-icon"></i>
 								<p>Inventaire</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="<?= site_url("stock/transfert") ?>" class="nav-link">
+								<i class="fas fa-users-cog nav-icon"></i>
+								<p>Transfert Stock</p>
 							</a>
 						</li>
 					</ul>
@@ -149,26 +186,30 @@
 					</a>
 					<ul class="nav nav-treeview">
 						<li class="nav-item">
+							<a href="<?= site_url("typecommercial/ajouter") ?>" class="nav-link">
+								<i class="fas fa-users-cog nav-icon"></i>
+								<p>Type de Commerciaux</p>
+							</a>
+						</li>
+
+						<li class="nav-item">
 							<a href="<?= site_url("commercial/ajouter") ?>" class="nav-link">
 								<i class="fas fa-users-cog nav-icon"></i>
 								<p>Commerciaux</p>
 							</a>
 						</li>
-					</ul>
-					<ul class="nav nav-treeview">
+
+						<li class="nav-item">
+							<a href="<?= site_url("typeclient/ajouter") ?>" class="nav-link">
+								<i class="fas fa-users-cog nav-icon"></i>
+								<p>Type de Client</p>
+							</a>
+						</li>
+
 						<li class="nav-item">
 							<a href="<?= site_url("client/ajouter") ?>" class="nav-link">
 								<i class="fas fa-users-cog nav-icon"></i>
 								<p>Clients</p>
-							</a>
-						</li>
-					</ul>
-
-					<ul class="nav nav-treeview">
-						<li class="nav-item">
-							<a href="<?= site_url("vente/ajouter") ?>" class="nav-link">
-								<i class="fas fa-users-cog nav-icon"></i>
-								<p>Vendre</p>
 							</a>
 						</li>
 					</ul>
@@ -182,20 +223,68 @@
 							<i class="right fas fa-angle-left"></i>
 						</p>
 					</a>
-					<ul class="nav nav-treeview">
-						<li class="nav-item">
-							<a href="<?= site_url("depense/ajouter") ?>" class="nav-link">
-								<i class="fas fa-users-cog nav-icon"></i>
-								<p>Sasir Dépense</p>
-							</a>
-						</li>
 
-						<li class="nav-item">
-							<a href="<?= site_url("versement/ajouter") ?>" class="nav-link">
-								<i class="fas fa-circle nav-icon"></i>
-								<p>Approvisionnement</p>
-							</a>
-						</li>
+					<ul class="nav nav-treeview">
+						<?php
+							if($action == "work"){
+								?>
+								<li class="nav-item">
+									<a href="<?= site_url("depense/ajouter") ?>" class="nav-link">
+										<i class="fas fa-users-cog nav-icon"></i>
+										<p>Sortie de Caisse</p>
+									</a>
+								</li>
+
+								<li class="nav-item">
+									<a href="<?= site_url("versement/ajouter") ?>" class="nav-link">
+										<i class="fas fa-circle nav-icon"></i>
+										<p>Approvisionnement</p>
+									</a>
+								</li>
+
+								<li class="nav-item">
+									<a href="<?= site_url("vente/ajouter") ?>" class="nav-link">
+										<i class="fas fa-users-cog nav-icon"></i>
+										<p>Vendre</p>
+									</a>
+								</li>
+
+								<li class="nav-item">
+									<a href="<?= site_url("actioncaisse/arret") ?>" class="nav-link">
+										<i class="fas fa-users-cog nav-icon"></i>
+										<p class="font-weight-bolder fontWhite fs-20">Arrêt Caisse</p>
+									</a>
+								</li>
+								<?php
+							}elseif ($action == "réouverture"){
+								?>
+								<li class="nav-item">
+									<a href="<?= site_url("actioncaisse/reouverture") ?>" class="nav-link">
+										<i class="fas fa-users-cog nav-icon"></i>
+										<p>Réouvrir Caisse</p>
+									</a>
+								</li>
+								<?php
+							}elseif ($action == "ouverture"){
+								?>
+								<li class="nav-item">
+									<a href="<?= site_url("actioncaisse/ouverture") ?>" class="nav-link">
+										<i class="fas fa-users-cog nav-icon"></i>
+										<p>Ouvrir Caisse</p>
+									</a>
+								</li>
+								<?php
+							}else{
+								?>
+								<li class="nav-item">
+									<a href="<?= site_url("actioncaisse/annulerac") ?>" class="nav-link">
+										<i class="fas fa-users-cog nav-icon"></i>
+										<p>Annuler Arrêt Caisse</p>
+									</a>
+								</li>
+								<?php
+							}
+						?>
 					</ul>
 				</li>
 
@@ -299,6 +388,27 @@
 							<a href="<?= site_url("paiement/index") ?>" class="nav-link">
 								<i class="fas fa-users-cog nav-icon"></i>
 								<p>Liste des Paiements </p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="<?= site_url("versement/historique") ?>" class="nav-link">
+								<i class="fas fa-users-cog nav-icon"></i>
+								<p> Compte d'exploitation </p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="<?= site_url("versement/point") ?>" class="nav-link">
+								<i class="fas fa-users-cog nav-icon"></i>
+								<p> Point de la Caisse </p>
+							</a>
+						</li>
+
+						<li class="nav-item">
+							<a href="<?= site_url("versement/banque") ?>" class="nav-link">
+								<i class="fas fa-users-cog nav-icon"></i>
+								<p> Situation Banque </p>
 							</a>
 						</li>
 					</ul>

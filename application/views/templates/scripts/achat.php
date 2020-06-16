@@ -24,6 +24,49 @@
         }
     });
 
+    $('.automaticallyAddQte').keyup(function () {
+        pu = $(this).parent().parent().find(".automaticallyAddPu").val();
+		let totElmt = $(this).parent().parent().find(".tot");
+        if(pu > 0){
+            totElmt.html(parseInt(pu) * $(this).val())
+        }
+
+        let total = 0;
+        $('.tot').each(function () {
+			total += parseInt($(this).html());
+        });
+        $('.total').text(total);
+
+        let theId = $(this).parent().parent().find('.removeBtn').attr('id');
+
+        let element = $('#elem_'+theId).find('.qte');
+
+        element.val($(this).val());
+    });
+
+    $('.automaticallyAddPu').keyup(function () {
+        qte = $(this).parent().parent().find(".automaticallyAddQte").val();
+        let totElmt = $(this).parent().parent().find(".tot");
+        if(qte > 0){
+            totElmt.html(parseInt(qte) * $(this).val())
+        }
+
+        let total = 0;
+        $('.tot').each(function () {
+            total += parseInt($(this).html());
+        });
+        $('.total').text(total);
+
+        let theId = $(this).parent().parent().find('.removeBtn').attr('id');
+
+        let element = $('#elem_'+theId).find('.pu');
+
+        element.val($(this).val());
+
+        //alert(theId)
+    });
+
+    
     $('#addToTable').click(function(){
 
         intrant = $('#intrant').select2('data')[0];
@@ -36,7 +79,7 @@
 
         if(intrant.text !== '' && qte > 0 && pu > 0){
 
-            tempInput = $('#int_'+ intrant.id).length;
+            tempInput = $('#tr_'+ intrant.id).length;
 
             if(tempInput <= 0){
 
@@ -69,7 +112,7 @@
                 $('#pu').val("");
                 $('#total').val("");
             }else{
-                alert("Cet intrant à déjà été ajouter à ce lieux de stockage");
+                alert("Cet intrant à déjà été ajouter");
             }
 
             $('#intrant option[value='+intrant.id+']').remove();

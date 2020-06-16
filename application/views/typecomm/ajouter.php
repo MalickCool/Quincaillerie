@@ -5,7 +5,7 @@
 		<div class="container-fluid">
 			<div class="row mb-2">
 				<div class="col-sm-6">
-					<h1 class="m-0 text-dark">Ajouter Magasin</h1>
+					<h1 class="m-0 text-dark">Ajouter un Type de Commercial</h1>
 				</div><!-- /.col -->
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
@@ -25,29 +25,29 @@
 				<div class="col-md-6">
 					<div class="card">
 						<div class="card-header">
-							<h4 class="card-title">Créer un Magasin</h4>
+							<h4 class="card-title">Créer un Type de Commercial</h4>
 						</div>
-						<?php echo form_open("entrepot/insert", array('class'=>'form-horizontal', 'id'=>'form'));?>
+						<?php echo form_open("typecommercial/insert", array('class'=>'form-horizontal', 'id'=>'form'));?>
 							<div class="card-body">
 								<div class="form-group row">
 									<label for="designation" class="col-sm-12 control-label col-form-label">Désignation</label>
 									<div class="col-sm-12">
-										<input type="text" name="designation" class="form-control" id="designation" placeholder="Nom du l'entrepôt" required>
+										<input type="text" name="designation" class="form-control" id="designation" placeholder="Désignation de Type de Commercial" required>
 										<?= form_error('designation','<div class="alert alert-danger">','</div>');?>
 									</div>
 								</div>
 
 								<div class="form-group row">
-									<label for="details" class="col-sm-12 control-label col-form-label">Description</label>
+									<label for="pourcentage" class="col-sm-12 control-label col-form-label">Pourcentage</label>
 									<div class="col-sm-12">
-										<textarea name="details" class="form-control" id="details" rows="3"> </textarea>
-										<?= form_error('details','<div class="alert alert-danger">','</div>');?>
+										<input type="number" step="any" min="0" max="100" class="form-control" name="pourcentage" id="pourcentage" required>
+										<?= form_error('pourcentage','<div class="alert alert-danger">','</div>');?>
 									</div>
 								</div>
 							</div>
 							<div class="border-top">
 								<div class="card-body text-center">
-									<a href="<?= site_url("entrepot/index/") ?>" class="btn btn-danger">
+									<a href="<?= site_url("typecommercial/index") ?>" class="btn btn-danger">
 										<i class="fa fa-window-close"></i> Quitter
 									</a>
 									<button type="submit" class="btn btn-primary">
@@ -62,43 +62,43 @@
 				<div class="col-md-6">
 					<div class="card">
 						<div class="card-header">
-							<h4 class="card-title">Liste des Magasins</h4>
+							<h4 class="card-title">Liste des Type de Commerciaux</h4>
 						</div>
 						<div class="card-body">
 							<div class="table-responsive">
 								<table id="zero_config" class="table table-striped table-bordered">
 									<thead>
-									<tr>
-										<th>Désignation</th>
-										<th>Description</th>
-										<th>Etat</th>
-										<th>Action</th>
-									</tr>
+										<tr>
+											<th>Désignation</th>
+											<th class="text-center">Pourcentage</th>
+											<th class="text-center">Etat</th>
+											<th class="text-center">Action</th>
+										</tr>
 									</thead>
 									<tbody>
-									<?php
-									foreach ($entrepots as $item) {
-										$status = "Activer";
-										if($item->etat  > 0)
-											$status = "Désactiver";
-										?>
-										<tr>
-											<td><?= $item->designation ?></td>
-											<td><?= $item->details ?></td>
-											<td><?= $status ?></td>
-											<td>
-												<a href="<?= site_url("entrepot/edit/".$item->identrepot) ?>" class="btn btn-danger">Modifier</a>
-											</td>
-										</tr>
 										<?php
-									}
-									?>
+											foreach ($types as $item) {
+												$status = "Activer";
+												if($item->etat  > 0)
+													$status = "Désactiver";
+												?>
+												<tr>
+													<td><?= $item->designation ?></td>
+													<td class="text-center"><?= $item->pourcentage ?>%</td>
+													<td class="text-center"><?= $status ?></td>
+													<td class="text-center">
+														<a href="<?= site_url("typecommercial/edit/".$item->idType) ?>" class="btn btn-danger">Modifier</a>
+													</td>
+												</tr>
+												<?php
+											}
+										?>
 									</tbody>
 								</table>
 							</div>
 						</div>
 						<div class="card-footer text-right">
-							<a href="<?= site_url("entrepot/imprimer") ?>" target="_blank" class="btn btn-primary"> <i class="fa fa-print"> Imprimer</i></a>
+							<a href="<?= site_url("typecommercial/imprimer") ?>" target="_blank" class="btn btn-primary"> <i class="fa fa-print"> Imprimer</i></a>
 						</div>
 					</div>
 				</div>

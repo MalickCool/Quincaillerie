@@ -106,7 +106,7 @@ class depense_m extends MY_Model
         $this->db->from('depense');
         $this->db->where('datedepense', $realDate);
 
-        $this->db->where('factureachat', $type);
+        $this->db->where('typedepense', $type);
 
         $query = $this->db->get();
         $result = $query->result();
@@ -124,6 +124,36 @@ class depense_m extends MY_Model
         $query = $this->db->get();
         return $query->result();
     }
+
+    function getADayDepenseExploitation($day, $type) {
+        $realDate = date('Y-m-d', strtotime($day));
+		$this->db->select_sum('montant');
+        $this->db->from('depense');
+        $this->db->where('datedepense', $realDate);
+
+        $this->db->where('typedepense', $type);
+
+		$query = $this->db->get();
+		$result = $query->result();
+		return $result[0]->montant;
+    }
+
+	function getADayDepenseBanque($day, $type) {
+    	$resultat = array();
+		$realDate = date('Y-m-d', strtotime($day));
+		$this->db->select('*');
+		$this->db->from('depense');
+		$this->db->where('datedepense', $realDate);
+
+		$this->db->where('typedepense', $type);
+
+		$query = $this->db->get();
+		$result = $query->result();
+		if(isset($result[0]))
+			return $result[0]->montant;
+		else
+			return $resultat;
+	}
 
     function getDepenseGauche($day) {
         $realDate = date('Y-m-d', strtotime($day));

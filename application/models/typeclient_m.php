@@ -6,7 +6,7 @@
  * Time: 15:32
  */
 if (! defined('BASEPATH')) exit("no direct script access allowed");
-class typecommercial_m extends MY_Model
+class typeclient_m extends MY_Model
 {
     public function __construct()
     {
@@ -14,7 +14,7 @@ class typecommercial_m extends MY_Model
     }
 
     public function get_db_table(){
-        return 'typecommercial';
+        return 'typeclient';
     }
 
     public function get_db_table_id(){
@@ -22,7 +22,7 @@ class typecommercial_m extends MY_Model
     }
 
     function add_item($post_data) {
-        $this->db->insert('typecommercial',$post_data);
+        $this->db->insert('typeclient',$post_data);
         return $this->db->insert_id();
     }
 

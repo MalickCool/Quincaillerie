@@ -75,8 +75,9 @@
 									<thead>
 										<tr>
 											<th>Date</th>
-											<th>N° Commande</th>
+											<th>N° Vente</th>
 											<th>Encaissé par</th>
+											<th>Moyen de Paiement</th>
 											<th>Montant</th>
 											<th>Action</th>
 										</tr>
@@ -92,6 +93,24 @@
 													<td><?= $paiement->vente_id ?></td>
 
 													<td><?= $this->ion_auth->user($paiement->userid)->row()->first_name." ".$this->ion_auth->user($paiement->userid)->row()->last_name ?></td>
+
+													<?php
+													switch ($paiement->typepaiement) {
+														case 'espece':
+															$moyen = 'Espèce';
+															break;
+
+														case 'cheque':
+															$moyen = 'Chèque';
+															break;
+
+														default:
+															$moyen = 'Mobile Money';
+															break;
+													}
+													?>
+													<td class="text-center"><?= $moyen ?></td>
+
 													<td class="text-center"><?= $this->vente_m->formatNumber($paiement->montant) ?> FCFA</td>
 													<td>
 														<a role="button" href="<?= site_url("vente/details/".$paiement->vente_id) ?>" class="btn btn-info">Détail</a>
@@ -103,7 +122,7 @@
 									</tbody>
 									<tfoot>
 										<tr>
-											<td colspan="3">Total Encaissé:</td>
+											<td colspan="4">Total Encaissé:</td>
 											<td class="text-center font-weight-bold font-24"><?= $this->vente_m->formatNumber($montant) ?> FCFA</td>
 											<td></td>
 										</tr>

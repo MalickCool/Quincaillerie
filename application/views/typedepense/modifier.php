@@ -5,7 +5,7 @@
 		<div class="container-fluid">
 			<div class="row mb-2">
 				<div class="col-sm-6">
-					<h1 class="m-0 text-dark">Modifier un Type de Client</h1>
+					<h1 class="m-0 text-dark">Modifier un Type de Sortie de Caisse</h1>
 				</div><!-- /.col -->
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
@@ -24,14 +24,14 @@
 			<div class="row">
 				<div class="col-md-6">
 					<div class="card">
-						<?php echo form_open("typeclient/update", array('class'=>'form-horizontal', 'id'=>'form'));?>
+						<?php echo form_open("typedepense/update", array('class'=>'form-horizontal', 'id'=>'form'));?>
 							<div class="card-body">
 
 								<div class="form-group row">
-									<label for="designation" class="col-sm-12 control-label col-form-label">Désignation</label>
+									<label for="libelle" class="col-sm-12 control-label col-form-label">Désignation</label>
 									<div class="col-sm-12">
-										<input type="text" name="designation" class="form-control" id="designation" value="<?= $type->designation ?>" required>
-										<?= form_error('designation','<div class="alert alert-danger">','</div>');?>
+										<input type="text" name="libelle" class="form-control" id="libelle" value="<?= $type->libelle ?>" required>
+										<?= form_error('libelle','<div class="alert alert-danger">','</div>');?>
 									</div>
 								</div>
 
@@ -42,19 +42,10 @@
 										<?= form_error('description','<div class="alert alert-danger">','</div>');?>
 									</div>
 								</div>
-
-								<div class="form-group row">
-									<div class="col-sm-12">
-										<div class="custom-control custom-checkbox mr-sm-2">
-											<input type="checkbox" name="etat" class="custom-control-input" id="chb" <?php if($type->etat == 1) echo "checked"; ?> >
-											<label class="custom-control-label" for="chb">Désactiver</label>
-										</div>
-									</div>
-								</div>
 							</div>
 							<div class="border-top">
 								<div class="card-body text-center">
-									<a href="<?= site_url("typeclient/index/") ?>" class="btn btn-danger">
+									<a href="<?= site_url("typedepense/index/") ?>" class="btn btn-danger">
 										<i class="fa fa-window-close"></i> Quitter
 									</a>
 									<button type="submit" class="btn btn-primary">
@@ -62,14 +53,14 @@
 									</button>
 								</div>
 							</div>
-							<input type="hidden" name="id" value="<?= $type->idType ?>">
+							<input type="hidden" name="id" value="<?= $type->idtypedepense ?>">
 						<?php echo form_close();?>
 					</div>
 				</div>
 				<div class="col-md-6">
 					<div class="card">
 						<div class="card-header">
-							<h4 class="card-title">Liste des Type de Client</h4>
+							<h4 class="card-title">Liste des Type de Sortie de Caisse</h4>
 						</div>
 						<div class="card-body">
 							<div class="table-responsive">
@@ -78,23 +69,18 @@
 									<tr>
 										<th>Désignation</th>
 										<th>Description</th>
-										<th class="text-center">Etat</th>
 										<th class="text-center">Action</th>
 									</tr>
 									</thead>
 									<tbody>
 									<?php
 									foreach ($types as $item) {
-										$status = "Activer";
-										if($item->etat  > 0)
-											$status = "Désactiver";
 										?>
 										<tr>
-											<td><?= $item->designation ?></td>
+											<td><?= $item->libelle ?></td>
 											<td><?= $item->description ?></td>
-											<td class="text-center"><?= $status ?></td>
 											<td class="text-center">
-												<a href="<?= site_url("typeclient/edit/".$item->idType) ?>" class="btn btn-danger">Modifier</a>
+												<a href="<?= site_url("typedepense/edit/".$item->idtypedepense) ?>" class="btn btn-danger">Modifier</a>
 											</td>
 										</tr>
 										<?php
@@ -105,7 +91,7 @@
 							</div>
 						</div>
 						<div class="card-footer text-right">
-							<a href="<?= site_url("typeclient/imprimer") ?>" target="_blank" class="btn btn-primary"> <i class="fa fa-print"> Imprimer</i></a>
+							<a href="<?= site_url("typedepense/imprimer") ?>" target="_blank" class="btn btn-primary"> <i class="fa fa-print"> Imprimer</i></a>
 						</div>
 					</div>
 				</div>

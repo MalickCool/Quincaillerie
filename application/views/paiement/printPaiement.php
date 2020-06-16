@@ -9,7 +9,7 @@
     </h2>
 
     <div style="padding-bottom: 0px">
-        <b>N° Commande: </b><?= date("Y/m/", strtotime($commande->datecommande))."_".$commande->idcommande ?>
+        <b>N° Facture: </b><?= date("Y/m/", strtotime($commande->datevente))."_".$commande->idvente ?>
     </div>
 
     <div style="padding-bottom: 0px">
@@ -20,8 +20,24 @@
         <b>Client: </b><?= $returnArray['Client']->nom ?>
     </div>
 
+	<?php
+		switch ($paiement->typepaiement) {
+			case 'espece':
+				$moyen = 'Espèce';
+				break;
+
+			case 'cheque':
+				$moyen = 'Chèque';
+				break;
+
+			default:
+				$moyen = 'Mobile Money';
+				break;
+		}
+	?>
+
     <div style="padding-bottom: 20px">
-        <b>Mode de Paiement: </b><?= ucwords($paiement->typepaiement) ?>
+        <b>Mode de Paiement: </b><?= ucwords($moyen) ?>
     </div>
 
     <table style="width: 100%;" cellspacing="0">
@@ -31,13 +47,13 @@
                     Date
                 </th>
                 <th style="width: 10%; border: solid; border-color: #000; border-width: 0.5px; padding: 10px; background-color: #CCCCCC">
-                    Montant Commande
+                    Montant Facture
                 </th>
                 <th style="width: 10%; border: solid; border-color: #000; border-width: 0.5px; padding: 10px; background-color: #CCCCCC">
                     Montant Réglé
                 </th>
                 <th style="width: 14%; border: solid; border-color: #000; border-width: 0.5px; padding: 10px; background-color: #CCCCCC">
-                    Montant Versement
+                    Montant Versé
                 </th>
                 <th style="width: 14%; border: solid; border-color: #000; border-width: 0.5px; padding: 10px; background-color: #CCCCCC">
                     Reste
@@ -50,16 +66,16 @@
                     <?= date('d/m/Y', strtotime($paiement->datepaiement)) ?>
                 </td>
                 <td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: center">
-                    <?= $this->commande_m->formatNumber($returnArray['TotalTTC']) ?>
+                    <?= $this->vente_m->formatNumber($returnArray['TotalTTC']) ?>
                 </td>
                 <td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: center">
-                    <?= $this->commande_m->formatNumber($oldPaiement) ?>
+                    <?= $this->vente_m->formatNumber($oldPaiement) ?>
                 </td>
                 <td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: center">
-                    <?= $this->commande_m->formatNumber($paiement->montant) ?>
+                    <?= $this->vente_m->formatNumber($paiement->montant) ?>
                 </td>
                 <td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: center">
-                    <?= $this->commande_m->formatNumber($returnArray['TotalTTC'] - ($oldPaiement + $paiement->montant)) ?>
+                    <?= $this->vente_m->formatNumber($returnArray['TotalTTC'] - ($oldPaiement + $paiement->montant)) ?>
                 </td>
             </tr>
         </tbody>

@@ -68,6 +68,16 @@ class Fournisseur extends CI_Controller {
                 'situation' => $this->input->post('situation'),
                 'etat' => 0,
                 'token' => $this->input->post('token'),
+
+                'nomRep' => $this->input->post('nomRep'),
+                'fonction' => $this->input->post('fonction'),
+                'contactPersonnel' => $this->input->post('contactPersonnel'),
+                'contactProfessionnel' => $this->input->post('contactProfessionnel'),
+                'observation' => $this->input->post('observation'),
+
+                'ncc' => $this->input->post('ncc'),
+                'rccm' => $this->input->post('rccm'),
+                'ncb' => $this->input->post('ncb'),
             );
 
             if(!$this->fournisseur_m->exist($this->input->post('token'))) {
@@ -131,6 +141,16 @@ class Fournisseur extends CI_Controller {
                 'email' => $this->input->post('email'),
                 'situation' => $this->input->post('situation'),
                 'etat' => $etat,
+
+				'nomRep' => $this->input->post('nomRep'),
+				'fonction' => $this->input->post('fonction'),
+				'contactPersonnel' => $this->input->post('contactPersonnel'),
+				'contactProfessionnel' => $this->input->post('contactProfessionnel'),
+				'observation' => $this->input->post('observation'),
+
+				'ncc' => $this->input->post('ncc'),
+				'rccm' => $this->input->post('rccm'),
+				'ncb' => $this->input->post('ncb'),
             );
 
             $this->fournisseur_m->update($item->idfournisseur, $datas);
@@ -149,26 +169,39 @@ class Fournisseur extends CI_Controller {
 
         $mpdf = new \Mpdf\Mpdf([
             'mode' => 'utf-8',
-            'format' => 'A4-P',
-            'orientation' => 'P'
+            'format' => 'A4-L',
+            'orientation' => 'L'
         ]);
         $mpdf->SetTitle($message);
         $mpdf->SetAuthor('ESC Technologie');
         $mpdf->SetCreator('Malick Coulibaly');
         $html = $this->load->view('fournisseur/print', $data, true);
-        $mpdf->setFooter('{PAGENO} / {nb}');
-        $mpdf->SetHTMLHeader('
-            <div style="text-align: right; font-weight: bold;">
-                '.$message.'
-            </div>');
-        $mpdf->SetHTMLFooter('
-            <table width="100%">
-                <tr>
-                    <td width="33%">{DATE j-m-Y}</td>
-                    <td width="33%" align="center">{PAGENO}/{nbpg}</td>
-                    <td width="33%" style="text-align: right;">'.$message.'</td>
-                </tr>
-            </table>');
+
+		$mpdf->setFooter('{PAGENO} / {nb}');
+		$mpdf->SetHTMLHeader('
+            <page_header>
+                <table style="border: none;">
+                    <tr>
+                        <td style="width: 20%;">
+                        
+                        </td>
+                        <td style="width: 60%;  padding-left: 0px; border: none !important; text-align: center">
+                            <img src="'.FCPATH.'/Uploads/logo.jpg" style="width: 100%;"  alt="">
+                        </td>
+                        <td style="width: 20%;">
+                        
+                        </td>
+                   </tr>
+                </table>
+            </page_header>');
+		$mpdf->AddPage('', // L - landscape, P - portrait
+			'', '', '', '',
+			15, // margin_left
+			15, // margin right
+			37, // margin top
+			30, // margin bottom
+			10, // margin header
+			5); // margin footer
         $mpdf->WriteHTML($html);
         $mpdf->Output($message.'.pdf', 'I');
     }

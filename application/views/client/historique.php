@@ -71,26 +71,16 @@
 													</div>
 
 													<div class="form-group row">
-														<div class="col-md-6 pl-0">
-															<label for="" class="col-sm-12 text-left control-label col-form-label">Total Remise sur Brique</label>
-															<div class="col-sm-12">
-																<input type="text" class="form-control" readonly value="<?= $this->vente_m->formatNumber($achat['TotalRemise'] - $achat['Vente']->remisefacture) ?> FCFA">
-															</div>
-														</div>
-														<div class="col-md-6 pr-0">
-															<label for="" class="col-sm-12 text-left control-label col-form-label">Remise sur Facture</label>
-															<div class="col-sm-12">
-																<input type="text" style="font-weight: bolder; color: red" class="form-control" readonly value="<?= $this->vente_m->formatNumber($achat['Vente']->remisefacture) ?> FCFA">
-															</div>
+														<label for="" class="col-sm-12 text-left control-label col-form-label">Montant Remise</label>
+														<div class="col-sm-12">
+															<input type="text" style="font-weight: bolder; color: red" class="form-control" readonly value="<?= $this->vente_m->formatNumber($achat['Vente']->remisefacture) ?> FCFA">
 														</div>
 													</div>
 
 													<div class="form-group row">
-														<div class="col-md-12 pr-0">
-															<label for="" class="col-sm-12 text-left control-label col-form-label">Montant Total</label>
-															<div class="col-sm-12">
-																<input type="text" style="font-weight: bolder; color: red" class="form-control" readonly value="<?= $this->vente_m->formatNumber($achat['TotalTTC']) ?> FCFA">
-															</div>
+														<label for="" class="col-sm-12 text-left control-label col-form-label">Montant Total</label>
+														<div class="col-sm-12">
+															<input type="text" style="font-weight: bolder; color: red" class="form-control" readonly value="<?= $this->vente_m->formatNumber($achat['TotalTTC']) ?> FCFA">
 														</div>
 													</div>
 

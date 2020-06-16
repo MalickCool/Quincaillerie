@@ -210,6 +210,22 @@ class MY_Model extends CI_Model
 		$returnArray['MontantVerse'] = $sommeVersee;
 		$returnArray['Reste'] = $returnArray['TotalTTC'] - $sommeVersee;
 
+		$globalState = "";
+		if($vente->etat == 0){
+			if($returnArray['Reste'] > 0)
+				$globalState .= "Non Soldée";
+			else
+				$globalState .= "Soldée";
+
+			if($livraison == "Livré")
+				$globalState .= " Livré";
+			else
+				$globalState .= " Non Livré";
+		}else{
+			$globalState = "Annulée";
+		}
+
+		$returnArray['GlobalState'] = $globalState;
 		//echo'<pre>'; die(print_r($returnArray));
 
 		return $returnArray;

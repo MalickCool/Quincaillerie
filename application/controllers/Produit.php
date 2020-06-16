@@ -63,6 +63,7 @@ class Produit extends CI_Controller {
             $datas = array(
                 'designation' => $this->input->post('designation'),
                 'montant' => $this->input->post('montant'),
+                'montant_revendeur' => $this->input->post('montant_revendeur'),
                 'information' => $this->input->post('information'),
                 'idfamille' => $this->input->post('idfamille'),
                 'masse' => $this->input->post('masse'),
@@ -126,6 +127,7 @@ class Produit extends CI_Controller {
             $datas = array(
                 'designation' => $this->input->post('designation'),
                 'montant' => $this->input->post('montant'),
+                'montant_revendeur' => $this->input->post('montant_revendeur'),
                 'information' => $this->input->post('information'),
                 'idfamille' => $this->input->post('idfamille'),
 				'masse' => $this->input->post('masse'),

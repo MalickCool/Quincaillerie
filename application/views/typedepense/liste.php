@@ -5,7 +5,7 @@
 		<div class="container-fluid">
 			<div class="row mb-2">
 				<div class="col-sm-6">
-					<h1 class="m-0 text-dark">Type de Client</h1>
+					<h1 class="m-0 text-dark">Type de Sortie de Caisse</h1>
 				</div><!-- /.col -->
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
@@ -25,7 +25,7 @@
 				<div class="col-md-12">
 					<div class="card">
 						<div class="card-header text-right">
-							<a href="<?= site_url("typeclient/ajouter") ?>" class="btn btn-primary"><i class="fa fa-plus"></i> Ajouter Type Client</a>
+							<a href="<?= site_url("typedepense/ajouter") ?>" class="btn btn-primary"><i class="fa fa-plus"></i> Ajouter</a>
 						</div>
 						<div class="card-body">
 							<div class="table-responsive">
@@ -34,23 +34,18 @@
 										<tr>
 											<th>Désignation</th>
 											<th>Description</th>
-											<th>Etat</th>
 											<th>Action</th>
 										</tr>
 									</thead>
 									<tbody>
 										<?php
 											foreach ($types as $item) {
-												$status = "Activer";
-												if($item->etat  > 0)
-													$status = "Désactiver";
 												?>
 												<tr>
-													<td><?= $item->designation ?></td>
+													<td><?= $item->libelle ?></td>
 													<td><?= $item->description ?></td>
-													<td><?= $status ?></td>
 													<td>
-														<a href="<?= site_url("typeclient/edit/".$item->idType) ?>" class="btn btn-danger">Modifier</a>
+														<a href="<?= site_url("typedepense/edit/".$item->idtypedepense) ?>" class="btn btn-danger">Modifier</a>
 													</td>
 												</tr>
 												<?php
@@ -61,7 +56,7 @@
 							</div>
 						</div>
 						<div class="card-footer text-right">
-							<a href="<?= site_url("entrepot/imprimer") ?>" target="_blank" class="btn btn-primary"> <i class="fa fa-print"> Imprimer</i></a>
+							<a href="<?= site_url("typedepense/imprimer") ?>" target="_blank" class="btn btn-primary"> <i class="fa fa-print"> Imprimer</i></a>
 						</div>
 					</div>
 				</div>

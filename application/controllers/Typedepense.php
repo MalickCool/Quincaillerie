@@ -7,14 +7,13 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Typeclient extends CI_Controller
+class Typedepense extends CI_Controller
 {
 
 	public function __construct($value = "")
 	{
 		parent::__construct();
-		$this->load->model('typeclient_m');
-		$this->load->model('client_m');
+		$this->load->model('typedepense_m');
 	}
 
 	public $template = 'templates/template';
@@ -24,11 +23,11 @@ class Typeclient extends CI_Controller
 		if (!$this->ion_auth->logged_in()) {
 			redirect("auth/login");
 		}
-		$types = $this->typeclient_m->get_all();
+		$types = $this->typedepense_m->get_all();
 		$data['types'] = $types;
 		//echo"<pre>"; die(print_r($types));
-		$data['titre'] = 'Liste des Types de Client';
-		$data['page'] = "typeclient/liste";
+		$data['titre'] = 'Liste des Types de Sortie de Caisse';
+		$data['page'] = "typedepense/liste";
 		$data['menu'] = 'edition';
 		$this->load->view($this->template, $data);
 	}
@@ -39,12 +38,12 @@ class Typeclient extends CI_Controller
 			redirect("auth/login");
 		}
 
-		$types = $this->typeclient_m->get_all();
+		$types = $this->typedepense_m->get_all();
 		$data['types'] = $types;
 		//echo"<pre>"; die(print_r($types));
-		$data['titre'] = 'Créer un Type de Client';
-		$data['page'] = "typeclient/ajouter";
-		$data['menu'] = 'commerciale';
+		$data['titre'] = 'Créer un Type de Sortie de Caisse';
+		$data['page'] = "typedepense/ajouter";
+		$data['menu'] = 'config';
 		$data['script'] = 'global';
 		$this->load->view($this->template, $data);
 	}
@@ -56,24 +55,22 @@ class Typeclient extends CI_Controller
 			redirect("auth/login");
 		}
 
-		$this->form_validation->set_rules('designation', 'Designation', 'required');
-		$this->form_validation->set_rules('description', 'description', 'required');
+		$this->form_validation->set_rules('libelle', 'libelle', 'required');
+		$this->form_validation->set_rules('token', 'token', 'required');
 
 		if ($this->form_validation->run()) {
 
 			$datas = array(
-				'designation' => $this->input->post('designation'),
+				'libelle' => $this->input->post('libelle'),
 				'description' => $this->input->post('description'),
 				'token' => $this->input->post('token'),
 			);
 
-			$lastInsertedId = 0;
-
-			if (!$this->typeclient_m->exist($this->input->post('token'))) {
-				$lastInsertedId = $this->typeclient_m->add_item($datas);
+			if (!$this->typedepense_m->exist($this->input->post('token'))) {
+				$this->typedepense_m->add_item($datas);
 			}
 		}
-		redirect('typeclient/ajouter', 'refresh');
+		redirect('typedepense/ajouter', 'refresh');
 	}
 
 	public function edit($id)
@@ -83,19 +80,19 @@ class Typeclient extends CI_Controller
 		}
 
 
-		$type = $this->typeclient_m->get($id);
-		if ($type->designation == "") {
-			redirect("typeclient/");
+		$type = $this->typedepense_m->get($id);
+		if ($type->libelle == "") {
+			redirect("typedepense/");
 		}
-		$types = $this->typeclient_m->get_all();
+		$types = $this->typedepense_m->get_all();
 		$data['types'] = $types;
 
 		$data['type'] = $type;
 
-		$data['titre'] = 'Modifier le Type de commercial ' . $type->designation;
-		$data['page'] = "typeclient/modifier";
-		$data['menu'] = 'commerciale';
-		$data['script'] = 'global';
+		$data['titre'] = 'Modifier le Type de dépense ' . $type->libelle;
+		$data['page'] = "typedepense/modifier";
+		$data['menu'] = 'config';
+		$data['script'] = 'achat';
 		$this->load->view($this->template, $data);
 	}
 
@@ -106,38 +103,30 @@ class Typeclient extends CI_Controller
 			redirect("auth/login");
 		}
 
-		$item = $this->typeclient_m->get($_POST['id']);
+		$item = $this->typedepense_m->get($_POST['id']);
 		if ($item->designation == "") {
-			redirect("typeclient/");
+			redirect("typedepense/");
 		}
 
-		$this->form_validation->set_rules('designation', 'Designation', 'required');
-		$this->form_validation->set_rules('description', 'description', 'required');
+		$this->form_validation->set_rules('libelle', 'libelle', 'required');
 
 		if ($this->form_validation->run()) {
-
-			$etat = 0;
-			if (isset($_POST['etat'])) {
-				$etat = 1;
-			}
-
 			$datas = array(
-				'designation' => $this->input->post('designation'),
+				'libelle' => $this->input->post('libelle'),
 				'description' => $this->input->post('description'),
-				'etat' => $etat,
 			);
 
-			$this->typeclient_m->update($item->idType, $datas);
+			$this->typedepense_m->update($item->idtypedepense, $datas);
 		}
-		redirect('typeclient/ajouter');
+		redirect('typedepense/ajouter');
 	}
 
 	public function imprimer()
 	{
 
-		$message = "Liste des Types de Commerciaux";
+		$message = "Liste des Types de Dépense";
 
-		$types = $this->typeclient_m->get_all();
+		$types = $this->typedepense_m->get_all();
 		$data['types'] = $types;
 		$data['message'] = $message;
 
@@ -149,7 +138,7 @@ class Typeclient extends CI_Controller
 		$mpdf->SetTitle($message);
 		$mpdf->SetAuthor('ESC Technologie');
 		$mpdf->SetCreator('Malick Coulibaly');
-		$html = $this->load->view('typeclient/print', $data, true);
+		$html = $this->load->view('typedepense/print', $data, true);
 		$mpdf->setFooter('{PAGENO} / {nb}');
 		$mpdf->SetHTMLHeader('
             <page_header>

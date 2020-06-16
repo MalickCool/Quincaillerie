@@ -36,36 +36,36 @@
 								<fieldset id="filedset0">
 									<legend>Détails Client</legend>
 									<div class="form-group row">
-										<label for="client" class="col-sm-1 text-left text-sm-right control-label col-form-label">Client</label>
-										<div class="col-sm-6">
-											<select id="client" name="client_id" class="select2 form-control custom-select" style="width: 100%; height:36px;" required>
-												<option value="">Selectionner client</option>
+										<label for="commercial_id" class="col-sm-2 text-left text-sm-right control-label col-form-label">Commercial</label>
+										<div class="col-sm-4">
+											<select id="commercial_id" name="commercial_id" class="select2 form-control custom-select" style="width: 100%; height:36px;">
+												<option value="">Aucun</option>
 												<?php
-												foreach ($clients as $client) {
-													?>
-													<option <?php if($returnArray['Client']->idclient == $client->idclient) echo 'selected'; ?> value="<?= $client->idclient ?>"><?= $client->nom ?></option>
-													<?php
-												}
+													foreach ($commerciaux as $commercial) {
+														?>
+														<option <?= ($returnArray['Commercial']->idcommercial == $commercial->idcommercial) ? 'selected' : ""; ?> value="<?= $commercial->idcommercial ?>"><?= $commercial->nom ?></option>
+														<?php
+													}
 												?>
+											</select>
+											<?= form_error('commercial_id','<div class="alert alert-danger">','</div>');?>
+										</div>
+
+										<label for="client" class="col-sm-2 text-left text-sm-right control-label col-form-label">Client</label>
+										<div class="col-sm-4">
+											<select id="client" name="client_id" class="form-control" readonly style="width: 100%; height:36px;" required>
+												<option value="<?= $client->idclient ?>"><?= $client->nom ?></option>
 											</select>
 											<?= form_error('client_id','<div class="alert alert-danger">','</div>');?>
 										</div>
 
-										<label for="tva" class="col-sm-2 text-left text-sm-right control-label col-form-label">Appliquer TVA :</label>
-										<div class="col-sm-3">
-											<select id="tva" name="tva" disabled class="select2 form-control custom-select theTVA" style="width: 100%; height:36px;">
-												<option lang="0" value="">Non</option>
-												<?php
-												foreach ($taxes as $taxe) {
-													?>
-													<option <?php if($returnArray['Vente']->tva_id == $taxe->idtaxe) echo 'selected'; ?> lang="<?= $taxe->pourcentage  ?>" value="<?= $taxe->idtaxe ?>"><?= $taxe->libelle ?></option>
-													<?php
-												}
-												?>
+										<label for="tva" class="col-sm-1 d-none text-left text-sm-right control-label col-form-label">Appliquer TVA :</label>
+										<div class="col-sm-2 d-none">
+											<select id="tva" name="tva" class="select2 form-control custom-select theTVA" style="width: 100%; height:36px;">
+												<option lang="18" value="1">18%</option>
 											</select>
 										</div>
 									</div>
-
 								</fieldset>
 
 								<div class="form-group mt-3">
@@ -89,11 +89,11 @@
 															<select name="lib2[]" class="select theSelect form-control custom-select" style="width: 100%; height:36px;">
 																<option value="">Selectionner Produit</option>
 																<?php
-																foreach ($produits as $produit) {
-																	?>
-																	<option <?php if($item['IdProduit'] == $produit->idproduit) echo 'selected'; ?> lang="<?= $produit->montant ?>" value="<?= $produit->idproduit ?>"><?= $produit->designation ?></option>
-																	<?php
-																}
+																	foreach ($produits as $produit) {
+																		?>
+																		<option <?php if($item['IdProduit'] == $produit['IdProduit']) echo 'selected'; ?> lang="<?= $produit['Prix'] ?>" value="<?= $produit['IdProduit'] ?>"><?= $produit['Designation'] ?></option>
+																		<?php
+																	}
 																?>
 															</select>
 														</div>
@@ -205,7 +205,7 @@
 												<?php
 													foreach ($produits as $produit) {
 														?>
-														<option lang="<?= $produit->montant ?>" value="<?= $produit->idproduit ?>"><?= $produit->designation ?></option>
+														<option lang="<?= $produit['Prix'] ?>" value="<?= $produit['IdProduit'] ?>"><?= $produit['Designation'] ?></option>
 														<?php
 													}
 												?>

@@ -5,7 +5,7 @@
 		<div class="container-fluid">
 			<div class="row mb-2">
 				<div class="col-sm-6">
-					<h1 class="m-0 text-dark">Modifier Magasin</h1>
+					<h1 class="m-0 text-dark">Type de Client</h1>
 				</div><!-- /.col -->
 				<div class="col-sm-6">
 					<ol class="breadcrumb float-sm-right">
@@ -25,7 +25,7 @@
 				<div class="col-md-12">
 					<div class="card">
 						<div class="card-header text-right">
-							<a href="<?= site_url("entrepot/ajouter") ?>" class="btn btn-primary"><i class="fa fa-plus"></i> Ajouter Magasin</a>
+							<a href="<?= site_url("typeclient/ajouter") ?>" class="btn btn-primary"><i class="fa fa-plus"></i> Ajouter Type Client</a>
 						</div>
 						<div class="card-body">
 							<div class="table-responsive">
@@ -40,17 +40,17 @@
 									</thead>
 									<tbody>
 										<?php
-											foreach ($entrepots as $item) {
+											foreach ($types as $item) {
 												$status = "Activer";
 												if($item->etat  > 0)
 													$status = "Désactiver";
 												?>
 												<tr>
 													<td><?= $item->designation ?></td>
-													<td><?= $item->details ?></td>
+													<td><?= $item->description ?></td>
 													<td><?= $status ?></td>
 													<td>
-														<a href="<?= site_url("entrepot/edit/".$item->identrepot) ?>" class="btn btn-danger">Modifier</a>
+														<a href="<?= site_url("typeclient/edit/".$item->idType) ?>" class="btn btn-danger">Modifier</a>
 													</td>
 												</tr>
 												<?php

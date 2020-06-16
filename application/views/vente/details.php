@@ -196,7 +196,7 @@
 									</tfoot>
 								</table>
 								<div class="text-right">
-									<a href="" class="btn btn-primary">
+									<a target="_blank" href="<?= site_url("paiement/imprimerListePaiement/".$returnArray['Vente']->idvente) ?>" class="btn btn-primary">
 										<i class="fa fa-print"></i> Imprimer
 									</a>
 								</div>

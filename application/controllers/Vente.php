@@ -19,6 +19,8 @@ class Vente extends CI_Controller {
         $this->load->model('commercial_m');
         $this->load->model('paiement_m');
         $this->load->model('entrepot_m');
+        $this->load->model('typeclient_m');
+        $this->load->model('prix_m');
     }
 
     public $template = 'templates/template';
@@ -72,25 +74,79 @@ class Vente extends CI_Controller {
         $this->load->view($this->template, $data);
     }
 
+    public function selectCustomer(){
+		if(!$this->ion_auth->logged_in()){
+			redirect("auth/login");
+		}
+
+		if(isset($_SESSION['caisse'])){
+			$caisse = $_SESSION['caisse'];
+		}else{
+			redirect("auth/login");
+		}
+
+		if(!isset($_SESSION['arretCaisse'])){
+			redirect("auth/login");
+		}
+
+		if(!isset($_SESSION['IdAC'])){
+			redirect("auth/login");
+		}
+
+		$clients = $this->client_m->get_all();
+		$data['clients'] = $clients;
+
+		$types = $this->typeclient_m->getActivated();
+		$data['types'] = $types;
+
+		$data['page'] = "vente/customer";
+		$data['menu'] = 'caisse';
+		$this->load->view($this->template, $data);
+	}
+
     public function ajouter(){
         if(!$this->ion_auth->logged_in()){
             redirect("auth/login");
         }
 
-        $clients = $this->client_m->get_all();
-        $data['clients'] = $clients;
+        if(!isset($_GET['client'])){
+			redirect("vente/selectCustomer");
+		}else{
+        	$client = $this->client_m->get($_GET['client']);
+        	if($client->nom == ""){
+				redirect("vente/selectCustomer");
+			}
+		}
 
-        $produits = $this->produit_m->get_all();
-        $data['produits'] = $produits;
+        if(is_null($client)){
+			redirect("vente/selectCustomer");
+		}
+
+		$produits = $this->produit_m->get_all();
+		$productArray = array();
+
+		foreach ($produits as $produit) {
+			$price = $this->prix_m->getPrice($produit->idproduit, $client->type_client);
+
+			$productArray[$produit->idproduit]['Designation'] = $produit->designation;
+			$productArray[$produit->idproduit]['IdProduit'] = $produit->idproduit;
+			$productArray[$produit->idproduit]['Prix'] = (!empty($price) AND isset($price[0])) ? $price[0]->prix : $produit->montant;
+        }
+
+
+        $data['client'] = $client;
+
+
+        $data['produits'] = $productArray;
 
         $commerciaux = $this->commercial_m->getActivated();
         $data['commerciaux'] = $commerciaux;
 
         $data['script'] = "vente";
-        //echo"<pre>"; die(print_r($data));
+        //echo"<pre>"; die(print_r($productArray));
         $data['titre'] = 'Vendre';
         $data['page'] = "vente/ajouter";
-        $data['menu'] = 'commerciale';
+        $data['menu'] = 'caisse';
         $this->load->view($this->template, $data);
     }
 
@@ -122,12 +178,13 @@ class Vente extends CI_Controller {
                 'montant' => 0,
                 'remisefacture' => $remise,
                 'token' => $this->input->post('token'),
+                'arretcaisse_id' => $_SESSION['IdAC'],
             );
 
             if(!$this->vente_m->exist($this->input->post('token'))) {
                 $vente_id = $this->vente_m->add_item($datas);
 
-
+				$client = $this->client_m->get($_POST['client_id']);
 
                 $tva_id = $_POST['tva'];
                 if($tva_id == ""){
@@ -141,22 +198,31 @@ class Vente extends CI_Controller {
 
                 foreach($_POST['lib2'] as $cle => $lib2){
                     $produit = $this->produit_m->get($lib2);
-                    $montant += $produit->montant * $_POST['qte'][$cle];
+
+					$price = $this->prix_m->getPrice($produit->idproduit, $client->type_client);
+
+					$price = (!empty($price) AND isset($price[0])) ? $price[0]->prix : $produit->montant;
+                    $montant += $price * $_POST['qte'][$cle];
 
                     $dataR = array(
                         'vente_id' => $vente_id,
                         'produit_id' => $lib2,
                         'qte' => $_POST['qte'][$cle],
-                        'pu' => $produit->montant,
+                        'pu' => $price,
                         'remise' => $_POST['remise'][$cle],
                     );
                     $this->detailvente_m->add_item($dataR);
                 }
 
+                $tva = ($montant * 0.18);
+
+                $mttc = $tva + $montant;
+
+
                 $montantPayer = $_POST['montP'];
 
-                if(($montantPayer + $remise) > $montant){
-                	$montantPayer = $montant;
+                if(($montantPayer + $remise) > $mttc){
+                	$montantPayer = $mttc;
 				}
 
                 $vente = array(
@@ -171,12 +237,25 @@ class Vente extends CI_Controller {
 						'montant' => $montantPayer,
 						'etat' => 0,
 						'datepaiement' => date('Y/m/d'),
+
+						'typepaiement' => $this->input->post('typepaiement'),
+						'numerocheque' => $this->input->post('numerocheque'),
+						'nombanque' => $this->input->post('nombanque'),
+
 						'token' => $this->input->post('token'),
+						'arretcaisse_id' => $_SESSION['IdAC'],
 					);
 
 					if(!$this->paiement_m->exist($this->input->post('token'))) {
 						$this->paiement_m->add_item($paiement);
 					}
+				}
+
+                if($montantPayer !== $mttc  ){
+					$dataR2 = array(
+						'echeance' => $this->input->post('echeance'),
+					);
+                    $this->vente_m->update($vente_id, $dataR2);
 				}
             }
         }
@@ -215,11 +294,24 @@ class Vente extends CI_Controller {
         $returnArray = $this->vente_m->getArray($id);
         $data['returnArray'] = $returnArray;
 
-        $clients = $this->client_m->get_all();
-        $data['clients'] = $clients;
+        $client = $this->client_m->get($vente->client_id);
+        $data['client'] = $client;
 
-        $produits = $this->produit_m->get_all();
-        $data['produits'] = $produits;
+		$produits = $this->produit_m->get_all();
+
+		$productArray = array();
+
+		foreach ($produits as $produit) {
+			$price = $this->prix_m->getPrice($produit->idproduit, $client->type_client);
+
+			$productArray[$produit->idproduit]['Designation'] = $produit->designation;
+			$productArray[$produit->idproduit]['IdProduit'] = $produit->idproduit;
+			$productArray[$produit->idproduit]['Prix'] = (!empty($price) AND isset($price[0])) ? $price[0]->prix : $produit->montant;
+		}
+        $data['produits'] = $productArray;
+
+		$commerciaux = $this->commercial_m->getActivated();
+		$data['commerciaux'] = $commerciaux;
 
         $data['script'] = "vente";
 
@@ -227,7 +319,7 @@ class Vente extends CI_Controller {
 
         $data['titre'] = 'Modifier la Vente N° '.$id;
         $data['page'] = "vente/modifier";
-        $data['menu'] = 'commerciale';
+        $data['menu'] = 'caisse';
         $this->load->view($this->template, $data);
     }
 
@@ -269,13 +361,21 @@ class Vente extends CI_Controller {
                 $this->vente_m->update($vente->idvente, $datas);
                 $vente_id = $vente->idvente;
 
+				$client = $this->client_m->get($_POST['client_id']);
+
                 $montant = 0;
                 foreach($_POST['lib2'] as $cle => $lib2){
 
                     $exist = $this->detailvente_m->checkIfAlreadyExist($vente_id, $lib2);
 
-                    $produit = $this->produit_m->get($lib2);
-                    $montant += $produit->montant * $_POST['qte'][$cle];
+
+					$produit = $this->produit_m->get($lib2);
+
+					$price = $this->prix_m->getPrice($produit->idproduit, $client->type_client);
+
+					$price = (!empty($price) AND isset($price[0])) ? $price[0]->prix : $produit->montant;
+					$montant += $price * $_POST['qte'][$cle];
+
 
                     if(empty($exist)){
                         $dataR = array(
@@ -301,7 +401,7 @@ class Vente extends CI_Controller {
                 $this->vente_m->update($vente_id, $commande);
             }
         }
-        //redirect('vente/index','refresh');
+        redirect('vente/index','refresh');
     }
 
     public function annuler($id){
@@ -312,17 +412,17 @@ class Vente extends CI_Controller {
 
         $commande = $this->vente_m->get($id);
         if($commande->token == ''){
-            redirect('commande/index','refresh');
+            redirect('vente/index','refresh');
         }
         if($commande->etat == 1){
-            redirect('commande/index','refresh');
+            redirect('vente/index','refresh');
         }
 
         $commandee = array(
             'etat' => -1,
         );
-        $this->vente_m->update($commande->idcommande, $commandee);
-        redirect('commande/index','refresh');
+        $this->vente_m->update($commande->idvente, $commandee);
+        redirect('vente/index','refresh');
     }
 
     public function imprimer($item){
@@ -331,7 +431,7 @@ class Vente extends CI_Controller {
 
         if(isset($item)){
             if($item == 'today'){
-                $message = "Liste des commandes du ".date('d/m/Y');
+                $message = "Liste des Ventes du ".date('d/m/Y');
                 $debut = date('Y/m/d');
                 $fin = date('Y/m/d');
             }else{
@@ -340,20 +440,20 @@ class Vente extends CI_Controller {
                 $debut = date('Y/m/d', $temp[0]);
                 $fin = date('Y/m/d', $temp[1]);
 
-                $message = "Liste des commandes du ".date("d/m/Y", strtotime($debut))." au ".date("d/m/Y", strtotime($fin));
+                $message = "Liste des Ventes du ".date("d/m/Y", strtotime($debut))." au ".date("d/m/Y", strtotime($fin));
             }
         }else{
-            $message = "Liste des commandes du ".date('d/m/Y');
+            $message = "Liste des Ventes du ".date('d/m/Y');
             $debut = date('Y/m/d');
             $fin = date('Y/m/d');
         }
 
-        $commandes = $this->vente_m->getByPeriode($debut, $fin, 'datecommande');
+        $commandes = $this->vente_m->getByPeriode($debut, $fin, 'datevente');
         //echo "<pre>";die(print_r($commandes));
 
         $bigArray = array();
         foreach ($commandes as $key => $commande) {
-            $bigArray[$key] = self::getArray($commande->idcommande);
+            $bigArray[$key] = $this->vente_m->getArray($commande->idvente);
         }
 
         $data['commandes'] = $bigArray;
@@ -367,56 +467,9 @@ class Vente extends CI_Controller {
         $mpdf->SetTitle($message);
         $mpdf->SetAuthor('ESC Technologie');
         $mpdf->SetCreator('Malick Coulibaly');
-        $html = $this->load->view('commande/print', $data, true);
+        $html = $this->load->view('vente/print', $data, true);
         $mpdf->setFooter('{PAGENO} / {nb}');
-        $mpdf->SetHTMLHeader('
-            <div style="text-align: right; font-weight: bold;">
-                '.$message.'
-            </div>');
-        $mpdf->SetHTMLFooter('
-            <table width="100%">
-                <tr>
-                    <td width="33%">{DATE j-m-Y}</td>
-                    <td width="33%" align="center">{PAGENO}/{nbpg}</td>
-                    <td width="33%" style="text-align: right;">'.$message.'</td>
-                </tr>
-            </table>');
-        $mpdf->WriteHTML($html);
-        $mpdf->Output($message.'.pdf', 'I');
-    }
-
-    public function imprimerCommande($id){
-
-        if(!$this->ion_auth->logged_in()){
-            redirect("auth/login");
-        }
-
-        $commande = $this->vente_m->get($id);
-
-        if($commande->etat == 0){
-            redirect('commande/index','refresh');
-        }
-
-        $message = "Commande N° ".date("Y/m/", strtotime($commande->datecommande))."_".$id;
-
-        $returnArray = self::getArray($id);
-
-        //echo "<pre>";die(print_r($returnArray));
-        $data['returnArray'] = $returnArray;
-
-        $data['message'] = $message;
-
-        $mpdf = new \Mpdf\Mpdf([
-            'mode' => 'utf-8',
-            'format' => 'A4-P',
-            'orientation' => 'P'
-        ]);
-        $mpdf->SetTitle($message);
-        $mpdf->SetAuthor('ESC Technologie');
-        $mpdf->SetCreator('Malick Coulibaly');
-        $html = $this->load->view('commande/printCommande', $data, true);
-        $mpdf->setFooter('{PAGENO} / {nb}');
-        $mpdf->SetHTMLHeader('
+		$mpdf->SetHTMLHeader('
             <page_header>
                 <table style="border: none;">
                     <tr>
@@ -437,9 +490,77 @@ class Vente extends CI_Controller {
                 <tr>
                     <td width="33%">{DATE j-m-Y}</td>
                     <td width="33%" align="center">{PAGENO}/{nbpg}</td>
-                    <td width="33%" style="text-align: right;"></td>
+                    <td width="33%" style="text-align: right;">'.$message.'</td>
                 </tr>
             </table>');
+		$mpdf->AddPage('', // L - landscape, P - portrait
+			'', '', '', '',
+			15, // margin_left
+			15, // margin right
+			37, // margin top
+			30, // margin bottom
+			10, // margin header
+			5); // margin footer
+        $mpdf->WriteHTML($html);
+        $mpdf->Output($message.'.pdf', 'I');
+    }
+
+    public function imprimerCommande($id){
+
+        if(!$this->ion_auth->logged_in()){
+            redirect("auth/login");
+        }
+
+        $commande = $this->vente_m->get($id);
+
+
+
+        $message = 'FACT_'.date('ymd', strtotime($commande->datevente)).'_'.$commande->idvente;
+
+
+
+        $returnArray = $this->vente_m->getArray($commande->idvente);
+
+
+        //echo "<pre>";die(print_r($returnArray));
+        $data['returnArray'] = $returnArray;
+
+        $data['message'] = $message;
+
+        $mpdf = new \Mpdf\Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4-P',
+            'orientation' => 'P'
+        ]);
+        $mpdf->SetTitle($message);
+        $mpdf->SetAuthor('ESC Technologie');
+        $mpdf->SetCreator('Malick Coulibaly');
+        $html = $this->load->view('vente/printCommande', $data, true);
+        $mpdf->setFooter('{PAGENO} / {nb}');
+        $mpdf->SetHTMLHeader('
+            <page_header>
+                <table style="border: none;">
+                    <tr>
+                        <td style="width: 20%;">
+                        
+                        </td>
+                        <td style="width: 60%;  padding-left: 0px; border: none !important; text-align: center">
+                            <img src="'.FCPATH.'/Uploads/logo.jpg" style="width: 100%;"  alt="">
+                        </td>
+                        <td style="width: 20%;">
+                        
+                        </td>
+                   </tr>
+                </table>
+            </page_header>');
+		$mpdf->AddPage('', // L - landscape, P - portrait
+			'', '', '', '',
+			15, // margin_left
+			15, // margin right
+			37, // margin top
+			30, // margin bottom
+			10, // margin header
+			5); // margin footer
         $mpdf->WriteHTML($html);
         $mpdf->Output($message.'.pdf', 'I');
     }
@@ -458,5 +579,65 @@ class Vente extends CI_Controller {
 		$data['page'] = "vente/details";
 		$data['menu'] = 'edition';
 		$this->load->view($this->template, $data);
+	}
+
+	public function imprimerBL($id){
+
+		if(!$this->ion_auth->logged_in()){
+			redirect("auth/login");
+		}
+
+		$commande = $this->vente_m->get($id);
+
+
+
+		$message = 'BON DE LIVRAISON N° '.date('ymd', strtotime($commande->datelivraison)).'_'.$commande->idvente;
+
+
+
+		$returnArray = $this->vente_m->getArray($commande->idvente);
+
+
+		//echo "<pre>";die(print_r($returnArray));
+		$data['returnArray'] = $returnArray;
+
+		$data['message'] = $message;
+
+		$mpdf = new \Mpdf\Mpdf([
+			'mode' => 'utf-8',
+			'format' => 'A4-P',
+			'orientation' => 'P'
+		]);
+		$mpdf->SetTitle($message);
+		$mpdf->SetAuthor('ESC Technologie');
+		$mpdf->SetCreator('Malick Coulibaly');
+		$html = $this->load->view('vente/printBL', $data, true);
+		$mpdf->setFooter('{PAGENO} / {nb}');
+		$mpdf->SetHTMLHeader('
+            <page_header>
+                <table style="border: none;">
+                    <tr>
+                        <td style="width: 20%;">
+                        
+                        </td>
+                        <td style="width: 60%;  padding-left: 0px; border: none !important; text-align: center">
+                            <img src="'.FCPATH.'/Uploads/logo.jpg" style="width: 100%;"  alt="">
+                        </td>
+                        <td style="width: 20%;">
+                        
+                        </td>
+                   </tr>
+                </table>
+            </page_header>');
+		$mpdf->AddPage('', // L - landscape, P - portrait
+			'', '', '', '',
+			15, // margin_left
+			15, // margin right
+			37, // margin top
+			30, // margin bottom
+			10, // margin header
+			5); // margin footer
+		$mpdf->WriteHTML($html);
+		$mpdf->Output($message.'.pdf', 'I');
 	}
 }

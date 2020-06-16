@@ -6,7 +6,7 @@
  * Time: 15:32
  */
 if (! defined('BASEPATH')) exit("no direct script access allowed");
-class detailinventaire_m extends MY_Model
+class detailtransfert_m extends MY_Model
 {
     public function __construct()
     {
@@ -14,25 +14,16 @@ class detailinventaire_m extends MY_Model
     }
 
     public function get_db_table(){
-        return 'detailinventaire';
+        return 'detailtransfert';
     }
 
     public function get_db_table_id(){
-        return 'iddetail';
+        return 'iddetailtransfert';
     }
 
     function add_item($post_data) {
-        $this->db->insert('detailinventaire',$post_data);
+        $this->db->insert('detailtransfert',$post_data);
         return $this->db->insert_id();
-    }
-
-    public function getAllByInventaireId($id){
-        $this->db->select('dtl.*, itr.designation');
-        $this->db->from('detailinventaire dtl, intrant itr');
-        $this->db->where('dtl.idproduit = itr.idintrant');
-        $this->db->where('idinventaire', $id);
-        $query = $this->db->get();
-        return $query->result();
     }
 
     public function exist($token){

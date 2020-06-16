@@ -15,17 +15,10 @@
         <b>Client: </b><?= $returnArray['Client']->nom ?>
     </div>
 
-    <div style="padding-bottom: 0px">
-        <b>Date de la commande: </b><?= $returnArray['Commande']->datecommande ?>
+    <div style="padding-bottom: 25px">
+        <b>Date de la vente: </b><?= date("d/m/Y", strtotime($returnArray['Vente']->datevente)) ?>
     </div>
 
-	<div style="padding-bottom: 0px">
-        <b>Date probable de livraison: </b><?= $returnArray['Commande']->datelivraison ?>
-    </div>
-
-    <div style="padding-bottom: 20px">
-        <b>Adresse de livraison: </b><?= $returnArray['Commande']->lieuxlivraison ?>
-    </div>
 
     <table style="width: 100%;" cellspacing="0">
         <thead style="width: 100%; border: solid; border-color: #000;">
@@ -36,7 +29,7 @@
                 <th style="width: 14%; border: solid; border-color: #000; border-width: 0.5px; padding: 10px; background-color: #CCCCCC">
                     P.U
                 </th>
-                <th style="width: 14%; border: solid; border-color: #000; border-width: 0.5px; padding: 10px; background-color: #CCCCCC">
+                <th style="width: 14%; border: solid; border-color: #000; border-width: 0.5px; padding: 10px; background-color: #CCCCCC; display: none; visibility: hidden">
                     Remise
                 </th>
                 <th style="width: 20%; border: solid; border-color: #000; border-width: 0.5px; padding: 10px; background-color: #CCCCCC">
@@ -52,28 +45,28 @@
                 $montantT = 0;
                 $montantRemise = 0;
                 $montantVrai = 0;
-                foreach ($returnArray['Briques'] as $brique) {
-                    if($brique['Etat'] == 0){
-                        $montantT += ($brique['Qte'] * $brique['Pu']);
-                        $montantRemise += ($brique['Qte'] * $brique['Remise']);
-                        $montantVrai += ($brique['Qte'] * ($brique['Pu'] - $brique['Remise']));
+                foreach ($returnArray['Produits'] as $produitItem) {
+                    if($produitItem['Etat'] == 0){
+                        $montantT += ($produitItem['Qte'] * $produitItem['Pu']);
+                        $montantRemise += ($produitItem['Qte'] * $produitItem['Remise']);
+                        $montantVrai += ($produitItem['Qte'] * ($produitItem['Pu'] - $produitItem['Remise']));
 
                         ?>
                         <tr>
                             <td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: left">
-                                <?= $brique['Brique'] ?>
+                                <?= $produitItem['Produit'] ?>
                             </td>
                             <td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: center">
-                                <?= $brique['Pu'] ?>
+                                <?= $this->vente_m->formatNumber($produitItem['Pu']) ?>
+                            </td>
+                            <td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: center; display: none; visibility: hidden">
+                                <?= $produitItem['Remise'] ?>
                             </td>
                             <td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: center">
-                                <?= $brique['Remise'] ?>
-                            </td>
-                            <td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: center">
-                                <?= $brique['Qte'] ?>
+                                <?= $produitItem['Qte'] ?>
                             </td>
                             <td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: right">
-                                <?= $this->commande_m->formatNumber($brique['Qte'] * ($brique['Pu'] - $brique['Remise'])) ?>
+                                <?= $this->vente_m->formatNumber($produitItem['Qte'] * ($produitItem['Pu'] - $produitItem['Remise'])) ?>
                             </td>
                         </tr>
                         <?php
@@ -86,30 +79,37 @@
                 <td colspan="5" style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: left; font-weight: bold; font-size: 16px"></td>
             </tr>
             <tr>
-                <td colspan="4" style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: left; font-weight: bold; font-size: 16px">Total Brique (HT)</td>
+                <td colspan="4" style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: left; font-weight: bold; font-size: 16px">Total (HT)</td>
                 <td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: right; font-weight: bold; font-size: 16px">
-                    <?= $this->commande_m->formatNumber($montantVrai) ?>
+                    <?= $this->vente_m->formatNumber($montantVrai) ?>
+                </td>
+            </tr>
+
+			<tr>
+				<td colspan="4" style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: left; font-weight: bold; font-size: 16px">TVA (18%)</td>
+				<td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: right; font-weight: bold; font-size: 16px">
+					<?= $this->vente_m->formatNumber($returnArray['MontTVA']) ?>
+				</td>
+			</tr>
+
+            <tr>
+                <td colspan="4" style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: left; font-weight: bold; font-size: 16px">Total (TTC)</td>
+                <td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: right; font-weight: bold; font-size: 16px">
+                    <?= $this->vente_m->formatNumber($returnArray['MontTTC']) ?>
+                </td>
+            </tr>
+
+			<tr>
+                <td colspan="4" style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: left; font-weight: bold; font-size: 16px">Remise</td>
+                <td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: right; font-weight: bold; font-size: 16px">
+                    <?= $this->vente_m->formatNumber($returnArray['TotalRemise']) ?>
                 </td>
             </tr>
 
             <tr>
-                <td colspan="4" style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: left; font-weight: bold; font-size: 16px">Total Brique (TTC)</td>
+                <td colspan="4" style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: left; font-weight: bold; font-size: 16px">Net à Payer</td>
                 <td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: right; font-weight: bold; font-size: 16px">
-                    <?= $this->commande_m->formatNumber($returnArray['MontTTC']) ?>
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="4" style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: left; font-weight: bold; font-size: 16px">Frais de Livraison</td>
-                <td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: right; font-weight: bold; font-size: 16px">
-                    <?= $this->commande_m->formatNumber($returnArray['FraisPort']) ?>
-                </td>
-            </tr>
-
-            <tr>
-                <td colspan="4" style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: left; font-weight: bold; font-size: 16px">Total</td>
-                <td style="border: solid; border-color: #000; border-width: 0.5px; padding: 5px; text-align: right; font-weight: bold; font-size: 16px">
-                    <?= $this->commande_m->formatNumber($returnArray['TotalTTC']) ?>
+                    <?= $this->vente_m->formatNumber($returnArray['TotalTTC']) ?>
                 </td>
             </tr>
         </tfoot>

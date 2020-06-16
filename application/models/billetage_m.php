@@ -6,7 +6,7 @@
  * Time: 15:32
  */
 if (! defined('BASEPATH')) exit("no direct script access allowed");
-class argent_m extends MY_Model
+class billetage_m extends MY_Model
 {
     public function __construct()
     {
@@ -14,22 +14,21 @@ class argent_m extends MY_Model
     }
 
     public function get_db_table(){
-        return 'argent';
+        return 'billetage';
     }
 
     public function get_db_table_id(){
-        return 'id_argent';
+        return 'id_billetage';
     }
 
     function add_item($post_data) {
-        $this->db->insert('argent',$post_data);
+        $this->db->insert('billetage',$post_data);
         return $this->db->insert_id();
     }
 
     function getActivated() {
         $this->db->select('*');
         $this->db->from($this->get_db_table());
-        $this->db->where('etat = 0');
         $this->db->order_by($this->get_db_table_id(),'DESC');
         $query = $this->db->get();
         return $query->result();
@@ -47,14 +46,4 @@ class argent_m extends MY_Model
         }
         return $rep;
     }
-
-	function getByType($type) {
-		$this->db->select('*');
-		$this->db->from($this->get_db_table());
-		$this->db->where('type', $type);
-		$this->db->where('etat = 0');
-		$this->db->order_by($this->get_db_table_id(),'DESC');
-		$query = $this->db->get();
-		return $query->result();
-	}
 }

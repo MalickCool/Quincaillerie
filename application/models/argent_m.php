@@ -6,7 +6,7 @@
  * Time: 15:32
  */
 if (! defined('BASEPATH')) exit("no direct script access allowed");
-class actioncaisse_m extends MY_Model
+class argent_m extends MY_Model
 {
     public function __construct()
     {
@@ -14,15 +14,15 @@ class actioncaisse_m extends MY_Model
     }
 
     public function get_db_table(){
-        return 'actioncaisse';
+        return 'argent';
     }
 
     public function get_db_table_id(){
-        return 'idac';
+        return 'id_argent';
     }
 
     function add_item($post_data) {
-        $this->db->insert('actioncaisse',$post_data);
+        $this->db->insert('argent',$post_data);
         return $this->db->insert_id();
     }
 
@@ -48,25 +48,12 @@ class actioncaisse_m extends MY_Model
         return $rep;
     }
 
-	public function arretCaisseDidExists($idCaisse){
+	function getByType($type) {
 		$this->db->select('*');
 		$this->db->from($this->get_db_table());
-		$this->db->where("caisse_id", $idCaisse);
-		$this->db->where("date_ouverture", date('Y/m/d'));
-		$query = $this->db->get();
-		$result = $query->result();
-		$rep = false;
-		if(!empty($result)){
-			$rep = true;
-		}
-		return $rep;
-	}
-
-	public function getArretCaisse($idCaisse){
-		$this->db->select('*');
-		$this->db->from($this->get_db_table());
-		$this->db->where("caisse_id", $idCaisse);
-		$this->db->where("date_ouverture", date('Y/m/d'));
+		$this->db->where('type', $type);
+		$this->db->where('etat = 0');
+		$this->db->order_by($this->get_db_table_id(),'DESC');
 		$query = $this->db->get();
 		return $query->result();
 	}

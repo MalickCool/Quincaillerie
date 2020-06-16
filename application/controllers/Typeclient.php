@@ -7,14 +7,14 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Typecommercial extends CI_Controller
+class Typeclient extends CI_Controller
 {
 
 	public function __construct($value = "")
 	{
 		parent::__construct();
-		$this->load->model('typecommercial_m');
-		$this->load->model('commercial_m');
+		$this->load->model('typeclient_m');
+		$this->load->model('client_m');
 	}
 
 	public $template = 'templates/template';
@@ -24,11 +24,11 @@ class Typecommercial extends CI_Controller
 		if (!$this->ion_auth->logged_in()) {
 			redirect("auth/login");
 		}
-		$types = $this->typecommercial_m->get_all();
+		$types = $this->typeclient_m->get_all();
 		$data['types'] = $types;
 		//echo"<pre>"; die(print_r($types));
-		$data['titre'] = 'Liste des Types de Commerciaux';
-		$data['page'] = "typecomm/liste";
+		$data['titre'] = 'Liste des Types de Client';
+		$data['page'] = "typeclient/liste";
 		$data['menu'] = 'edition';
 		$this->load->view($this->template, $data);
 	}
@@ -39,11 +39,11 @@ class Typecommercial extends CI_Controller
 			redirect("auth/login");
 		}
 
-		$types = $this->typecommercial_m->get_all();
+		$types = $this->typeclient_m->get_all();
 		$data['types'] = $types;
 		//echo"<pre>"; die(print_r($types));
-		$data['titre'] = 'Ajouter un Type de Commercial';
-		$data['page'] = "typecomm/ajouter";
+		$data['titre'] = 'Créer un Type de Client';
+		$data['page'] = "typeclient/ajouter";
 		$data['menu'] = 'commerciale';
 		$data['script'] = 'global';
 		$this->load->view($this->template, $data);
@@ -57,23 +57,23 @@ class Typecommercial extends CI_Controller
 		}
 
 		$this->form_validation->set_rules('designation', 'Designation', 'required');
-		$this->form_validation->set_rules('pourcentage', 'Pourcentage', 'required');
+		$this->form_validation->set_rules('description', 'description', 'required');
 
 		if ($this->form_validation->run()) {
 
 			$datas = array(
 				'designation' => $this->input->post('designation'),
-				'pourcentage' => $this->input->post('pourcentage'),
+				'description' => $this->input->post('description'),
 				'token' => $this->input->post('token'),
 			);
 
 			$lastInsertedId = 0;
 
-			if (!$this->typecommercial_m->exist($this->input->post('token'))) {
-				$lastInsertedId = $this->typecommercial_m->add_item($datas);
+			if (!$this->typeclient_m->exist($this->input->post('token'))) {
+				$lastInsertedId = $this->typeclient_m->add_item($datas);
 			}
 		}
-		redirect('typecommercial/ajouter', 'refresh');
+		redirect('typeclient/ajouter', 'refresh');
 	}
 
 	public function edit($id)
@@ -83,17 +83,17 @@ class Typecommercial extends CI_Controller
 		}
 
 
-		$type = $this->typecommercial_m->get($id);
+		$type = $this->typeclient_m->get($id);
 		if ($type->designation == "") {
-			redirect("typecommercial/");
+			redirect("typeclient/");
 		}
-		$types = $this->typecommercial_m->get_all();
+		$types = $this->typeclient_m->get_all();
 		$data['types'] = $types;
 
 		$data['type'] = $type;
 
 		$data['titre'] = 'Modifier le Type de commercial ' . $type->designation;
-		$data['page'] = "typecomm/modifier";
+		$data['page'] = "typeclient/modifier";
 		$data['menu'] = 'commerciale';
 		$data['script'] = 'global';
 		$this->load->view($this->template, $data);
@@ -106,13 +106,13 @@ class Typecommercial extends CI_Controller
 			redirect("auth/login");
 		}
 
-		$item = $this->typecommercial_m->get($_POST['id']);
+		$item = $this->typeclient_m->get($_POST['id']);
 		if ($item->designation == "") {
-			redirect("typecommercial/");
+			redirect("typeclient/");
 		}
 
 		$this->form_validation->set_rules('designation', 'Designation', 'required');
-		$this->form_validation->set_rules('pourcentage', 'Pourcentage', 'required');
+		$this->form_validation->set_rules('description', 'description', 'required');
 
 		if ($this->form_validation->run()) {
 
@@ -123,13 +123,13 @@ class Typecommercial extends CI_Controller
 
 			$datas = array(
 				'designation' => $this->input->post('designation'),
-				'pourcentage' => $this->input->post('pourcentage'),
+				'description' => $this->input->post('description'),
 				'etat' => $etat,
 			);
 
-			$this->typecommercial_m->update($item->idType, $datas);
+			$this->typeclient_m->update($item->idType, $datas);
 		}
-		redirect('typecommercial/ajouter');
+		redirect('typeclient/ajouter');
 	}
 
 	public function imprimer()
@@ -137,7 +137,7 @@ class Typecommercial extends CI_Controller
 
 		$message = "Liste des Types de Commerciaux";
 
-		$types = $this->typecommercial_m->get_all();
+		$types = $this->typeclient_m->get_all();
 		$data['types'] = $types;
 		$data['message'] = $message;
 
@@ -149,7 +149,7 @@ class Typecommercial extends CI_Controller
 		$mpdf->SetTitle($message);
 		$mpdf->SetAuthor('ESC Technologie');
 		$mpdf->SetCreator('Malick Coulibaly');
-		$html = $this->load->view('typecomm/print', $data, true);
+		$html = $this->load->view('typeclient/print', $data, true);
 		$mpdf->setFooter('{PAGENO} / {nb}');
 		$mpdf->SetHTMLHeader('
             <page_header>

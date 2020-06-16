@@ -101,6 +101,8 @@
 											<th>Montant Total</th>
 											<th>Montant Reglé</th>
 											<th>Reste à Payer</th>
+											<th>Date Echéance</th>
+											<th>Action</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -121,6 +123,11 @@
 													<td><?= $this->client_m->formatNumber($list['TotalTTC']) ?></td>
 													<td><?= $this->client_m->formatNumber($list['MontantVerse']) ?></td>
 													<td><?= $this->client_m->formatNumber($list['Reste']) ?></td>
+
+													<td><?= ($this->client_m->formatNumber($list['Reste']) > 0) ? date("d/m/Y", strtotime($list['Vente']->echeance)) : "" ?></td>
+													<td class="text-center">
+														<a href="<?= site_url("paiement/ajouter/".$list['Vente']->idvente) ?>" class="btn btn-success">Régler</a>
+													</td>
 												</tr>
 												<?php
 											}

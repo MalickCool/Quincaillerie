@@ -100,6 +100,8 @@
 											<th>Montant Bon Commande</th>
 											<th>Montant Réglé</th>
 											<th>Reste à Payer</th>
+											<th>Date Echéance</th>
+											<th>Action</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -107,18 +109,24 @@
 											$montB = 0;
 											$montR = 0;
 											foreach ($bons as $bon) {
-												$montB += $bon->montantCommande;
-												$montR += $bon->montantRegler;
-												?>
-												<tr>
-													<td><?= $bon->numbon ?></td>
-													<td><?= date('d/m/Y', strtotime($bon->datebon)) ?></td>
-													<td><?= $bon->Fournisseur ?></td>
-													<td class="text-right"><?= $this->fournisseur_m->formatNumber($bon->montantCommande) ?> FCFA</td>
-													<td class="text-right"><?= $this->fournisseur_m->formatNumber($bon->montantRegler) ?> FCFA</td>
-													<td class="text-right"><?= $this->fournisseur_m->formatNumber($bon->montantCommande - $bon->montantRegler) ?> FCFA</td>
-												</tr>
-												<?php
+												if($bon->montantCommande != $bon->montantRegler){
+													$montB += $bon->montantCommande;
+													$montR += $bon->montantRegler;
+													?>
+													<tr>
+														<td><?= $bon->numbon ?></td>
+														<td><?= date('d/m/Y', strtotime($bon->datebon)) ?></td>
+														<td><?= $bon->Fournisseur ?></td>
+														<td class="text-right"><?= $this->fournisseur_m->formatNumber($bon->montantCommande) ?> FCFA</td>
+														<td class="text-right"><?= $this->fournisseur_m->formatNumber($bon->montantRegler) ?> FCFA</td>
+														<td class="text-right"><?= $this->fournisseur_m->formatNumber($bon->montantCommande - $bon->montantRegler) ?> FCFA</td>
+														<td class="text-right"><?= (($bon->montantCommande - $bon->montantRegler) > 0) ? date("d/m/Y", strtotime($bon->echeance)) : "" ?></td>
+														<td class="text-center">
+															<a href="<?= site_url("depense/reglerfournisseur/".$bon->idfacture) ?>" class="btn btn-success">Régler</a>
+														</td>
+													</tr>
+													<?php
+												}
 											}
 										?>
 									</tbody>

@@ -103,10 +103,12 @@
 								if($bon->etat == 0){
 									?>
 									<a href="<?= site_url("commande/receptionner/".$bon->idfacture) ?>" class="btn btn-success"><i class="fa fa-shopping-basket"></i> Réceptionner les marchandises</a>
+
+									<a href="<?= site_url("commande/modifier/".$bon->idfacture) ?>" class="btn btn-warning"><i class="fa fa-edit"></i> Modifier</a>
 									<?php
 								}
 							?>
-							<a href="" class="btn btn-primary"><i class="fa fa-print"></i> Imprimer Bon</a>
+							<a href="<?= site_url("commande/imprimerBon/".$bon->idfacture) ?>" class="btn btn-primary"><i class="fa fa-print"></i> Imprimer Bon</a>
 
 						</div>
 					</div>

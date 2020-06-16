@@ -43,15 +43,26 @@
 								</li>
 							</ul>
 						</div>
+						<?php
+							$item = 3;
+						?>
 						<?php echo form_open_multipart("Commande/validerReception/".$bon->idfacture, array('class'=>'form-horizontal', 'id'=>'form'));?>
 							<div class="card-body">
 								<div class="row">
-									<table class="table table-striped table-bordered">
+									<table class="table table-striped table-bordered table-responsive-md">
 										<thead>
 											<tr>
-												<th style="width: 40%">Produit</th>
-												<th style="width: 15%">Quantité</th>
-												<th style="width: 15%">Magasin de Stockage</th>
+												<th style="width: 20%">Produit</th>
+												<th style="width: 10%">Quantité Total</th>
+												<?php
+													foreach ($magasins as $magasin) {
+														$item++;
+														?>
+														<th style="width: 10%"><?= $magasin->designation ?></th>
+														<?php
+													}
+												?>
+
 												<th style="width: 15%">Prix Unitaire TTC</th>
 												<th style="width: 15%">Total TTC</th>
 											</tr>
@@ -64,18 +75,18 @@
 													?>
 													<tr>
 														<td><?= $detail->produit ?></td>
-														<td><input class="form-control qte font-weight-bold" type="number" name="qte_<?= $detail->iddetail ?>" value="<?= $detail->qte ?>"></td>
-														<td>
-															<select id="entrepot" name="entrepot_<?= $detail->iddetail ?>" required class="select2 form-control custom-select col-sm-12">
-																<?php
-																	foreach ($magasins as $magasin) {
-																		?>
-																		<option value="<?= $magasin->identrepot ?>"><?= $magasin->designation ?></option>
-																		<?php
-																	}
+														<td><input class="form-control qte font-weight-bold text-center" readonly type="number" name="qte_<?= $detail->iddetail ?>" value="<?= $detail->qte ?>"></td>
+
+
+														<?php
+															foreach ($magasins as $magasin) {
 																?>
-															</select>
-														</td>
+																<td>
+																	<input class="form-control entrepot font-weight-bold" type="number" name="entrepot_<?= $detail->iddetail ?>_<?= $magasin->identrepot ?>">
+																</td>
+																<?php
+															}
+														?>
 														<td class="text-right font-weight-bold" style="font-size: 20px"><span class="pu"><?= $this->detailsbc_m->formatNumber($detail->pu) ?></span> FCFA</td>
 														<td class="text-right font-weight-bold" style="font-size: 20px"><span class="total"><?= $this->detailsbc_m->formatNumber($detail->qte * $detail->pu) ?></span> FCFA</td>
 													</tr>
@@ -85,19 +96,25 @@
 										</tbody>
 										<tfoot>
 											<tr>
-												<td colspan="4">Total:</td>
+												<td colspan="<?= $item ?>">Total:</td>
 												<td class="text-right font-weight-bold" style="font-size: 20px; text-align: right"><span id="theTotal"><?= $this->detailsbc_m->formatNumber($total) ?></span> FCFA</td>
 											</tr>
 											<tr>
-												<td colspan="4">Montant du Paiement:</td>
+												<td colspan="<?= $item ?>">Montant du Paiement:</td>
 												<td>
 													<input type="number" class="form-control font-weight-bold bg-red" style="border: 2px red solid" name="montantPayer" id="montantPayer" min="0">
 												</td>
 											</tr>
 											<tr>
-												<td colspan="4">Reste à Payer:</td>
+												<td colspan="<?= $item ?>">Reste à Payer:</td>
 												<td>
 													<input type="text" class="form-control font-weight-bold" readonly style="border: 2px red solid" name="reste" id="reste">
+												</td>
+											</tr>
+											<tr id="echeanceDiv">
+												<td colspan="<?= $item ?>">Prochaine Echéance:</td>
+												<td>
+													<input type="date" class="form-control font-weight-bold text-center" style="border: 2px red solid" required name="echeance" id="echeance">
 												</td>
 											</tr>
 										</tfoot>
