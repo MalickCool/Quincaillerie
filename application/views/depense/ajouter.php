@@ -32,6 +32,12 @@
 									<label for="typeDepense" class="col-sm-12 control-label col-form-label">Type de Sortie de Caisse</label>
 									<div class="col-sm-12">
 										<select class="select2 form-control custom-select" name="typedepense" id="typeDepense">
+											<?php
+												foreach ($types as $type) {
+													?>
+													<?php
+												}
+											?>
 											<option value="exp">Exploitation</option>
 											<option value="banque">Banque</option>
 										</select>
