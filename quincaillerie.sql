@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  127.0.0.1
--- Généré le :  Ven 12 Juin 2020 à 14:48
+-- Généré le :  Jeu 18 Juin 2020 à 17:28
 -- Version du serveur :  5.7.11
 -- Version de PHP :  7.0.4
 
@@ -48,7 +48,11 @@ INSERT INTO `actioncaisse` (`idac`, `date_ouverture`, `heure_ouverture`, `date_f
 (1, '2020-06-09', '09:13:00', NULL, NULL, 0, 1, NULL, 1, 1, 'jigbuhfge deyvgzyho vuzigfhpoj hvc'),
 (6, '2020-06-10', '14:44:38', '2020-06-10', '15:15:07', 54600, 1, '', 1, 1, 'b876414abb602793b1212aa48d37c66faa6facf7adbc1263acf4e1db223233de95a6d0b9ba3cf2c27cd3ea9ced66803506de'),
 (8, '2020-06-11', '10:13:36', NULL, NULL, 0, 0, NULL, 1, 1, '5be107855e1c8585e3f6c1dd8d76778271e008014abf625e263a44caff3dd8d3491d72e4641e3685efb8e7acadf575153862'),
-(9, '2020-06-12', '13:19:27', NULL, NULL, 0, 0, NULL, 1, 1, '60bb4fda6e98db6a1cdf35cfad396e5e69091a30c8ef9e3367b60b62fcc7b571c13710de40cb0d38947c45ca95e1b961abb8');
+(9, '2020-06-12', '13:19:27', NULL, NULL, 0, 0, NULL, 1, 1, '60bb4fda6e98db6a1cdf35cfad396e5e69091a30c8ef9e3367b60b62fcc7b571c13710de40cb0d38947c45ca95e1b961abb8'),
+(10, '2020-06-15', '10:19:48', NULL, NULL, 0, 0, NULL, 1, 1, 'abf54bab6dba198d2dd9c3b887b3f8d2a1862db9537453dd0a786a9c3a596b4e200a77c6e47efcaf7d6b43ea9db275a7bc0e'),
+(11, '2020-06-16', '09:51:33', NULL, NULL, 0, 0, NULL, 1, 1, '108beac719caa321b2d491c01e3ef85d935615d8e479e4debf9a2e8a5f446fa6a561fcd85dabf38f0a307a57027c4e26896b'),
+(12, '2020-06-17', '08:40:22', NULL, NULL, 0, 0, NULL, 1, 1, 'f03c3a73edb6d7929713540163d9719652b5234c3ee12c77cb3934d9ea7d833404f05165759d0f253e61abc03da78c579f49'),
+(13, '2020-06-18', '11:59:14', NULL, NULL, 0, 0, NULL, 1, 1, '615ce8b65ae2911dd7d1f959d4dc1f911345bc41fc6f2c84242824688b8c2d855139a4d8442a12ddae074ef87d15dff983b2');
 
 -- --------------------------------------------------------
 
@@ -137,7 +141,8 @@ INSERT INTO `boncommande` (`idfacture`, `numbon`, `idfournisseur`, `datebon`, `i
 (2, NULL, 3, '2020-06-04', 1, 'non', 0, NULL, 'bea96728f153a20ac10b39efeedbe388471301bb74535cdd195fae8bad01db6603ddbe5a65870f5088b177db0482d604b42c', 1, 'Motif annulation', NULL, 1),
 (3, NULL, 3, '2020-06-05', 1, 'non', 0, NULL, '038a0b715700a011e452ddbbf65031469cd33d8505a48214f2b46a4965e7dc28b61b1a77932aa66ba8fcec1c9ffc57071ea9', 0, NULL, NULL, NULL),
 (4, NULL, 3, '2020-06-08', 1, 'non', 1, '2020-07-08', '80afe6e64a41af22e41041959879aac2bcac1858f8d49ac5f8d37c5ba4dc00a5daeecbad06180bff336553a585c376d35333', 0, NULL, NULL, NULL),
-(5, NULL, 3, '2020-06-10', 1, 'non', 0, NULL, '3b74b0df90badf64e4b78af5a4dd2798793f84918f12285576217a40c8124dd4519f1abe0d5bb7589138cb50a379101b4f24', 0, NULL, NULL, NULL);
+(5, NULL, 3, '2020-06-10', 1, 'non', 0, NULL, '3b74b0df90badf64e4b78af5a4dd2798793f84918f12285576217a40c8124dd4519f1abe0d5bb7589138cb50a379101b4f24', 0, NULL, NULL, NULL),
+(6, NULL, 3, '2020-06-16', 1, 'non', 1, NULL, '2ee84e722a3679d3e68f69e63a8da10a6e681f086b808f50c20e122413d80cb595042f305d2b1c06eac337607fde06db484a', 0, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -162,7 +167,8 @@ INSERT INTO `bonlivraison` (`idfacture`, `numbon`, `datebon`, `iduser`, `idbc`, 
 (1, NULL, '2020-05-13', 1, 1, 'f5354d2cbc97cd607dbbbde4a5a965918376ade0f13c89ba1cbeb0ce0ff65d8ea3121b1e682f6b862b34b8baa911387d4fed'),
 (2, NULL, '2020-06-08', 1, 4, '897a36172338d8517530bc423b04666335c76a9f80fd9382c8c2924d29be90163eadfc82a1c7bb4e6b8f6562e048337db89c'),
 (3, NULL, '2020-06-08', 1, 4, 'a7c7bdafa1fa4284e67c3ca4d39171e3c5a23a08f246d6cbe2191424e5b1a48b74c9648ff6377780b0770f209c1f6c2785cc'),
-(4, NULL, '2020-06-10', 1, 4, 'bec7f93c168d0a196cc4d8b6c47744392ec2768e6f2f7cf9419347f29df5d68c4b15fbab24d531bd836dec9475bfc893273c');
+(4, NULL, '2020-06-10', 1, 4, 'bec7f93c168d0a196cc4d8b6c47744392ec2768e6f2f7cf9419347f29df5d68c4b15fbab24d531bd836dec9475bfc893273c'),
+(5, NULL, '2020-06-16', 1, 6, '44cfb3f9428e7ecda7b62428802d23701068a42527d1aee5c6b1ff2f467654048e3fc04ab12c21cf4d355664b38a10c811fa');
 
 -- --------------------------------------------------------
 
@@ -263,7 +269,8 @@ CREATE TABLE `depense` (
 INSERT INTO `depense` (`iddepense`, `motifdepense`, `datedepense`, `iduser`, `montant`, `token`, `factureachat`, `typedepense`, `fournisseur_id`, `arretcaisse_id`) VALUES
 (10, 'Versement Banque', '2020-06-10', 1, 45000, '6d03b78b5bfc967f3a07ea8174e72bbe1f9c8acc0a8e2e6959b34563855c28f46221cdf875defbe4122447f6ae617814ccf6', NULL, 'banque', NULL, 6),
 (9, 'Règlement Fournisseur', '2020-06-10', 1, 150000, 'ca51df3b273e0a238247f92a02cdb27e31fa63fa4a3d083cad8f33f87104eb49e1d9c570036c8efbfea9227ec6a25671b71d', 5, 'fa', 3, 6),
-(8, ' Motif', '2020-06-10', 1, 15000, '0583aea874a3461b39888bb5018f57a592ac36cdeff9d294ae40d29a435b6cb52a2680a6b13146178adfc5f91341c6597c08', NULL, 'exp', NULL, 6);
+(8, ' Motif', '2020-06-10', 1, 15000, '0583aea874a3461b39888bb5018f57a592ac36cdeff9d294ae40d29a435b6cb52a2680a6b13146178adfc5f91341c6597c08', NULL, 'exp', NULL, 6),
+(11, 'Règlement Fournisseur', '2020-06-16', 1, 67200, '44cfb3f9428e7ecda7b62428802d23701068a42527d1aee5c6b1ff2f467654048e3fc04ab12c21cf4d355664b38a10c811fa', 6, 'fa', 3, 0);
 
 -- --------------------------------------------------------
 
@@ -297,7 +304,9 @@ INSERT INTO `detailbc` (`iddetail`, `idbon`, `idproduit`, `qte`, `pu`) VALUES
 (17, 4, 24, 2, 10000),
 (16, 4, 25, 3, 25000),
 (19, 4, 26, 1, 74800),
-(20, 5, 1, 10, 15000);
+(20, 5, 1, 10, 15000),
+(21, 6, 26, 1, 60000),
+(22, 6, 1, 9, 800);
 
 -- --------------------------------------------------------
 
@@ -326,7 +335,9 @@ INSERT INTO `detailbl` (`iddetail`, `idbon`, `idproduit`, `qte`, `pu`) VALUES
 (6, 4, 1, 1, 5000),
 (7, 4, 24, 2, 10000),
 (8, 4, 25, 3, 25000),
-(9, 4, 26, 1, 74800);
+(9, 4, 26, 1, 74800),
+(10, 5, 26, 1, 60000),
+(11, 5, 1, 9, 800);
 
 -- --------------------------------------------------------
 
@@ -341,6 +352,51 @@ CREATE TABLE `detailinventaire` (
   `qteapres` double NOT NULL,
   `idinventaire` int(11) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `detailproforma`
+--
+
+CREATE TABLE `detailproforma` (
+  `iddetailproforma` int(10) UNSIGNED NOT NULL,
+  `proforma_id` int(10) UNSIGNED NOT NULL,
+  `produit_id` int(10) UNSIGNED NOT NULL,
+  `qte` int(11) NOT NULL,
+  `pu` int(11) NOT NULL,
+  `remise` int(11) NOT NULL DEFAULT '0',
+  `etat` tinyint(1) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Contenu de la table `detailproforma`
+--
+
+INSERT INTO `detailproforma` (`iddetailproforma`, `proforma_id`, `produit_id`, `qte`, `pu`, `remise`, `etat`) VALUES
+(1, 2, 26, 10, 80000, 0, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `detailtransfert`
+--
+
+CREATE TABLE `detailtransfert` (
+  `iddetailtransfert` int(11) NOT NULL,
+  `idproduit` int(11) NOT NULL,
+  `quantite` int(11) NOT NULL,
+  `transfert_id` int(11) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `detailtransfert`
+--
+
+INSERT INTO `detailtransfert` (`iddetailtransfert`, `idproduit`, `quantite`, `transfert_id`) VALUES
+(2, 25, 10, 2),
+(3, 25, 10, 3),
+(4, 25, 10, 4);
 
 -- --------------------------------------------------------
 
@@ -363,23 +419,9 @@ CREATE TABLE `detailvente` (
 --
 
 INSERT INTO `detailvente` (`iddetailvente`, `vente_id`, `produit_id`, `qte`, `pu`, `remise`, `etat`) VALUES
-(1, 1, 1, 1, 1500, 0, 0),
-(2, 1, 24, 1, 45000, 0, 0),
-(3, 2, 24, 1, 45000, 0, 0),
-(6, 4, 26, 1, 80000, 0, 0),
-(7, 4, 24, 1, 45000, 0, 0),
-(8, 5, 1, 5, 1500, 0, 0),
-(9, 5, 24, 1, 45000, 0, 0),
-(10, 6, 1, 5, 1500, 0, 0),
-(11, 6, 24, 1, 45000, 0, 0),
-(12, 7, 1, 5, 1500, 0, 0),
-(13, 7, 24, 1, 45000, 0, 0),
-(14, 8, 1, 5, 1500, 0, 0),
-(15, 8, 24, 1, 45000, 0, 0),
-(16, 9, 26, 1, 80000, 0, 0),
-(17, 9, 24, 1, 45000, 0, 0),
-(18, 9, 1, 5, 1500, 0, 0),
-(19, 10, 26, 1, 80000, 0, 0);
+(21, 12, 1, 100, 1500, 0, 0),
+(22, 13, 1, 100, 1000, 0, 0),
+(23, 12, 24, 1, 4500, 0, 0);
 
 -- --------------------------------------------------------
 
@@ -446,17 +488,20 @@ CREATE TABLE `fournisseur` (
   `fonction` varchar(155) NOT NULL,
   `contactPersonnel` varchar(25) NOT NULL,
   `contactProfessionnel` varchar(25) NOT NULL,
-  `observation` text NOT NULL
+  `observation` text NOT NULL,
+  `ncc` varchar(25) DEFAULT NULL,
+  `rccm` varchar(25) DEFAULT NULL,
+  `ncb` varchar(25) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
 --
 -- Contenu de la table `fournisseur`
 --
 
-INSERT INTO `fournisseur` (`idfournisseur`, `designation`, `situation`, `contact`, `email`, `etat`, `token`, `nomRep`, `fonction`, `contactPersonnel`, `contactProfessionnel`, `observation`) VALUES
-(1, 'Fournisseur 1', ' Situation géographique du fournisseur', '57800439', 'email@email.com', 0, '18b376bf148d8d4ca4c090c94e7d0e01d7176158b73904571a03b106babeb006054c15c61776e07caded3318ebc9e26c7b22', 'YUHL.M', 'tgfuyuhjk', '654865', '64541652', 'Observation'),
-(2, 'Fournisseur 2', ' Fournisseur 2', '57800439', 'azerty@fbi.us', 0, '911502bc1eb6972c94b1a3da0d4b45c65b6fc20b5b3f0e88be02b86abde78675552b4524aab0983082bd3cc3946fb52b78d7', 'Zié ', 'DG', '05451200', '84200600', 'Observation'),
-(3, 'SICOMEX', 'Yopougon, Siporex', '75896315', 'info@sicomex.ci', 0, '5d7b49bff6507a9c465e696202e182e763a2031ffcccce242292a016477b3e0081f69a8687e66612b93bec012c70df0e7ed5', 'Coulibaly Malick', 'Commercial', '2589123', '77892130', 'Observation');
+INSERT INTO `fournisseur` (`idfournisseur`, `designation`, `situation`, `contact`, `email`, `etat`, `token`, `nomRep`, `fonction`, `contactPersonnel`, `contactProfessionnel`, `observation`, `ncc`, `rccm`, `ncb`) VALUES
+(1, 'Fournisseur 1', ' Situation géographique du fournisseur', '57800439', 'email@email.com', 0, '18b376bf148d8d4ca4c090c94e7d0e01d7176158b73904571a03b106babeb006054c15c61776e07caded3318ebc9e26c7b22', 'YUHL.M', 'tgfuyuhjk', '654865', '64541652', 'Observation', '0123', '4567', '0123456789'),
+(2, 'Fournisseur 2', ' Fournisseur 2', '57800439', 'azerty@fbi.us', 0, '911502bc1eb6972c94b1a3da0d4b45c65b6fc20b5b3f0e88be02b86abde78675552b4524aab0983082bd3cc3946fb52b78d7', 'Zié ', 'DG', '05451200', '84200600', 'Observation', NULL, NULL, NULL),
+(3, 'SICOMEX', 'Yopougon, Siporex', '75896315', 'info@sicomex.ci', 0, '5d7b49bff6507a9c465e696202e182e763a2031ffcccce242292a016477b3e0081f69a8687e66612b93bec012c70df0e7ed5', 'Coulibaly Malick', 'Commercial', '2589123', '77892130', 'Observation', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -538,6 +583,32 @@ INSERT INTO `paiements` (`idpaiement`, `vente_id`, `userid`, `montant`, `nompaye
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `personnel`
+--
+
+CREATE TABLE `personnel` (
+  `idpersonnel` int(11) NOT NULL,
+  `nom` varchar(50) NOT NULL,
+  `prenom` varchar(50) NOT NULL,
+  `contact` varchar(25) NOT NULL,
+  `statut` varchar(25) NOT NULL,
+  `magasin_id` int(11) NOT NULL,
+  `fonction` varchar(100) NOT NULL,
+  `etat` int(11) NOT NULL DEFAULT '0',
+  `token` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `personnel`
+--
+
+INSERT INTO `personnel` (`idpersonnel`, `nom`, `prenom`, `contact`, `statut`, `magasin_id`, `fonction`, `etat`, `token`) VALUES
+(1, 'Coulibaly', 'Malick', '57800439', 'Permanent', 1, 'Informaticien', 0, ''),
+(2, 'Coulibaly', 'Yacine', '47755588', 'Permanent', 2, 'Comptable', 0, '');
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `prix`
 --
 
@@ -601,6 +672,57 @@ INSERT INTO `produits` (`idproduit`, `designation`, `information`, `qte`, `monta
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `proforma`
+--
+
+CREATE TABLE `proforma` (
+  `idproforma` int(11) NOT NULL,
+  `dateemission` date NOT NULL,
+  `service_id` int(11) NOT NULL,
+  `tva_id` int(11) NOT NULL,
+  `montant` int(11) NOT NULL,
+  `remisefacture` int(11) NOT NULL,
+  `etat` int(11) NOT NULL DEFAULT '0',
+  `token` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `proforma`
+--
+
+INSERT INTO `proforma` (`idproforma`, `dateemission`, `service_id`, `tva_id`, `montant`, `remisefacture`, `etat`, `token`) VALUES
+(2, '2020-06-18', 1, 1, 800000, 25000, 0, '366e15a5bb455e6eafbec5c23f9754d4bada01f7b2f2120c7ae272cf7abe778a5c5d430a1214c2a14017203a9c3b78ddab20');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `services`
+--
+
+CREATE TABLE `services` (
+  `idservice` int(11) NOT NULL,
+  `typeservice` varchar(100) NOT NULL,
+  `adresse` varchar(255) NOT NULL,
+  `delai` int(11) NOT NULL,
+  `datedebut` date NOT NULL,
+  `dateenregistrement` date NOT NULL,
+  `detail` text,
+  `client_id` int(11) NOT NULL,
+  `montant` int(11) NOT NULL,
+  `etat` int(11) NOT NULL DEFAULT '0',
+  `token` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `services`
+--
+
+INSERT INTO `services` (`idservice`, `typeservice`, `adresse`, `delai`, `datedebut`, `dateenregistrement`, `detail`, `client_id`, `montant`, `etat`, `token`) VALUES
+(1, 'Aménagement', 'Yopougon Annanerai Cité Batim 3', 20, '2020-06-29', '2020-06-18', 'Détail du chantier', 3, 500000, 0, '578568111cff8b4f9d541d85753bded6e4dd4104c68df7ea92cea3dabad66b49a4e131691cd9d71d1f7fbec0dbec1b0159e2');
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `stock`
 --
 
@@ -619,10 +741,10 @@ CREATE TABLE `stock` (
 --
 
 INSERT INTO `stock` (`idstock`, `idproduit`, `qte`, `prixachat`, `identrepot`, `idbl`, `dateachat`) VALUES
-(7, 25, 20, 17800, 3, 4, '2020-03-11'),
+(7, 25, 0, 17800, 3, 4, '2020-03-11'),
 (8, 25, 7, 2500, 1, 5, '2020-03-18'),
 (9, 1, 0, 2300, 1, 5, '2020-03-18'),
-(4, 25, 10, 1250, 2, 3, '2020-03-11'),
+(4, 25, 0, 1250, 2, 3, '2020-03-11'),
 (5, 24, 4, 985, 1, 3, '2020-03-11'),
 (6, 1, 0, 880, 1, 3, '2020-03-11'),
 (10, 25, 10, 2500, 1, 6, '2020-03-18'),
@@ -632,23 +754,28 @@ INSERT INTO `stock` (`idstock`, `idproduit`, `qte`, `prixachat`, `identrepot`, `
 (14, 25, 2, 1500, 3, 7, '2020-04-26'),
 (15, 24, 4, 2000, 1, 7, '2020-04-26'),
 (16, 24, 5, 2000, 2, 7, '2020-04-26'),
-(17, 24, 1, 2000, 3, 7, '2020-04-26'),
-(18, 1, 1, 10000, 1, 1, '2020-05-13'),
+(17, 24, 0, 2000, 3, 7, '2020-04-26'),
+(18, 1, 0, 10000, 1, 1, '2020-05-13'),
 (19, 1, 1, 10000, 2, 1, '2020-05-13'),
-(20, 1, 1, 10000, 3, 1, '2020-05-13'),
+(20, 1, 0, 10000, 3, 1, '2020-05-13'),
 (21, 24, 2, 1500, 1, 1, '2020-05-13'),
 (22, 24, 2, 1500, 2, 1, '2020-05-13'),
 (23, 24, 2, 1500, 3, 1, '2020-05-13'),
 (24, 25, 3, 2000, 1, 1, '2020-05-13'),
 (25, 25, 3, 2000, 2, 1, '2020-05-13'),
 (26, 25, 3, 2000, 3, 1, '2020-05-13'),
-(27, 1, 1, 5000, 1, 4, '2020-06-08'),
+(27, 1, 0, 5000, 1, 4, '2020-06-08'),
 (28, 24, 1, 10000, 1, 4, '2020-06-08'),
 (29, 24, 1, 10000, 2, 4, '2020-06-08'),
 (30, 25, 1, 25000, 1, 4, '2020-06-08'),
 (31, 25, 1, 25000, 2, 4, '2020-06-08'),
 (32, 25, 1, 25000, 3, 4, '2020-06-08'),
-(33, 26, 1, 74800, 3, 4, '2020-06-08');
+(33, 26, 1, 74800, 3, 4, '2020-06-08'),
+(34, 25, 10, 17800, 2, 4, '2020-03-11'),
+(35, 25, 10, 1250, 3, 3, '2020-03-11'),
+(36, 25, 10, 17800, 2, 4, '2020-03-11'),
+(37, 26, 1, 60000, 1, 5, '2020-06-16'),
+(38, 1, 9, 800, 1, 5, '2020-06-16');
 
 -- --------------------------------------------------------
 
@@ -670,6 +797,31 @@ CREATE TABLE `taxes` (
 
 INSERT INTO `taxes` (`idtaxe`, `pourcentage`, `libelle`, `etat`, `token`) VALUES
 (1, 18, 'TVA', 0, '');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `transfert`
+--
+
+CREATE TABLE `transfert` (
+  `idtransfert` int(11) NOT NULL,
+  `datetransfert` date NOT NULL,
+  `heuretransfert` time NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `de` int(11) NOT NULL,
+  `vers` int(11) NOT NULL,
+  `token` varchar(255) NOT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `transfert`
+--
+
+INSERT INTO `transfert` (`idtransfert`, `datetransfert`, `heuretransfert`, `user_id`, `de`, `vers`, `token`) VALUES
+(2, '2020-06-15', '16:35:38', 1, 3, 2, '9e88a13f0322e860256ffcf1685fbb7f22dbad04b694494a6a0e2a97cf50a1652410f197b7ad029031f9890ee425a724115e'),
+(3, '2020-06-15', '16:39:05', 1, 2, 3, '0439c49d34815d4f833655a99bca89be2a704ea779c3024c309622903655dae6fc9b5757411b0339593d3150c02a2bdd3f34'),
+(4, '2020-06-15', '16:39:37', 1, 3, 2, '30aa0ec9b036b7954069852d008238f806f562cd6105101401e07cf64ec9279d600f34d985c8422c3d17f4cae3702501ee35');
 
 -- --------------------------------------------------------
 
@@ -720,6 +872,32 @@ INSERT INTO `typecommercial` (`idType`, `designation`, `pourcentage`, `etat`, `t
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `typedepense`
+--
+
+CREATE TABLE `typedepense` (
+  `idtypedepense` int(11) NOT NULL,
+  `libelle` varchar(100) NOT NULL,
+  `description` text NOT NULL,
+  `token` varchar(255) NOT NULL,
+  `abb` varchar(11) DEFAULT NULL
+) ENGINE=MyISAM DEFAULT CHARSET=latin1;
+
+--
+-- Contenu de la table `typedepense`
+--
+
+INSERT INTO `typedepense` (`idtypedepense`, `libelle`, `description`, `token`, `abb`) VALUES
+(1, 'Enlèvement de Fond', 'Enlèvement de Fond gtfeg ct csahsca', '8b816b455459e5623657850697ad6b7409f13c9e3da171ca940bb9ad7f6e337ce2890d1bf84873002a7934310d4cff64e738', NULL),
+(2, 'Frais de route', 'Frais de route', 'bc01c7bbc5dc026a7f28083264e6ba4a763f4ddf6f913377c7e0cb512e3be677e8394b9346547fcb027537a1e5f99705d5e3', NULL),
+(3, 'Frais annexe BL', 'Frais annexe BL', '7eb6f6a1f3260f0d1b56f5e924178fcf4e4560d3a7a8ed442d8102f0ff41af997c1abc920781b1883c8e9dd1880ff7231f87', NULL),
+(4, 'Versement Banque', 'Versement Banque', '466ab5321268f2b3c6c84a128eba572f7ba663be5cd2585719539771ac7b95fe3c4a78045981fc28159d58dc065d4100b407', 'banque'),
+(5, 'Dépense Exploitation', 'Dépense Exploitation', '0837c80f28b5d0dcba8c98f5ef2a68073fc2f13770ac4818f06a288531e949acef1840afff5e943c0f7410df0c684671aab2', 'exp'),
+(6, 'Facture Achat', 'Facture Achat', '0837c80f28b5d0dcba8c98f5ef2a68073fc2f13770ac4818f06a288531e949acef1840afff98e943c0f7410df0c684671aab2', 'fa');
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `users`
 --
 
@@ -750,7 +928,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `email`, `activation_selector`, `activation_code`, `forgotten_password_selector`, `forgotten_password_code`, `forgotten_password_time`, `remember_selector`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(1, '127.0.0.1', 'administrator', '$2y$12$AxHY2jN2/BuQfYFlVWXIHOPYAzlbk6qWFT2dYCg.bTAfmDYryGANu', 'admin@admin.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1591961953, 1, 'Admin', 'istrator', 'ADMIN', '0'),
+(1, '127.0.0.1', 'administrator', '$2y$12$AxHY2jN2/BuQfYFlVWXIHOPYAzlbk6qWFT2dYCg.bTAfmDYryGANu', 'admin@admin.com', NULL, '', NULL, NULL, NULL, NULL, NULL, 1268889823, 1592481524, 1, 'Admin', 'istrator', 'ADMIN', '0'),
 (3, '::1', 'malick', '$2y$10$Ai4iguJpKIGiVXjvVMG/reYYGvc/2Hj/SEnDvWP9HG91/OOxd7dQ.', 'admin@admin.come', NULL, NULL, NULL, NULL, NULL, NULL, NULL, 1583344154, NULL, 1, 'Coulibaly', 'Malick', 'Développeur', '578222512');
 
 -- --------------------------------------------------------
@@ -794,16 +972,18 @@ CREATE TABLE `ventes` (
   `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `remisefacture` int(11) NOT NULL DEFAULT '0',
   `echeance` date DEFAULT NULL,
-  `arretcaisse_id` int(11) NOT NULL
+  `arretcaisse_id` int(11) NOT NULL,
+  `datelivraison` date DEFAULT NULL,
+  `entrepotlivraison` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Contenu de la table `ventes`
 --
 
-INSERT INTO `ventes` (`idvente`, `datevente`, `client_id`, `commercial_id`, `tva_id`, `montant`, `avance`, `etat`, `etatlivraison`, `token`, `remisefacture`, `echeance`, `arretcaisse_id`) VALUES
-(9, '2020-06-10', 1, 1, 1, 132500, 0, 0, 0, 'b3bca0f73bfcc3958e7fe8e5a10369642f5a6a6ac43fb66b1b78f6c5e8ea79a5124a05a421133e483190bacd4e20bbf396c2', 350, '0000-00-00', 6),
-(10, '2020-06-10', 2, 2, 1, 80000, 0, 0, 0, 'fb70328cd84d3b096776f7f4749cda7955f105b469933b5c82dc11a38d9cf6a04e92021b8ad1f40abe12d0891bd4dcf8b81b', 800, '2020-07-09', 6);
+INSERT INTO `ventes` (`idvente`, `datevente`, `client_id`, `commercial_id`, `tva_id`, `montant`, `avance`, `etat`, `etatlivraison`, `token`, `remisefacture`, `echeance`, `arretcaisse_id`, `datelivraison`, `entrepotlivraison`) VALUES
+(12, '2020-06-15', 3, 2, 1, 154500, 0, 0, 1, '0821cca7dff9aafb27e1b0423e07a8c45238aca41dd6e2b45ee8c7b44e504c23dfc92c1c7d44d51be89c445a8509c7fe90b3', 0, '2020-07-12', 10, '2020-06-15', 1),
+(13, '2020-06-15', 2, 3, 1, 100000, 0, 0, 0, '519556a85e5aec45df848aed4952cdb56c0529a8ea369f85a1cb70412c2441f4930a1626cd543500dbf28d891ddac83c3894', 0, '2020-07-12', 10, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -909,6 +1089,18 @@ ALTER TABLE `detailinventaire`
   ADD PRIMARY KEY (`iddetail`);
 
 --
+-- Index pour la table `detailproforma`
+--
+ALTER TABLE `detailproforma`
+  ADD PRIMARY KEY (`iddetailproforma`);
+
+--
+-- Index pour la table `detailtransfert`
+--
+ALTER TABLE `detailtransfert`
+  ADD PRIMARY KEY (`iddetailtransfert`);
+
+--
 -- Index pour la table `detailvente`
 --
 ALTER TABLE `detailvente`
@@ -957,6 +1149,12 @@ ALTER TABLE `paiements`
   ADD PRIMARY KEY (`idpaiement`);
 
 --
+-- Index pour la table `personnel`
+--
+ALTER TABLE `personnel`
+  ADD PRIMARY KEY (`idpersonnel`);
+
+--
 -- Index pour la table `prix`
 --
 ALTER TABLE `prix`
@@ -967,6 +1165,18 @@ ALTER TABLE `prix`
 --
 ALTER TABLE `produits`
   ADD PRIMARY KEY (`idproduit`);
+
+--
+-- Index pour la table `proforma`
+--
+ALTER TABLE `proforma`
+  ADD PRIMARY KEY (`idproforma`);
+
+--
+-- Index pour la table `services`
+--
+ALTER TABLE `services`
+  ADD PRIMARY KEY (`idservice`);
 
 --
 -- Index pour la table `stock`
@@ -981,6 +1191,12 @@ ALTER TABLE `taxes`
   ADD PRIMARY KEY (`idtaxe`);
 
 --
+-- Index pour la table `transfert`
+--
+ALTER TABLE `transfert`
+  ADD PRIMARY KEY (`idtransfert`);
+
+--
 -- Index pour la table `typeclient`
 --
 ALTER TABLE `typeclient`
@@ -991,6 +1207,12 @@ ALTER TABLE `typeclient`
 --
 ALTER TABLE `typecommercial`
   ADD PRIMARY KEY (`idType`);
+
+--
+-- Index pour la table `typedepense`
+--
+ALTER TABLE `typedepense`
+  ADD PRIMARY KEY (`idtypedepense`);
 
 --
 -- Index pour la table `users`
@@ -1031,7 +1253,7 @@ ALTER TABLE `versements`
 -- AUTO_INCREMENT pour la table `actioncaisse`
 --
 ALTER TABLE `actioncaisse`
-  MODIFY `idac` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `idac` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT pour la table `argent`
 --
@@ -1046,12 +1268,12 @@ ALTER TABLE `billetage`
 -- AUTO_INCREMENT pour la table `boncommande`
 --
 ALTER TABLE `boncommande`
-  MODIFY `idfacture` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `idfacture` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT pour la table `bonlivraison`
 --
 ALTER TABLE `bonlivraison`
-  MODIFY `idfacture` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `idfacture` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT pour la table `caisse`
 --
@@ -1071,27 +1293,37 @@ ALTER TABLE `commerciaux`
 -- AUTO_INCREMENT pour la table `depense`
 --
 ALTER TABLE `depense`
-  MODIFY `iddepense` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `iddepense` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT pour la table `detailbc`
 --
 ALTER TABLE `detailbc`
-  MODIFY `iddetail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `iddetail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 --
 -- AUTO_INCREMENT pour la table `detailbl`
 --
 ALTER TABLE `detailbl`
-  MODIFY `iddetail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `iddetail` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
 -- AUTO_INCREMENT pour la table `detailinventaire`
 --
 ALTER TABLE `detailinventaire`
   MODIFY `iddetail` int(11) NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT pour la table `detailproforma`
+--
+ALTER TABLE `detailproforma`
+  MODIFY `iddetailproforma` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT pour la table `detailtransfert`
+--
+ALTER TABLE `detailtransfert`
+  MODIFY `iddetailtransfert` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+--
 -- AUTO_INCREMENT pour la table `detailvente`
 --
 ALTER TABLE `detailvente`
-  MODIFY `iddetailvente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `iddetailvente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 --
 -- AUTO_INCREMENT pour la table `entrepot`
 --
@@ -1128,6 +1360,11 @@ ALTER TABLE `login_attempts`
 ALTER TABLE `paiements`
   MODIFY `idpaiement` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 --
+-- AUTO_INCREMENT pour la table `personnel`
+--
+ALTER TABLE `personnel`
+  MODIFY `idpersonnel` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
 -- AUTO_INCREMENT pour la table `prix`
 --
 ALTER TABLE `prix`
@@ -1138,15 +1375,30 @@ ALTER TABLE `prix`
 ALTER TABLE `produits`
   MODIFY `idproduit` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 --
+-- AUTO_INCREMENT pour la table `proforma`
+--
+ALTER TABLE `proforma`
+  MODIFY `idproforma` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+--
+-- AUTO_INCREMENT pour la table `services`
+--
+ALTER TABLE `services`
+  MODIFY `idservice` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
 -- AUTO_INCREMENT pour la table `stock`
 --
 ALTER TABLE `stock`
-  MODIFY `idstock` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `idstock` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 --
 -- AUTO_INCREMENT pour la table `taxes`
 --
 ALTER TABLE `taxes`
   MODIFY `idtaxe` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT pour la table `transfert`
+--
+ALTER TABLE `transfert`
+  MODIFY `idtransfert` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT pour la table `typeclient`
 --
@@ -1157,6 +1409,11 @@ ALTER TABLE `typeclient`
 --
 ALTER TABLE `typecommercial`
   MODIFY `idType` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT pour la table `typedepense`
+--
+ALTER TABLE `typedepense`
+  MODIFY `idtypedepense` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT pour la table `users`
 --
@@ -1171,7 +1428,7 @@ ALTER TABLE `users_groups`
 -- AUTO_INCREMENT pour la table `ventes`
 --
 ALTER TABLE `ventes`
-  MODIFY `idvente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `idvente` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 --
 -- AUTO_INCREMENT pour la table `versements`
 --
