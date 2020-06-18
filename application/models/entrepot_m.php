@@ -30,7 +30,7 @@ class entrepot_m extends MY_Model
         $this->db->select('*');
         $this->db->from($this->get_db_table());
         $this->db->where('etat = 0');
-        $this->db->order_by($this->get_db_table_id(),'DESC');
+		$this->db->order_by('designation','ASC');
         $query = $this->db->get();
         return $query->result();
     }

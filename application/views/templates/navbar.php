@@ -313,6 +313,44 @@
 					</ul>
 				</li>
 
+				<li class="nav-item has-treeview <?= (isset($menu) && $menu == 'rh') ? 'menu-open' : "" ?>">
+					<a href="#" class="nav-link <?= (isset($menu) && $menu == 'rh') ? 'active' : "" ?>">
+						<i class="nav-icon fas fa-cogs"></i>
+						<p>
+							Ressources Humaine
+							<i class="right fas fa-angle-left"></i>
+						</p>
+					</a>
+
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a href="<?= site_url("personnel/ajouter") ?>" class="nav-link">
+								<i class="fas fa-users-cog nav-icon"></i>
+								<p>Ajouter Personnel</p>
+							</a>
+						</li>
+					</ul>
+				</li>
+
+				<li class="nav-item has-treeview <?= (isset($menu) && $menu == 'gc') ? 'menu-open' : "" ?>">
+					<a href="#" class="nav-link <?= (isset($menu) && $menu == 'gc') ? 'active' : "" ?>">
+						<i class="nav-icon fas fa-cogs"></i>
+						<p>
+							Génie Civil
+							<i class="right fas fa-angle-left"></i>
+						</p>
+					</a>
+
+					<ul class="nav nav-treeview">
+						<li class="nav-item">
+							<a href="<?= site_url("service/ajouter") ?>" class="nav-link">
+								<i class="fas fa-users-cog nav-icon"></i>
+								<p>Ajouter Chantier</p>
+							</a>
+						</li>
+					</ul>
+				</li>
+
 				<li class="nav-item has-treeview <?= (isset($menu) && $menu == 'edition') ? 'menu-open' : "" ?>">
 					<a href="#" class="nav-link <?= (isset($menu) && $menu == 'edition') ? 'active' : "" ?>">
 						<i class="nav-icon fas fa-cogs"></i>

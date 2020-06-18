@@ -231,6 +231,89 @@ class MY_Model extends CI_Model
 		return $returnArray;
 	}
 
+	function getArrayForService($id){
+		$returnArray = array();
+		$service = $this->service_m->get($id);
+
+		$clients = $this->client_m->get($service->client_id);
+
+		$proforma = $this->proforma_m->getProformaByServiceId($service->idservice);
+
+		if(empty($proforma)){
+			return $returnArray;
+		}
+
+		$proforma = $proforma[0];
+
+		//$commercial = $this->commercial_m->get($vente->commercial_id);
+
+		if($proforma->tva_id > 0){
+			//$tvas = $this->taxe_m->get($vente->tva_id);
+			$tva = 18;
+		}else{
+			$tva = 0;
+		}
+
+		$concerners = $this->detailproforma_m->getByForeignKey($proforma->idproforma);
+
+		$productArray = array();
+		$i = 0;
+		$liv = array();
+
+		$totalRemise = 0;
+
+		foreach ($concerners as $concerner) {
+
+			$produit = $this->produit_m->get($concerner->produit_id);
+
+			$productArray[$i]['Produit'] = $produit->designation;
+			$productArray[$i]['IdProduit'] = $produit->idproduit;
+			$productArray[$i]['Qte'] = $concerner->qte;
+			$productArray[$i]['Pu'] = $concerner->pu;
+			$productArray[$i]['Remise'] = $concerner->remise;
+			$productArray[$i]['Etat'] = $concerner->etat;
+			$productArray[$i]['IdDetail'] = $concerner->iddetailproforma;
+
+			$totalRemise += ($concerner->qte * ($concerner->remise));
+
+			$i++;
+		}
+
+		//echo'<pre>'; die(print_r($productArray));
+
+		$returnArray['Service'] = $service;
+
+		$returnArray['Proforma'] = $proforma;
+
+		$returnArray['Client'] = $clients;
+		//$returnArray['Commercial'] = $commercial;
+
+		$returnArray['DetailProforma']['Tva'] = $tva;
+
+		$returnArray['DetailProforma']['MontTVA'] = $proforma->montant * $tva / 100;
+		$returnArray['DetailProforma']['MontHT'] = $proforma->montant;
+
+		$totalRemise += $proforma->remisefacture;
+
+		$returnArray['DetailProforma']['TotalRemise'] = $totalRemise;
+
+		$returnArray['DetailProforma']['MontTTC'] = $proforma->montant  + ($proforma->montant * $tva / 100);
+		$returnArray['DetailProforma']['TotalTTC'] = $proforma->montant + ($proforma->montant * $tva / 100) - $totalRemise;
+		$returnArray['Produits'] = $productArray;
+
+		$globalState = "";
+		if($proforma->etat == 1){
+			$globalState = "Annulée";
+		}else{
+			$globalState = "En Cours";
+		}
+
+		$returnArray['GlobalState'] = $globalState;
+		//echo'<pre>'; die(print_r($returnArray));
+
+		return $returnArray;
+	}
+
 	function getByForeignKey($idForeignKey) {
 		$this->db->select('*');
 		$this->db->from($this->get_db_table());

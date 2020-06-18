@@ -86,6 +86,10 @@
             $('.select2bs4').select2({
                 theme: 'bootstrap4'
             });
+
+            $(document).on("wheel", "input[type=number]", function (e) {
+                $(this).blur();
+            });
 		</script>
 
 		<?php
@@ -100,5 +104,19 @@
 				$this->load->view("templates/scripts/".$script2);
 			}
 		?>
+
+		<style>
+			/* Chrome, Safari, Edge, Opera */
+			input::-webkit-outer-spin-button,
+			input::-webkit-inner-spin-button {
+				-webkit-appearance: none;
+				margin: 0;
+			}
+
+			/* Firefox */
+			input[type=number] {
+				-moz-appearance: textfield;
+			}
+		</style>
 	</body>
 </html>

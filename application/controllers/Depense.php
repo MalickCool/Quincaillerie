@@ -120,7 +120,7 @@ class Depense extends CI_Controller {
         $types = $this->typedepense_m->get_all();
         $data['types'] = $types;
         //echo"<pre>"; die(print_r($types));
-        $data['titre'] = 'Ajouter une Depense';
+        $data['titre'] = 'Effectuer une sortie de Caisse';
         $data['page'] = "depense/ajouter";
         $data['menu'] = 'caisse';
         $this->load->view($this->template, $data);

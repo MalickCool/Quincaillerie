@@ -35,11 +35,10 @@
 											<?php
 												foreach ($types as $type) {
 													?>
+													<option value="<?= $type->idtypedepense ?>"><?= $type->libelle ?></option>
 													<?php
 												}
 											?>
-											<option value="exp">Exploitation</option>
-											<option value="banque">Banque</option>
 										</select>
 									</div>
 								</div>
@@ -62,8 +61,8 @@
 						</div>
 						<div class="border-top">
 							<div class="card-body text-center">
-								<button type="submit" class="btn btn-primary">Ajouter</button>
-								<a href="<?= site_url("depense/index/") ?>" class="btn btn-danger">Quitter</a>
+								<a href="<?= site_url("depense/index/") ?>" class="btn btn-danger"><i class="fa fa-window-close"></i> Quitter</a>
+								<button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Ajouter</button>
 							</div>
 						</div>
 						<input type="hidden" name="token" value="<?= bin2hex(openssl_random_pseudo_bytes(50)) ?>">

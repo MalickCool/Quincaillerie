@@ -7,11 +7,12 @@
  */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Entrepot extends CI_Controller {
+class Personnel extends CI_Controller {
 
     public function __construct($value = "")
     {
         parent::__construct();
+        $this->load->model('personnel_m');
         $this->load->model('entrepot_m');
     }
 
@@ -22,11 +23,11 @@ class Entrepot extends CI_Controller {
         if(!$this->ion_auth->logged_in()){
             redirect("auth/login");
         }
-        $entrepots = $this->entrepot_m->get_all();
-        $data['entrepots'] = $entrepots;
+        $personnels = $this->personnel_m->get_all();
+        $data['personnels'] = $personnels;
         //echo"<pre>"; die(print_r($types));
-        $data['titre'] = 'Liste des entrepots enregistré';
-        $data['page'] = "entrepot/liste";
+        $data['titre'] = 'Liste du Personnel enregistré';
+        $data['page'] = "personnel/liste";
         $data['menu'] = 'edition';
         $this->load->view($this->template, $data);
     }
@@ -36,12 +37,15 @@ class Entrepot extends CI_Controller {
             redirect("auth/login");
         }
 
-        $entrepots = $this->entrepot_m->get_all();
-        $data['entrepots'] = $entrepots;
+		$personnels = $this->personnel_m->get_all();
+		$data['personnels'] = $personnels;
+
+		$magasins = $this->entrepot_m->getActivated();
+		$data['magasins'] = $magasins;
         //echo"<pre>"; die(print_r($types));
-        $data['titre'] = 'Ajouter un Entrepot';
-        $data['page'] = "entrepot/ajouter";
-        $data['menu'] = 'config';
+        $data['titre'] = 'Ajouter Personnel';
+        $data['page'] = "personnel/ajouter";
+        $data['menu'] = 'rh';
         $this->load->view($this->template, $data);
     }
 
@@ -51,30 +55,31 @@ class Entrepot extends CI_Controller {
             redirect("auth/login");
         }
 
-        $this->form_validation->set_rules('designation','Désignation de l\'entrepôt ','required');
+        $this->form_validation->set_rules('nom', 'nom','required');
+        $this->form_validation->set_rules('prenom', 'prenom','required');
+        $this->form_validation->set_rules('contact', 'contact','required');
+        $this->form_validation->set_rules('fonction', 'fonction','required');
 
         //echo'<pre>'; die(print_r($reclamation));
 
         if($this->form_validation->run()){
 
             $datas = array(
-                'designation' => $this->input->post('designation'),
-                'details' => $this->input->post('details'),
-                'datecreation' => date('Y-m-d'),
+                'nom' => $this->input->post('nom'),
+                'prenom' => $this->input->post('prenom'),
+                'contact' => $this->input->post('contact'),
+                'statut' => $this->input->post('statut'),
+                'magasin_id' => $this->input->post('magasin_id'),
+                'fonction' => $this->input->post('fonction'),
                 'etat' => 0,
-                'iduser' => $this->session->userdata('user_id'),
                 'token' => $this->input->post('token'),
             );
 
-            if(!$this->entrepot_m->exist($this->input->post('token'))) {
-                $this->entrepot_m->add_item($datas);
+            if(!$this->personnel_m->exist($this->input->post('token'))) {
+                $this->personnel_m->add_item($datas);
             }
         }
-        redirect('entrepot/index','refresh');
-        $data['title'] = 'Ajouter un Entrepot';
-        $data['main_content'] = 'entrepot/index';
-        $data['menu'] = 'config';
-        $this->load->view($this->template, $data);
+        redirect('personnel/ajouter','refresh');
     }
 
     public function edit($id){
@@ -82,18 +87,21 @@ class Entrepot extends CI_Controller {
             redirect("auth/login");
         }
 
-        $entrepot = $this->entrepot_m->get($id);
-        if($entrepot->designation == ""){
-            redirect("entrepot/");
+        $personnel = $this->personnel_m->get($id);
+        if($personnel->nom == ""){
+            redirect("personnel/ajouter");
         }
-        $entrepots = $this->entrepot_m->get_all();
-        $data['entrepots'] = $entrepots;
+		$personnels = $this->personnel_m->get_all();
+        $data['personnels'] = $personnels;
 
-        $data['entrepot'] = $entrepot;
+        $data['personnel'] = $personnel;
 
-        $data['titre'] = 'Modifier l\'entrepot '.$entrepot->designation;
-        $data['page'] = "entrepot/modifier";
-        $data['menu'] = 'config';
+		$magasins = $this->entrepot_m->getActivated();
+		$data['magasins'] = $magasins;
+
+        $data['titre'] = 'Modifier Personnel '.$personnel->nom." ".$personnel->prenom;
+        $data['page'] = "personnel/modifier";
+        $data['menu'] = 'rh';
         $this->load->view($this->template, $data);
     }
 
@@ -103,12 +111,15 @@ class Entrepot extends CI_Controller {
             redirect("auth/login");
         }
 
-        $item = $this->entrepot_m->get($_POST['id']);
-        if($item->designation == ""){
-            redirect("entrepot/");
+        $item = $this->personnel_m->get($_POST['id']);
+        if($item->nom == ""){
+            redirect("personnel/");
         }
 
-        $this->form_validation->set_rules('designation','Désignation du fournisseur','required');
+		$this->form_validation->set_rules('nom', 'nom','required');
+		$this->form_validation->set_rules('prenom', 'prenom','required');
+		$this->form_validation->set_rules('contact', 'contact','required');
+		$this->form_validation->set_rules('fonction', 'fonction','required');
 
         //echo'<pre>'; die(print_r($_POST));
 
@@ -119,24 +130,38 @@ class Entrepot extends CI_Controller {
                 $etat = 1;
             }
             $datas = array(
-                'designation' => $this->input->post('designation'),
-                'details' => $this->input->post('details'),
-                'datecreation' => date('Y-m-d'),
-                'iduser' => $this->session->userdata('user_id'),
+				'nom' => $this->input->post('nom'),
+				'prenom' => $this->input->post('prenom'),
+				'contact' => $this->input->post('contact'),
+				'statut' => $this->input->post('statut'),
+				'magasin_id' => $this->input->post('magasin_id'),
+				'fonction' => $this->input->post('fonction'),
+				'token' => $this->input->post('token'),
                 'etat' => $etat,
             );
 
-            $this->entrepot_m->update($item->identrepot, $datas);
+            $this->personnel_m->update($item->idpersonnel, $datas);
         }
-        redirect('entrepot/index','refresh');
+        redirect('personnel/ajouter','refresh');
     }
 
     public function imprimer(){
 
-        $message = "Liste des lieux de stockage enregistrés";
+        $message = "Liste du Personnel";
 
-        $entrepots = $this->entrepot_m->get_all();
-        $data['entrepots'] = $entrepots;
+		$magasins = $this->entrepot_m->getActivated();
+
+		$personnels = array();
+
+		foreach ($magasins as $magasin) {
+			$personns = $this->personnel_m->getAllForPrint($magasin->identrepot);
+			if(!empty($personns))
+				$personnels[$magasin->designation] = $personns;
+		}
+
+		//echo'<pre>'; die(print_r($personnels));
+
+        $data['magasins'] = $personnels;
         $data['message'] = $message;
 
         $mpdf = new \Mpdf\Mpdf([
@@ -147,7 +172,7 @@ class Entrepot extends CI_Controller {
         $mpdf->SetTitle($message);
         $mpdf->SetAuthor('ESC Technologie');
         $mpdf->SetCreator('Malick Coulibaly');
-        $html = $this->load->view('entrepot/print', $data, true);
+        $html = $this->load->view('personnel/print', $data, true);
         $mpdf->setFooter('{PAGENO} / {nb}');
         $mpdf->SetHTMLHeader('
             <div style="text-align: right; font-weight: bold;">
