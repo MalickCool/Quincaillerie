@@ -104,6 +104,12 @@
 							</a>
 						</li>
 						<li class="nav-item">
+							<a href="<?= site_url("unite/ajouter") ?>" class="nav-link">
+								<i class="fas fa-warehouse nav-icon"></i>
+								<p>Unité de Mésure</p>
+							</a>
+						</li>
+						<li class="nav-item">
 							<a href="<?= site_url("typedepense/ajouter") ?>" class="nav-link">
 								<i class="fas fa-users-cog nav-icon"></i>
 								<p>Type de Sortie de Caisse</p>

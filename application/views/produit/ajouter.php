@@ -86,6 +86,22 @@
 								</div>
 
 								<div class="form-group row">
+									<label for="unite_id" class="col-sm-12 control-label col-form-label">Unité de Réapprovisionnement <b style="color: #e74c3c; font-weight: bolder">*</b></label>
+									<div class="col-sm-12">
+										<select name="unite_id" id="unite_id" required class="select2 form-control custom-select">
+											<?php
+											foreach ($unites as $unite) {
+												?>
+												<option value="<?= $unite->idunite ?>"><?= $unite->designation ?></option>
+												<?php
+											}
+											?>
+										</select>
+										<?= form_error('unite_id','<div class="alert alert-danger">','</div>');?>
+									</div>
+								</div>
+
+								<div class="form-group row">
 									<label for="information" class="col-sm-12 control-label col-form-label">Détail</label>
 									<div class="col-sm-12">
 										<textarea name="information" class="form-control" id="information" rows="3"> </textarea>
@@ -122,6 +138,7 @@
 											<th>Désignation</th>
 											<th>Prix Par Défaut</th>
 											<th>Poids</th>
+											<th>Unité de Réappro</th>
 											<th>Etat</th>
 											<th>Action</th>
 										</tr>
@@ -138,6 +155,7 @@
 												<td><?= $item->designation ?></td>
 												<td><?= $item->montant ?> FCFA</td>
 												<td><?= $item->masse ?> Kg</td>
+												<td><?= $this->unite_m->get($item->unite_id)->designation ?></td>
 												<td><?= $status ?></td>
 												<td>
 													<a href="<?= site_url("produit/edit/".$item->idproduit) ?>" class="btn btn-danger">Modifier</a>

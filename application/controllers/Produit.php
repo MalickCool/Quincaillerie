@@ -14,6 +14,7 @@ class Produit extends CI_Controller {
         parent::__construct();
         $this->load->model('famille_m');
         $this->load->model('produit_m');
+        $this->load->model('unite_m');
     }
 
     public $template = 'templates/template';
@@ -39,8 +40,12 @@ class Produit extends CI_Controller {
 
         $produits = $this->produit_m->getAllProductWithFamilly();
 
-        $familles = $this->famille_m->get_all();
-        $data['produits'] = $produits;
+		$familles = $this->famille_m->get_all();
+
+		$unites = $this->unite_m->get_all();
+		$data['unites'] = $unites;
+
+		$data['produits'] = $produits;
         $data['familles'] = $familles;
         //echo"<pre>"; die(print_r($types));
         $data['titre'] = 'Ajouter une nouveau Produit';
@@ -70,6 +75,7 @@ class Produit extends CI_Controller {
                 'etat' => 0,
                 'seuil' => $this->input->post('seuil'),
                 'token' => $this->input->post('token'),
+                'unite_id' => $this->input->post('unite_id'),
             );
 
             if(!$this->produit_m->exist($this->input->post('token'))) {
@@ -101,6 +107,9 @@ class Produit extends CI_Controller {
         $data['familles'] = $familles;
 
         $data['produit'] = $produit;
+
+		$unites = $this->unite_m->get_all();
+		$data['unites'] = $unites;
 
         $data['titre'] = 'Modifier le produit '.$produit->designation;
         $data['page'] = "produit/modifier";
@@ -138,6 +147,7 @@ class Produit extends CI_Controller {
 				'masse' => $this->input->post('masse'),
 				'seuil' => $this->input->post('seuil'),
                 'etat' => $etat,
+				'unite_id' => $this->input->post('unite_id'),
             );
 
             $this->produit_m->update($produit->idproduit, $datas);

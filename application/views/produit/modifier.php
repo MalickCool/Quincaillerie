@@ -78,6 +78,22 @@
 							</div>
 
 							<div class="form-group row">
+								<label for="unite_id" class="col-sm-12 control-label col-form-label">Unité de Réapprovisionnement <b style="color: #e74c3c; font-weight: bolder">*</b></label>
+								<div class="col-sm-12">
+									<select name="unite_id" id="unite_id" required class="select2 form-control custom-select">
+										<?php
+										foreach ($unites as $unite) {
+											?>
+											<option <?= ($unite->idunite == $produit->unite_id) ? "selected" : ""; ?> value="<?= $unite->idunite ?>"><?= $unite->designation ?></option>
+											<?php
+										}
+										?>
+									</select>
+									<?= form_error('unite_id','<div class="alert alert-danger">','</div>');?>
+								</div>
+							</div>
+
+							<div class="form-group row">
 								<label for="information" class="col-sm-12 control-label col-form-label">Détail</label>
 								<div class="col-sm-12">
 									<textarea name="information" class="form-control" id="information" rows="3"><?= $produit->information ?></textarea>
