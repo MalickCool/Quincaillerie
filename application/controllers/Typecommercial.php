@@ -71,7 +71,12 @@ class Typecommercial extends CI_Controller
 
 			if (!$this->typecommercial_m->exist($this->input->post('token'))) {
 				$lastInsertedId = $this->typecommercial_m->add_item($datas);
+				$this->session->set_flashdata('message', "Type de commercial crée avec succès");
+			}else{
+				$this->session->set_flashdata('message', "Echec lors de la création du Type de commercial");
 			}
+		}else{
+			$this->session->set_flashdata('message', "Echec lors de la création du Type de commercial");
 		}
 		redirect('typecommercial/ajouter', 'refresh');
 	}
@@ -128,6 +133,9 @@ class Typecommercial extends CI_Controller
 			);
 
 			$this->typecommercial_m->update($item->idType, $datas);
+			$this->session->set_flashdata('message', "Type de commercial Modifié avec succès");
+		}else{
+			$this->session->set_flashdata('message', "Echec lors de la modification du Type de commercial");
 		}
 		redirect('typecommercial/ajouter');
 	}

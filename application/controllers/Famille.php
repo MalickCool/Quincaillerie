@@ -43,7 +43,7 @@ class Famille extends CI_Controller {
         $this->load->view($this->template, $data);
     }
 
-    public function do_upload(){
+    public function insert(){
 
         if(!$this->ion_auth->logged_in()){
             redirect("auth/login");
@@ -61,9 +61,14 @@ class Famille extends CI_Controller {
 
             if(!$this->famille_m->exist($this->input->post('token'))) {
                 $this->famille_m->add_item($datas);
-            }
-        }
-        redirect('famille/index','refresh');
+				$this->session->set_flashdata('message', "Famille créée avec succès");
+            }else{
+				$this->session->set_flashdata('message', "Echec lors de la création de la Famille");
+			}
+        }else{
+			$this->session->set_flashdata('message', "Echec lors de la création de la Famille");
+		}
+        redirect('famille/ajouter','refresh');
     }
 
     public function edit($id){
@@ -112,8 +117,11 @@ class Famille extends CI_Controller {
             );
 
             $this->famille_m->update($famille->idfamille, $datas);
-        }
-        redirect('famille/index','refresh');
+			$this->session->set_flashdata('message', "Famille Modifiée avec succès");
+        }else{
+			$this->session->set_flashdata('message', "Echec lors de la modification de la Famille");
+		}
+        redirect('famille/ajouter','refresh');
     }
 
     public function getProducts(){

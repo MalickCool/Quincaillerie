@@ -68,7 +68,12 @@ class Typedepense extends CI_Controller
 
 			if (!$this->typedepense_m->exist($this->input->post('token'))) {
 				$this->typedepense_m->add_item($datas);
+				$this->session->set_flashdata('message', "Type de dépense crée avec succès");
+			}else{
+				$this->session->set_flashdata('message', "Echec lors de la création du Type de dépense");
 			}
+		}else{
+			$this->session->set_flashdata('message', "Echec lors de la création du Type de dépense");
 		}
 		redirect('typedepense/ajouter', 'refresh');
 	}
@@ -104,8 +109,8 @@ class Typedepense extends CI_Controller
 		}
 
 		$item = $this->typedepense_m->get($_POST['id']);
-		if ($item->designation == "") {
-			redirect("typedepense/");
+		if ($item->description == "") {
+			redirect("typedepense/ajouter");
 		}
 
 		$this->form_validation->set_rules('libelle', 'libelle', 'required');
@@ -117,6 +122,9 @@ class Typedepense extends CI_Controller
 			);
 
 			$this->typedepense_m->update($item->idtypedepense, $datas);
+			$this->session->set_flashdata('message', "Type de dépense modifié avec succès");
+		}else{
+			$this->session->set_flashdata('message', "Echec lors de la modification du Type de dépense");
 		}
 		redirect('typedepense/ajouter');
 	}

@@ -176,22 +176,33 @@ class Commande extends CI_Controller {
             $montantTotal = 0;
 
             if(!$this->boncommande_m->exist($this->input->post('token'))) {
-                $lastId = $this->boncommande_m->add_item($datas);
+				$nbreProduit = sizeof($_POST['product']);
+            	if($nbreProduit > 0){
+					$lastId = $this->boncommande_m->add_item($datas);
 
-                $nbreProduit = sizeof($_POST['product']);
-                for ($i=0; $i < $nbreProduit; $i++) {
-                    $datax = array(
-                        'idproduit' => $_POST['product'][$i],
-                        'qte' => $_POST['qte'][$i],
-                        'pu' => $_POST['pu'][$i],
-                        'idbon' => $lastId,
-                    );
-                    $this->detailsbc_m->add_item($datax);
-                }
-            }
-        }
 
-        redirect('stock/ajouter','refresh');
+					for ($i=0; $i < $nbreProduit; $i++) {
+						$datax = array(
+							'idproduit' => $_POST['product'][$i],
+							'qte' => $_POST['qte'][$i],
+							'pu' => $_POST['pu'][$i],
+							'idbon' => $lastId,
+						);
+						$this->detailsbc_m->add_item($datax);
+					}
+					$this->session->set_flashdata('message', "Commande créée avec succès");
+				}else{
+					$this->session->set_flashdata('message', "Echec lors de la Validation de la Commande");
+				}
+
+            }else{
+				$this->session->set_flashdata('message', "Echec lors de la création de la Commande");
+			}
+        }else{
+			$this->session->set_flashdata('message', "Echec lors de la création de la Commande");
+		}
+
+        redirect('commande/ajouter','refresh');
     }
 
     public function updateBonCommande(){
@@ -202,7 +213,7 @@ class Commande extends CI_Controller {
         $bon = $this->boncommande_m->get($_POST['idBon']);
 
 		if($bon->token == ""){
-			redirect("commande/index");
+			redirect("commande/ajouter");
 		}
 
 		//echo'<pre>'; die(print_r($bon));
@@ -232,8 +243,11 @@ class Commande extends CI_Controller {
 				);
 				$this->detailsbc_m->add_item($datax);
 			}
+			$this->session->set_flashdata('message', "Commande Modifiée avec succès");
 
-        }
+        }else{
+			$this->session->set_flashdata('message', "Echec lors de la modification de la Commande");
+		}
 
         redirect('commande/index','refresh');
     }

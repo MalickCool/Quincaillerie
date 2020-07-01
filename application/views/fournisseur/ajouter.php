@@ -22,6 +22,17 @@
 	<section class="content">
 		<div class="container-fluid">
 			<div class="row">
+				<?php
+				if(isset($_SESSION['message'])){
+					?>
+
+					<div class="alert alert-success col-md-12" role="alert">
+						<?= $_SESSION['message'] ?>
+					</div>
+
+					<?php
+				}
+				?>
 				<div class="col-md-5">
 					<div class="card">
 						<div class="card-header">

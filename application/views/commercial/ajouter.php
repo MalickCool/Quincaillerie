@@ -23,13 +23,24 @@
 	<section class="content">
 		<div class="container-fluid">
 			<div class="row">
+				<?php
+				if(isset($_SESSION['message'])){
+					?>
+
+					<div class="alert alert-success col-md-12" role="alert">
+						<?= $_SESSION['message'] ?>
+					</div>
+
+					<?php
+				}
+				?>
 				<div class="col-md-6 col-sm-12">
 					<div class="card">
 						<div class="card-header">
 							Ajouter un Commercial
 						</div>
 						<div class="card-body">
-							<?php echo form_open_multipart("commercial/do_upload", array('class'=>'form-horizontal', 'id'=>'form'));?>
+							<?php echo form_open_multipart("commercial/insert", array('class'=>'form-horizontal', 'id'=>'form'));?>
 								<div class="card-body">
 									<div class="form-group row">
 										<label for="type" class="col-sm-3 text-right control-label col-form-label"><b>Type Commercial</b></label>

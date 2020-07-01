@@ -22,12 +22,23 @@
 	<section class="content">
 		<div class="container-fluid">
 			<div class="row">
+				<?php
+				if(isset($_SESSION['message'])){
+					?>
+
+					<div class="alert alert-success col-md-12" role="alert">
+						<?= $_SESSION['message'] ?>
+					</div>
+
+					<?php
+				}
+				?>
 				<div class="col-md-6">
 					<div class="card">
 						<div class="card-header">
 							<h4 class="card-title">Créer une Famille</h4>
 						</div>
-						<?php echo form_open_multipart("famille/do_upload", array('class'=>'form-horizontal', 'id'=>'form'));?>
+						<?php echo form_open_multipart("famille/insert", array('class'=>'form-horizontal', 'id'=>'form'));?>
 							<div class="card-body">
 								<div class="form-group row">
 									<label for="designation" class="col-sm-12 control-label col-form-label">Désignation</label>

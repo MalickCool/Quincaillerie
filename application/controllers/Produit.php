@@ -74,9 +74,14 @@ class Produit extends CI_Controller {
 
             if(!$this->produit_m->exist($this->input->post('token'))) {
                 $this->produit_m->add_item($datas);
-            }
-        }
-        redirect('produit/index','refresh');
+				$this->session->set_flashdata('message', "Produit crée avec succès");
+            }else{
+				$this->session->set_flashdata('message', "Echec lors de la création du Produit");
+			}
+        }else{
+			$this->session->set_flashdata('message', "Echec lors de la création du Produit");
+		}
+        redirect('produit/ajouter','refresh');
     }
 
     public function edit($id){
@@ -136,8 +141,11 @@ class Produit extends CI_Controller {
             );
 
             $this->produit_m->update($produit->idproduit, $datas);
-        }
-        redirect('produit/index','refresh');
+			$this->session->set_flashdata('message', "Produit Modifié avec succès");
+        }else{
+			$this->session->set_flashdata('message', "Echec lors de la modification du Produit");
+		}
+        redirect('produit/ajouter','refresh');
     }
 
     public function imprimer(){

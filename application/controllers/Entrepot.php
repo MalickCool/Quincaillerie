@@ -39,7 +39,7 @@ class Entrepot extends CI_Controller {
         $entrepots = $this->entrepot_m->get_all();
         $data['entrepots'] = $entrepots;
         //echo"<pre>"; die(print_r($types));
-        $data['titre'] = 'Ajouter un Entrepot';
+        $data['titre'] = 'Ajouter un Magasin';
         $data['page'] = "entrepot/ajouter";
         $data['menu'] = 'config';
         $this->load->view($this->template, $data);
@@ -68,11 +68,16 @@ class Entrepot extends CI_Controller {
 
             if(!$this->entrepot_m->exist($this->input->post('token'))) {
                 $this->entrepot_m->add_item($datas);
-            }
-        }
-        redirect('entrepot/index','refresh');
+				$this->session->set_flashdata('message', "Magasin crée avec succès");
+            }else{
+				$this->session->set_flashdata('message', "Echec lors de la création du Magasin");
+			}
+        }else{
+			$this->session->set_flashdata('message', "Echec lors de la création du Magasin");
+		}
+        redirect('entrepot/ajouter','refresh');
         $data['title'] = 'Ajouter un Entrepot';
-        $data['main_content'] = 'entrepot/index';
+        $data['main_content'] = 'entrepot/ajouter';
         $data['menu'] = 'config';
         $this->load->view($this->template, $data);
     }
@@ -105,7 +110,7 @@ class Entrepot extends CI_Controller {
 
         $item = $this->entrepot_m->get($_POST['id']);
         if($item->designation == ""){
-            redirect("entrepot/");
+            redirect("entrepot/ajouter");
         }
 
         $this->form_validation->set_rules('designation','Désignation du fournisseur','required');
@@ -127,8 +132,11 @@ class Entrepot extends CI_Controller {
             );
 
             $this->entrepot_m->update($item->identrepot, $datas);
-        }
-        redirect('entrepot/index','refresh');
+			$this->session->set_flashdata('message', "Magasin Modifié avec succès");
+        }else{
+			$this->session->set_flashdata('message', "Echec lors de la modification du Magasin");
+		}
+        redirect('entrepot/ajouter','refresh');
     }
 
     public function imprimer(){

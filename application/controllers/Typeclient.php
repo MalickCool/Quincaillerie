@@ -71,7 +71,12 @@ class Typeclient extends CI_Controller
 
 			if (!$this->typeclient_m->exist($this->input->post('token'))) {
 				$lastInsertedId = $this->typeclient_m->add_item($datas);
+				$this->session->set_flashdata('message', "Type de Client crée avec succès");
+			}else{
+				$this->session->set_flashdata('message', "Echec lors de la création du Type de Client");
 			}
+		}else{
+			$this->session->set_flashdata('message', "Echec lors de la création du Type de Client");
 		}
 		redirect('typeclient/ajouter', 'refresh');
 	}
@@ -85,7 +90,7 @@ class Typeclient extends CI_Controller
 
 		$type = $this->typeclient_m->get($id);
 		if ($type->designation == "") {
-			redirect("typeclient/");
+			redirect("accueil/");
 		}
 		$types = $this->typeclient_m->get_all();
 		$data['types'] = $types;
@@ -108,7 +113,7 @@ class Typeclient extends CI_Controller
 
 		$item = $this->typeclient_m->get($_POST['id']);
 		if ($item->designation == "") {
-			redirect("typeclient/");
+			redirect("typeclient/ajouter");
 		}
 
 		$this->form_validation->set_rules('designation', 'Designation', 'required');
@@ -128,6 +133,9 @@ class Typeclient extends CI_Controller
 			);
 
 			$this->typeclient_m->update($item->idType, $datas);
+			$this->session->set_flashdata('message', "Type de Client Modifié avec succès");
+		}else{
+			$this->session->set_flashdata('message', "Echec lors de la modification du Type de Client");
 		}
 		redirect('typeclient/ajouter');
 	}

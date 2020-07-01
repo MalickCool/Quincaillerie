@@ -82,9 +82,14 @@ class Fournisseur extends CI_Controller {
 
             if(!$this->fournisseur_m->exist($this->input->post('token'))) {
                 $this->fournisseur_m->add_item($datas);
-            }
-        }
-        redirect('fournisseur/index','refresh');
+				$this->session->set_flashdata('message', "Fournisseur crée avec succès");
+            }else{
+				$this->session->set_flashdata('message', "Echec lors de la création du Fournisseur");
+			}
+        }else{
+			$this->session->set_flashdata('message', "Echec lors de la création du Fournisseur");
+		}
+        redirect('fournisseur/ajouter','refresh');
         $data['title'] = 'Ajouter un Fournisseur';
         $data['main_content']='fournisseur/index';
         $data['menu'] = 'config';
@@ -121,7 +126,7 @@ class Fournisseur extends CI_Controller {
 
         $item = $this->fournisseur_m->get($_POST['id']);
         if($item->designation == ""){
-            redirect("fournisseur/");
+            redirect("fournisseur/ajouter");
         }
 
         $this->form_validation->set_rules('designation','Désignation du fournisseur','required');
@@ -154,9 +159,11 @@ class Fournisseur extends CI_Controller {
             );
 
             $this->fournisseur_m->update($item->idfournisseur, $datas);
-
-        }
-        redirect('fournisseur/index','refresh');
+			$this->session->set_flashdata('message', "Fournisseur Modifié avec succès");
+        }else{
+			$this->session->set_flashdata('message', "Echec lors de la modification du Fournisseur");
+		}
+        redirect('fournisseur/ajouter','refresh');
     }
 
     public function imprimer(){

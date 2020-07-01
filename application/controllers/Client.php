@@ -80,6 +80,9 @@ class Client extends CI_Controller {
 
 		if(!$this->client_m->exist($this->input->post('token'))) {
 			$lastInsertedId = $this->client_m->add_item($datas);
+			$this->session->set_flashdata('message', "Client ajouté avec succès");
+		}else{
+			$this->session->set_flashdata('message', "Echec lors de l'ajout du Client");
 		}
 
         redirect('client/ajouter','refresh');
@@ -143,6 +146,7 @@ class Client extends CI_Controller {
 		);
 
 		$this->client_m->update($item->idclient, $datas);
+		$this->session->set_flashdata('message', "Client Modifié avec succès");
 
         redirect('client/ajouter');
     }

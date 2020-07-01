@@ -910,12 +910,14 @@ class Auth extends CI_Controller
 		$this->data['group_name'] = [
 			'name'  => 'group_name',
 			'id'    => 'group_name',
+			'class' => 'form-control',
 			'type'  => 'text',
 			'value' => $this->form_validation->set_value('group_name'),
 		];
 		$this->data['description'] = [
 			'name'  => 'description',
 			'id'    => 'description',
+			'class' => 'form-control',
 			'type'  => 'text',
 			'value' => $this->form_validation->set_value('description'),
 		];

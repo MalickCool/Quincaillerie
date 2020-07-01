@@ -53,7 +53,7 @@ class Commercial extends CI_Controller {
         $this->load->view($this->template, $data);
     }
 
-    public function do_upload(){
+    public function insert(){
 
         if(!$this->ion_auth->logged_in()){
             redirect("auth/login");
@@ -76,8 +76,13 @@ class Commercial extends CI_Controller {
 
             if(!$this->commercial_m->exist($this->input->post('token'))) {
                 $lastInsertedId = $this->commercial_m->add_item($datas);
-            }
-        }
+				$this->session->set_flashdata('message', "Commercial crée avec succès");
+            }else{
+				$this->session->set_flashdata('message', "Echec lors de la création du Commercial");
+			}
+        }else{
+			$this->session->set_flashdata('message', "Echec lors de la création du Commercial");
+		}
         redirect('Commercial/ajouter','refresh');
     }
 
@@ -113,7 +118,7 @@ class Commercial extends CI_Controller {
 
         $item = $this->commercial_m->get($_POST['id']);
         if($item->nom == ""){
-            redirect("Commercial/");
+            redirect("Commercial/ajouter");
         }
 
         $this->form_validation->set_rules('nom','Nom du Commercial','required');
@@ -135,7 +140,10 @@ class Commercial extends CI_Controller {
             );
 
             $this->commercial_m->update($item->idcommercial, $datas);
-        }
+			$this->session->set_flashdata('message', "Commercial Modifié avec succès");
+        }else{
+			$this->session->set_flashdata('message', "Echec lors de la modification du Commercial");
+		}
         redirect('Commercial/ajouter');
     }
 
