@@ -33,7 +33,7 @@
 								?>
 
 								<div class="form-group row">
-									<label for="type_client" class="col-sm-3 text-right control-label col-form-label pr-0">Type de Client</label>
+									<label for="type_client" class="col-sm-3 text-right control-label col-form-label pr-0">Type de Client <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 									<div class="col-sm-9">
 										<select name="type_client" class="form-control select2" id="type_client">
 											<?php
@@ -72,7 +72,7 @@
 									<legend>Autre Type de Client</legend>
 
 									<div class="form-group row">
-										<label for="nom" class="col-sm-3 text-right control-label col-form-label pr-0">Nom & Prenom</label>
+										<label for="nom" class="col-sm-3 text-right control-label col-form-label pr-0">Nom & Prenom <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 										<div class="col-sm-9">
 											<input type="text" name="nom" class="form-control" id="nom" value="<?= $nom ?>">
 											<?= form_error('nom','<div class="alert alert-danger">','</div>');?>
@@ -80,7 +80,7 @@
 									</div>
 
 									<div class="form-group row">
-										<label for="profession" class="col-sm-3 text-right control-label col-form-label pr-0">Profession</label>
+										<label for="profession" class="col-sm-3 text-right control-label col-form-label pr-0">Profession <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 										<div class="col-sm-9">
 											<input type="text" name="profession" class="form-control" id="profession" value="<?= $client->profession ?>">
 											<?= form_error('profession','<div class="alert alert-danger">','</div>');?>
@@ -88,7 +88,7 @@
 									</div>
 
 									<div class="form-group row">
-										<label for="adres" class="col-sm-3 text-right control-label col-form-label pr-0">Domicile</label>
+										<label for="adres" class="col-sm-3 text-right control-label col-form-label pr-0">Domicile <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 										<div class="col-sm-9">
 											<input type="text" name="adresse" class="form-control" id="adres" value="<?= $client->adresse ?>">
 											<?= form_error('adresse','<div class="alert alert-danger">','</div>');?>
@@ -108,7 +108,7 @@
 									</div>
 
 									<div class="form-group row">
-										<label for="tel" class="col-sm-3 text-right control-label col-form-label pr-0">Contact</label>
+										<label for="tel" class="col-sm-3 text-right control-label col-form-label pr-0">Contact <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 										<div class="col-sm-9">
 											<input type="text" name="phone" class="form-control" required id="tel" value="<?= $client->phone ?>">
 											<?= form_error('phone','<div class="alert alert-danger">','</div>');?>

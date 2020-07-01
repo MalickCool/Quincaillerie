@@ -28,7 +28,7 @@
 							<div class="card-body">
 
 								<div class="form-group row">
-									<label for="designation" class="col-sm-12 control-label col-form-label">Désignation</label>
+									<label for="designation" class="col-sm-12 control-label col-form-label">Désignation <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 									<div class="col-sm-12">
 										<input type="text" name="designation" class="form-control" id="designation" value="<?= $type->designation ?>" required>
 										<?= form_error('designation','<div class="alert alert-danger">','</div>');?>
@@ -36,7 +36,7 @@
 								</div>
 
 								<div class="form-group row">
-									<label for="pourcentage" class="col-sm-12 control-label col-form-label">Pourcentage</label>
+									<label for="pourcentage" class="col-sm-12 control-label col-form-label">Pourcentage <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 									<div class="col-sm-12">
 										<input type="number" step="any" min="0" max="100" class="form-control" value="<?= $type->pourcentage ?>" required name="pourcentage" id="pourcentage">
 										<?= form_error('pourcentage','<div class="alert alert-danger">','</div>');?>

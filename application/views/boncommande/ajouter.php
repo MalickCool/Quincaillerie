@@ -59,7 +59,7 @@
 
 									<div class="form-group row">
 
-										<label for="idfournisseur" class="col-sm-2 text-right control-label col-form-label"><b>Fournisseur</b></label>
+										<label for="idfournisseur" class="col-sm-2 text-right control-label col-form-label"><b>Fournisseur</b> <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 										<div class="col-sm-4">
 											<select id="idfournisseur" name="idfournisseur" required class="select2 form-control custom-select">
 												<option value=""></option>
@@ -98,7 +98,7 @@
 								</style>
 								<div class="form-group row" id="field">
 									<div class="col-sm-3 pl-0 pr-0">
-										<label for="intrant" class="col-sm-12 control-label col-form-label">Produit</label>
+										<label for="intrant" class="col-sm-12 control-label col-form-label">Produit <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 										<div class="col-sm-12">
 											<select id="intrant" class="select2 form-control custom-select col-sm-12">
 												<option value=""></option>
@@ -114,21 +114,21 @@
 									</div>
 
 									<div class="col-sm-3 pl-0 pr-0">
-										<label for="qte" class="col-sm-12 control-label col-form-label">Quantité</label>
+										<label for="qte" class="col-sm-12 control-label col-form-label">Quantité <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 										<div class="col-sm-12">
 											<input type="number" class="form-control" id="qte" placeholder="Quantité">
 										</div>
 									</div>
 
 									<div class="col-sm-3 pl-0 pr-0">
-										<label for="pu" class="col-sm-12 control-label col-form-label">Prix Unitaire TTC</label>
+										<label for="pu" class="col-sm-12 control-label col-form-label">Prix Unitaire TTC <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 										<div class="col-sm-12">
 											<input type="number" id="pu" step="0.01" class="form-control" placeholder="Prix Unitaire">
 										</div>
 									</div>
 
 									<div class="col-sm-2 pl-0 pr-0">
-										<label for="total" class="col-sm-12 control-label col-form-label">Total TTC</label>
+										<label for="total" class="col-sm-12 control-label col-form-label">Total TTC <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 										<div class="col-sm-12">
 											<input type="number" id="total" class="form-control" readonly>
 										</div>

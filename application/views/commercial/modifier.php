@@ -28,7 +28,7 @@
 						<?php echo form_open_multipart("commercial/update", array('class'=>'form-horizontal', 'id'=>'form'));?>
 							<div class="card-body">
 								<div class="form-group row">
-									<label for="type" class="col-sm-3 text-right control-label col-form-label"><b>Type Commercial</b></label>
+									<label for="type" class="col-sm-3 text-right control-label col-form-label"><b>Type Commercial</b> <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 									<div class="col-sm-9">
 										<select id="type" name="typecommercial" required class="select2 form-control custom-select">
 											<?php
@@ -42,7 +42,7 @@
 									</div>
 								</div>
 								<div class="form-group row">
-									<label for="nom" class="col-sm-3 text-right control-label col-form-label pr-0">Nom & Prenom</label>
+									<label for="nom" class="col-sm-3 text-right control-label col-form-label pr-0">Nom & Prenom <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 									<div class="col-sm-9">
 										<input type="text" name="nom" class="form-control" id="nom" value="<?= $commercial->nom ?>">
 										<?= form_error('nom','<div class="alert alert-danger">','</div>');?>
@@ -50,7 +50,7 @@
 								</div>
 
 								<div class="form-group row">
-									<label for="tel" class="col-sm-3 text-right control-label col-form-label pr-0">Contact</label>
+									<label for="tel" class="col-sm-3 text-right control-label col-form-label pr-0">Contact <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 									<div class="col-sm-9">
 										<input type="text" name="phone" class="form-control" id="tel" value="<?= $commercial->phone ?>">
 										<?= form_error('phone','<div class="alert alert-danger">','</div>');?>

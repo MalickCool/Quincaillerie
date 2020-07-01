@@ -30,7 +30,7 @@
 						<?php echo form_open_multipart("produit/update", array('class'=>'form-horizontal', 'id'=>'form'));?>
 						<div class="card-body">
 							<div class="form-group row">
-								<label for="idfamille" class="col-sm-12 control-label col-form-label">Famille</label>
+								<label for="idfamille" class="col-sm-12 control-label col-form-label">Famille <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 								<div class="col-sm-12">
 									<select name="idfamille" id="idfamille" required class="select2 form-control custom-select">
 										<?php
@@ -46,7 +46,7 @@
 							</div>
 
 							<div class="form-group row">
-								<label for="designation" class="col-sm-12 control-label col-form-label">Désignation</label>
+								<label for="designation" class="col-sm-12 control-label col-form-label">Désignation <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 								<div class="col-sm-12">
 									<input type="text" name="designation" class="form-control" id="designation" value="<?= $produit->designation ?>" required>
 									<?= form_error('designation','<div class="alert alert-danger">','</div>');?>
@@ -54,7 +54,7 @@
 							</div>
 
 							<div class="form-group row">
-								<label for="montant" class="col-sm-12 control-label col-form-label">Prix Par Défaut</label>
+								<label for="montant" class="col-sm-12 control-label col-form-label">Prix Par Défaut <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 								<div class="col-sm-12">
 									<input type="number" name="montant" class="form-control" id="montant" value="<?= $produit->montant ?>" required>
 									<?= form_error('montant','<div class="alert alert-danger">','</div>');?>
@@ -62,7 +62,7 @@
 							</div>
 
 							<div class="form-group row">
-								<label for="masse" class="col-sm-12 control-label col-form-label">Poids du Produit (en Kg)</label>
+								<label for="masse" class="col-sm-12 control-label col-form-label">Poids du Produit (en Kg) <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 								<div class="col-sm-12">
 									<input type="number" step="any" name="masse" class="form-control" id="masse" value="<?= $produit->masse ?>" required>
 									<?= form_error('masse','<div class="alert alert-danger">','</div>');?>
@@ -70,7 +70,7 @@
 							</div>
 
 							<div class="form-group row">
-								<label for="seuil" class="col-sm-12 control-label col-form-label">Seuil d'alerte</label>
+								<label for="seuil" class="col-sm-12 control-label col-form-label">Seuil d'alerte <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 								<div class="col-sm-12">
 									<input type="number" name="seuil" class="form-control" id="seuil" value="<?= $produit->seuil ?>" required>
 									<?= form_error('seuil','<div class="alert alert-danger">','</div>');?>

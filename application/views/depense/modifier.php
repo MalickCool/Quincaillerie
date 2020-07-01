@@ -43,7 +43,7 @@
 
                         <div class="form-group row">
                             <div class="col-sm-6 pl-0 pr-0">
-                                <label for="typeDepense" class="col-sm-12 control-label col-form-label">Type de dépense</label>
+                                <label for="typeDepense" class="col-sm-12 control-label col-form-label">Type de dépense <b style="color: #e74c3c; font-weight: bolder">*</b></label>
                                 <div class="col-sm-12">
                                     <select class="select2 form-control custom-select" name="typedepense" id="typeDepense">
                                         <option <?php if(is_null($depense->factureachat) OR $depense->factureachat == 1) echo "selected"; ?> value="">Exploitation</option>

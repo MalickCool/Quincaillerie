@@ -41,7 +41,7 @@
 						<?php echo form_open_multipart("famille/insert", array('class'=>'form-horizontal', 'id'=>'form'));?>
 							<div class="card-body">
 								<div class="form-group row">
-									<label for="designation" class="col-sm-12 control-label col-form-label">Désignation</label>
+									<label for="designation" class="col-sm-12 control-label col-form-label">Désignation <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 									<div class="col-sm-12">
 										<input type="text" name="libelle" class="form-control" id="designation" placeholder="Nom de la famille" required>
 										<?= form_error('libelle','<div class="alert alert-danger">','</div>');?>

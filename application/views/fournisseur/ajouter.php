@@ -43,7 +43,7 @@
 								<fieldset>
 									<legend>Information Structure</legend>
 									<div class="form-group row">
-										<label for="designation" class="col-sm-12 control-label col-form-label">Désignation</label>
+										<label for="designation" class="col-sm-12 control-label col-form-label">Désignation <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 										<div class="col-sm-12">
 											<input type="text" name="designation" class="form-control" id="designation" placeholder="Désignation de la structure" required>
 											<?= form_error('designation','<div class="alert alert-danger">','</div>');?>
@@ -96,7 +96,7 @@
 
 									<div class="form-group row">
 										<div class="col-md-6 pl-0">
-											<label for="situation" class="col-sm-12 control-label col-form-label">Situation</label>
+											<label for="situation" class="col-sm-12 control-label col-form-label">Situation <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 											<div class="col-sm-12">
 												<textarea name="situation" class="form-control" id="situation" rows="2"> </textarea>
 												<?= form_error('situation','<div class="alert alert-danger">','</div>');?>
@@ -117,14 +117,14 @@
 									<legend>Représentant Fournisseur</legend>
 									<div class="form-group row">
 										<div class="col-sm-7 pl-0">
-											<label for="nomRep" class="col-sm-12 control-label col-form-label">Nom & Prénom</label>
+											<label for="nomRep" class="col-sm-12 control-label col-form-label">Nom & Prénom <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 											<div class="col-sm-12">
 												<input type="text" name="nomRep" class="form-control" id="nomRep" placeholder="Nom et Prénom du Représentant" required>
 												<?= form_error('nomRep','<div class="alert alert-danger">','</div>');?>
 											</div>
 										</div>
 										<div class="col-sm-5 pl-0">
-											<label for="fonction" class="col-sm-12 control-label col-form-label">Fonction</label>
+											<label for="fonction" class="col-sm-12 control-label col-form-label">Fonction <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 											<div class="col-sm-12">
 												<input type="text" name="fonction" class="form-control" id="fonction" placeholder="Fonction du Représentant" required>
 												<?= form_error('fonction','<div class="alert alert-danger">','</div>');?>
@@ -134,7 +134,7 @@
 
 									<div class="form-group row">
 										<div class="col-sm-6 pl-0">
-											<label for="contactPersonnel" class="col-sm-12 control-label col-form-label">Contact Personnel</label>
+											<label for="contactPersonnel" class="col-sm-12 control-label col-form-label">Contact Personnel <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 											<div class="col-sm-12">
 												<input type="text" name="contactPersonnel" class="form-control" id="contactPersonnel" placeholder="Contact Personnel" required>
 												<?= form_error('contactPersonnel','<div class="alert alert-danger">','</div>');?>

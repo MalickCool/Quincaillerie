@@ -152,8 +152,13 @@ class Depense extends CI_Controller {
 
             if(!$this->depense_m->exist($this->input->post('token'))) {
                 $this->depense_m->add_item($datas);
-            }
-        }
+				$this->session->set_flashdata('message', "Sortie de Caisse effectuée avec succès");
+            }else{
+				$this->session->set_flashdata('message', "Echec lors de la validation de la Sortie de Caisse");
+			}
+        }else{
+			$this->session->set_flashdata('message', "Echec lors de la validation de la Sortie de Caisse");
+		}
         redirect('depense/ajouter','refresh');
     }
 
@@ -204,8 +209,11 @@ class Depense extends CI_Controller {
             );
 
             $this->depense_m->update($item->iddepense, $datas);
+			$this->session->set_flashdata('message', "Sortie de Caisse Modifiée avec succès");
 
-        }
+        }else{
+			$this->session->set_flashdata('message', "Echec lors de la modification de la Sortie de Caisse");
+		}
         redirect('depense/index','refresh');
     }
 
