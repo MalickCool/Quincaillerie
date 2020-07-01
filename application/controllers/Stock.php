@@ -79,48 +79,34 @@ class Stock extends CI_Controller {
         }
 
         $produits = $this->produit_m->getActivated();
+		$entrepots = $this->entrepot_m->getActivated();
 
-        if(isset($_POST['entrepot'])){
-            $ent = $_POST['entrepot'];
-            $entrepot = $this->entrepot_m->get($_POST['entrepot']);
 
-            if($entrepot->designation == ""){
-                redirect("stock/entrepot");
-            }
+		//$ent = $_POST['entrepot'];
+		//$entrepot = $this->entrepot_m->get($_POST['entrepot']);
 
-            $stocks = array();
-            foreach ($produits as $produit) {
-                $qte = $this->stock_m->getProductsByEntrepotWithDetails($produit->idproduit, $_POST['entrepot']);
-                if(!is_numeric($qte))
-                    $qte = 0;
+		$stocks = array();
 
-                if($qte > 0){
-                    $stocks[$produit->idproduit]['designation'] = $produit->designation;
-                    $stocks[$produit->idproduit]['seuil'] = $produit->seuil;
-                    $stocks[$produit->idproduit]['Qte'] = $qte;
-                }
-            }
-        }else{
-            $ent = "";
-            $stocks = array();
-			foreach ($produits as $produit) {
-                $qte = $this->stock_m->getProductsWithDetails($produit->idproduit);
-                if($qte < 0)
-                    $qte = 0;
-                if($qte > 0){
-                    $stocks[$produit->idproduit]['designation'] = $produit->designation;
-                    $stocks[$produit->idproduit]['seuil'] = $produit->seuil;
-                    $stocks[$produit->idproduit]['Qte'] = $qte;
-                }
-            }
-        }
+		foreach ($produits as $produit) {
+			$stocks[$produit->idproduit]['Produit'] = $produit;
+			foreach ($entrepots as $entrepot) {
+				$qte = $this->stock_m->getProductsByEntrepotWithDetails($produit->idproduit, $entrepot->identrepot);
+				if(!is_numeric($qte))
+					$qte = 0;
+
+				if($qte > 0){
+					$stocks[$produit->idproduit]['Quantité'][$entrepot->identrepot] = $qte;
+				}
+			}
+		}
+
 
         $entrepots = $this->entrepot_m->getActivated();
 
 
         $data['stocks'] = $stocks;
         $data['entrepots'] = $entrepots;
-        $data['selected'] = $ent;
+        $data['produits'] = $produits;
 
         //echo"<pre>"; die(print_r($stocks));
         $data['titre'] = 'Etat du Stock';

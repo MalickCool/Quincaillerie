@@ -34,34 +34,20 @@
 							</div>
 						</div>
 						<div class="card-body">
-							<?php echo form_open("stock/entrepot", array('class'=>'form-horizontal', 'id'=>'form'));?>
-								<div class="form-group row">
-									<label for="entrepot" class="col-sm-3 text-right control-label col-form-label">Magasins</label>
-									<div class="col-sm-5">
-										<select id="entrepot" name="entrepot" class="select2 form-control custom-select col-sm-12">
-											<option <?php if($selected == "") echo"selected"; ?> value="">Tous les Magasins</option>
-											<?php
-											foreach ($entrepots as $intrant) {
-												?>
-												<option <?php if($selected == $intrant->identrepot) echo"selected"; ?> value="<?= $intrant->identrepot ?>"><?= $intrant->designation ?></option>
-												<?php
-											}
-											?>
-										</select>
-									</div>
-									<div class="col-sm-2">
-										<button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Afficher</button>
-									</div>
-								</div>
-							<?php echo form_close();?>
-
 							<div class="table-responsive">
 								<table id="zero_config" class="table table-striped table-bordered">
 									<thead>
 										<tr>
-											<th>Intrant</th>
-											<th>Quantité</th>
-											<th>Seuil d'Alerte</th>
+											<th>Produit</th>
+											<?php
+												foreach ($entrepots as $entrepot) {
+													?>
+													<th class="text-center"><?= $entrepot->designation ?></th>
+													<?php
+												}
+											?>
+											<th class="text-center">Seuil d'Alerte</th>
+											<th class="text-center">Total Qté</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -69,9 +55,18 @@
 											foreach ($stocks as $item) {
 												?>
 												<tr>
-													<td><?= $item['designation'] ?></td>
-													<td><?= round($item['Qte'], 2) ?></td>
-													<td><?= round($item['seuil'], 2) ?></td>
+													<td><?= $item['Produit']->designation ?></td>
+													<?php
+														$total = 0;
+														foreach ($entrepots as $entrepot) {
+															$total += $item['Quantité'][$entrepot->identrepot];
+															?>
+															<td class="text-center"><?= $item['Quantité'][$entrepot->identrepot] ?></td>
+															<?php
+														}
+													?>
+													<td class="text-center"><?= round($item['Produit']->seuil, 2) ?></td>
+													<td class="text-center"><?= $this->stock_m->formatNumber($total) ?></td>
 												</tr>
 												<?php
 											}
