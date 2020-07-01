@@ -52,7 +52,7 @@
 									<table class="table table-striped table-bordered table-responsive-md">
 										<thead>
 											<tr>
-												<th style="width: 15%">Produit</th>
+												<th style="width: 20%">Produit</th>
 												<th style="width: 10%">Quantité Total</th>
 												<?php
 													foreach ($magasins as $magasin) {
@@ -63,7 +63,7 @@
 													}
 												?>
 
-												<th style="width: 10%">Prix Unitaire TTC</th>
+												<th style="width: 15%">Prix Unitaire TTC</th>
 												<th style="width: 15%">Total TTC</th>
 											</tr>
 										</thead>
@@ -94,6 +94,30 @@
 												}
 											?>
 										</tbody>
+										<tfoot>
+											<tr>
+												<td colspan="<?= $item ?>">Total:</td>
+												<td class="text-right font-weight-bold" style="font-size: 20px; text-align: right"><span id="theTotal"><?= $this->detailsbc_m->formatNumber($total) ?></span> FCFA</td>
+											</tr>
+											<tr>
+												<td colspan="<?= $item ?>">Montant du Paiement:</td>
+												<td>
+													<input type="number" class="form-control font-weight-bold bg-red" style="border: 2px red solid" name="montantPayer" id="montantPayer" min="0">
+												</td>
+											</tr>
+											<tr>
+												<td colspan="<?= $item ?>">Reste à Payer:</td>
+												<td>
+													<input type="text" class="form-control font-weight-bold" readonly style="border: 2px red solid" name="reste" id="reste">
+												</td>
+											</tr>
+											<tr id="echeanceDiv">
+												<td colspan="<?= $item ?>">Prochaine Echéance:</td>
+												<td>
+													<input type="date" class="form-control font-weight-bold text-center" style="border: 2px red solid" required name="echeance" id="echeance">
+												</td>
+											</tr>
+										</tfoot>
 									</table>
 								</div>
 							</div>

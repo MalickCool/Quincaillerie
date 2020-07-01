@@ -78,6 +78,8 @@ class Fournisseur extends CI_Controller {
                 'ncc' => $this->input->post('ncc'),
                 'rccm' => $this->input->post('rccm'),
                 'ncb' => $this->input->post('ncb'),
+
+                'echeance' => $this->input->post('echeance'),
             );
 
             if(!$this->fournisseur_m->exist($this->input->post('token'))) {
@@ -90,10 +92,6 @@ class Fournisseur extends CI_Controller {
 			$this->session->set_flashdata('message', "Echec lors de la création du Fournisseur");
 		}
         redirect('fournisseur/ajouter','refresh');
-        $data['title'] = 'Ajouter un Fournisseur';
-        $data['main_content']='fournisseur/index';
-        $data['menu'] = 'config';
-        $this->load->view($this->template, $data);
     }
 
     public function edit($id){
@@ -156,6 +154,8 @@ class Fournisseur extends CI_Controller {
 				'ncc' => $this->input->post('ncc'),
 				'rccm' => $this->input->post('rccm'),
 				'ncb' => $this->input->post('ncb'),
+
+				'echeance' => $this->input->post('echeance'),
             );
 
             $this->fournisseur_m->update($item->idfournisseur, $datas);

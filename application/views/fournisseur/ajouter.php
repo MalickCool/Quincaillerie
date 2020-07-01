@@ -150,6 +150,16 @@
 										</div>
 									</div>
 								</fieldset>
+								<fieldset>
+									<legend>Echéance</legend>
+									<div class="form-group row">
+										<label for="echeance" class="col-sm-12 control-label col-form-label">Nbre Jour Avant Reglement Facture</label>
+										<div class="col-sm-12">
+											<input type="number" name="echeance" class="form-control" id="echeance" placeholder="Nbre Jour Avant Reglement Facture">
+											<?= form_error('echeance','<div class="alert alert-danger">','</div>');?>
+										</div>
+									</div>
+								</fieldset>
 							</div>
 							<div class="border-top">
 								<div class="card-body text-center">

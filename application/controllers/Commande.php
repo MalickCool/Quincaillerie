@@ -22,6 +22,7 @@ class Commande extends CI_Controller {
         $this->load->model('depense_m');
         $this->load->model('bonlivraison_m');
         $this->load->model('detailsbl_m');
+        $this->load->model('unite_m');
     }
 
     public $template = 'templates/template';
@@ -164,12 +165,17 @@ class Commande extends CI_Controller {
 
         if($this->form_validation->run()){
 
+        	$fournisseur = $this->fournisseur_m->get($_POST['idfournisseur']);
+
+        	$echeance = date('Y-m-d', strtotime("+". $fournisseur->echeance ." day"));
+
             $datas = array(
                 'numbon' => $this->input->post('numbon'),
                 'idfournisseur' => $this->input->post('idfournisseur'),
                 'datebon' => date('Y-m-d'),
                 'iduser' => $this->session->userdata('user_id'),
                 'tva' => $this->input->post('tva'),
+                'echeance' => $echeance,
                 'token' => $this->input->post('token'),
             );
 
@@ -424,6 +430,7 @@ class Commande extends CI_Controller {
 		);
 
 		$idBl = $this->bonlivraison_m->add_item($datas);
+		//$idBl = 1;
 
 		$total = 0;
 
@@ -448,9 +455,28 @@ class Commande extends CI_Controller {
 
 						$total += ($_POST['entrepot_'.$detail->iddetail.'_'.$magasin->identrepot] * $detail->pu);
 
+						$theProduct = $this->produit_m->get($detail->idproduit);
+						$unite = $this->unite_m->get($theProduct->unite_id);
+						if($unite->parent == 0){
+							$theQte = $_POST['entrepot_'.$detail->iddetail.'_'.$magasin->identrepot];
+							//echo'a';
+						}else{
+							$theParent = $this->unite_m->get($unite->parent);
+
+							$theQte = $unite->valeur * $_POST['entrepot_'.$detail->iddetail.'_'.$magasin->identrepot];
+							//echo'<pre>'; print_r($theProduct);
+						}
+//						echo"Produit ===> <br>";
+//						echo'<pre>'; print_r($theProduct);
+//						echo"Unite ===> <br>";
+//						echo'<pre>'; print_r($unite);
+//						echo"Qte ===> <br>";
+//						echo'<pre>'; print_r($theQte);
+//						echo "<br>-------------------------------------------------------------------- <br>";
+
 						$dataz = array(
 							'idproduit' => $detail->idproduit,
-							'qte' => $_POST['entrepot_'.$detail->iddetail.'_'.$magasin->identrepot],
+							'qte' => $theQte,
 							'prixachat' => $detail->pu,
 							'identrepot' => $magasin->identrepot,
 							'dateachat' => $bon->datebon,
@@ -460,11 +486,7 @@ class Commande extends CI_Controller {
 					}
 
 				}
-
-
-
 			}
-
 			//echo'<pre>'; die(print_r($detail));
 		}
 
@@ -473,33 +495,7 @@ class Commande extends CI_Controller {
 		);
 		$this->boncommande_m->update($bon->idfacture, $datax);
 
-		//echo'<pre>'; die(print_r($_POST));
-
-		// montantPayer
-
-		$datas = array(
-			'motifdepense' => 'Règlement Fournisseur',
-			'datedepense' => date('Y-m-d'),
-			'iduser' => $this->session->userdata('user_id'),
-			'montant' => $this->input->post('montantPayer'),
-			'token' => $this->input->post('token'),
-			'typedepense' => 'fa',
-			'factureachat' => $bon->idfacture,
-			'fournisseur_id' => $bon->idfournisseur,
-		);
-
-		if(!$this->depense_m->exist($this->input->post('token'))) {
-			$this->depense_m->add_item($datas);
-		}
-
-		if($total > $_POST['montantPayer']){
-			$dataEcheance = array(
-				'echeance' => $this->input->post('echeance'),
-			);
-			$this->boncommande_m->update($bon->idfacture, $dataEcheance);
-		}
-
-		redirect('depense/index','refresh');
+		redirect('commande/ajouter','refresh');
 	}
 
 	public function disableBon(){
