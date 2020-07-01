@@ -96,7 +96,7 @@
 
 									<div class="form-group row">
 										<div class="col-md-6 pl-0">
-											<label for="situation" class="col-sm-12 control-label col-form-label">Situation <b style="color: #e74c3c; font-weight: bolder">*</b></label>
+											<label for="situation" class="col-sm-12 control-label col-form-label">Adresse Géographique <b style="color: #e74c3c; font-weight: bolder">*</b></label>
 											<div class="col-sm-12">
 												<textarea name="situation" class="form-control" id="situation" rows="2"> </textarea>
 												<?= form_error('situation','<div class="alert alert-danger">','</div>');?>
